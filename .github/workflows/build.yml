@@ -2,7 +2,6 @@ name: Build iOS App
 on: [push]
 jobs:
   build:
-      - run: eas init --non-interactive --name mood-tracker-ios
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -11,6 +10,7 @@ jobs:
           node-version: 18.x
       - run: npm install -g eas-cli
       - run: npm install
+      - run: eas init --non-interactive --name mood-tracker-ios
       - run: eas build -p ios --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
