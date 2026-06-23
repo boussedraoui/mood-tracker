@@ -10,7 +10,7 @@ jobs:
           node-version: 18.x
       - run: npm install -g eas-cli
       - run: npm install
-      - run: eas init --non-interactive --name mood-tracker-ios
+      - run: eas init --non-interactive
       - run: eas build -p ios --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
