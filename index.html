@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Daily Mood Tracker</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        #app { width: 100%; max-width: 420px; background-color: #ffffff; border-radius: 24px; padding: 20px; box-shadow: 0px 10px 30px rgba(0,0,0,0.08); position: relative; }
+        
+        .title { font-size: 24px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
+        .label { font-size: 16px; font-weight: 600; color: #34495e; margin-top: 10px; margin-bottom: 5px; }
+        .row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .btn { padding: 12px; border-radius: 50%; background-color: #fff; min-width: 50px; text-align: center; box-shadow: 0px 2px 4px rgba(0,0,0,0.05); border: none; cursor: pointer; transition: 0.2s; font-size: 28px; }
+        .btn.selected { background-color: #007AFF; box-shadow: 0px 4px 8px rgba(0,122,255,0.4); transform: scale(1.05); }
+        
+        .save-btn { background-color: #34C759; border: none; padding: 14px; border-radius: 30px; width: 100%; color: white; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0px 4px 10px rgba(52,199,89,0.3); margin-top: 5px; }
+        .save-btn:active { transform: scale(0.95); }
+
+        .insights-box { background-color: #fff; padding: 20px; border-radius: 20px; width: 100%; margin-top: 20px; box-shadow: 0px 4px 10px rgba(0,0,0,0.05); position: relative; border: 1px solid #f0f0f0; }
+        
+        /* Badge Free / Paid */
+        .badge { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #e0e0e0; font-size: 12px; font-weight: bold; }
+        .badge.free { background-color: #f8f9fa; color: #6c757d; }
+        .badge.paid { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+
+        .section-title { font-size: 18px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
+        .trend-text { font-size: 14px; margin: 5px 0; color: #2c3e50; }
+        .tip-text { font-size: 14px; margin: 5px 0; color: #007AFF; }
+        .advice-text { font-size: 14px; margin: 5px 0; color: #34C759; }
+        .sub-status { font-size: 12px; color: #666; margin-top: 5px; font-style: italic; }
+        
+        .recommend-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+        .recommend-label { font-size: 14px; font-weight: 600; color: #2c3e50; }
+        .subscribe-btn-small { background-color: #FF9500; border: none; padding: 6px 12px; border-radius: 20px; color: white; font-weight: bold; font-size: 12px; cursor: pointer; }
+        
+        .bottom-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; }
+        .counter { font-size: 14px; color: #888; }
+        .action-btn { border: none; padding: 8px 16px; border-radius: 20px; color: white; font-weight: bold; font-size: 14px; cursor: pointer; }
+        .share-btn { background-color: #007AFF; }
+        .download-btn { background-color: #34C759; }
+
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 999; }
+        .modal-content { background: white; border-radius: 24px; padding: 30px; width: 85%; max-width: 350px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .modal-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #2c3e50; }
+        .modal-desc { font-size: 16px; color: #666; margin-bottom: 20px; }
+        .modal-btn { border: none; padding: 12px; border-radius: 30px; width: 100%; font-weight: bold; font-size: 16px; margin-bottom: 10px; cursor: pointer; }
+        .modal-confirm { background-color: #007AFF; color: white; }
+        .modal-cancel { background-color: #f0f0f0; color: #666; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="title">Daily Mood Tracker</div>
+
+    <div class="label">Mood:</div>
+    <div class="row" id="mood-buttons">
+        <button class="btn" data-value="😊">😊</button>
+        <button class="btn" data-value="😢">😢</button>
+        <button class="btn" data-value="😤">😤</button>
+        <button class="btn" data-value="😰">😰</button>
+    </div>
+
+    <div class="label">Activity:</div>
+    <div class="row" id="activity-buttons">
+        <button class="btn" data-value="💼">💼</button>
+        <button class="btn" data-value="🏃">🏃</button>
+        <button class="btn" data-value="🛌">🛌</button>
+        <button class="btn" data-value="🍽️">🍽️</button>
+    </div>
+
+    <button class="save-btn" id="save-btn">Save</button>
+
+    <div class="insights-box">
+        <!-- BADGE -->
+        <div class="badge free" id="status-badge">Free</div>
+
+        <div class="section-title">Your Insights</div>
+        <div class="trend-text" id="mood-trend">Mood Trend: Start logging to see trends.</div>
+
+        <div id="premium-content">
+            <div class="recommend-row">
+                <span class="recommend-label">Recommendations:</span>
+                <button class="subscribe-btn-small" id="subscribe-btn">Subscribe ($4.99/mo)</button>
+            </div>
+        </div>
+
+        <div id="subscribed-content" class="hidden">
+            <div class="tip-text" id="food-tip">Food Recommendations: Log a mood to get tips.</div>
+            <div class="advice-text" id="activity-advice">Activity Advice: Log 3 entries for advice.</div>
+            <div class="sub-status" id="expiry-text">Active until: --</div>
+        </div>
+    </div>
+
+    <div class="bottom-row">
+        <span class="counter" id="entries-counter">Entries: 0</span>
+        <div>
+            <button class="action-btn download-btn" id="download-btn">⬇️ Download</button>
+            <button class="action-btn share-btn" id="share-btn">🔗 Share</button>
+        </div>
+    </div>
+</div>
+
+<!-- Subscription Modal -->
+<div class="modal-overlay hidden" id="pay-modal">
+    <div class="modal-content">
+        <div class="modal-title">Apple Pay (Simulation)</div>
+        <div class="modal-desc">Monthly Subscription: $4.99</div>
+        <button class="modal-btn modal-confirm" id="confirm-subscribe">Confirm Subscription</button>
+        <button class="modal-btn modal-cancel" id="cancel-subscribe">Cancel</button>
+    </div>
+</div>
+
+<script>
+    // --- State ---
+    let selectedMood = null;
+    let selectedActivity = null;
+    let entries = JSON.parse(localStorage.getItem('moodData')) || [];
+    let isSubscribed = false;
+    let expiryTime = null;
+
+    // --- Elements ---
+    const moodBtns = document.querySelectorAll('#mood-buttons .btn');
+    const activityBtns = document.querySelectorAll('#activity-buttons .btn');
+    const saveBtn = document.getElementById('save-btn');
+    const badge = document.getElementById('status-badge');
+    const trendEl = document.getElementById('mood-trend');
+    const premiumContent = document.getElementById('premium-content');
+    const subscribedContent = document.getElementById('subscribed-content');
+    const foodTipEl = document.getElementById('food-tip');
+    const adviceEl = document.getElementById('activity-advice');
+    const expiryEl = document.getElementById('expiry-text');
+    const counterEl = document.getElementById('entries-counter');
+    const subscribeBtn = document.getElementById('subscribe-btn');
+    const payModal = document.getElementById('pay-modal');
+    const confirmBtn = document.getElementById('confirm-subscribe');
+    const cancelBtn = document.getElementById('cancel-subscribe');
+    const downloadBtn = document.getElementById('download-btn');
+    const shareBtn = document.getElementById('share-btn');
+
+    // --- Helper Functions ---
+    const formatDate = (timestamp) => {
+        if (!timestamp) return '--';
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    };
+
+    const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+    const updateUI = () => {
+        counterEl.textContent = `Entries: ${entries.length}`;
+        
+        // Update Trend
+        if (entries.length === 0) {
+            trendEl.textContent = "Mood Trend: Not enough data. Start logging!";
+        } else {
+            const recent = entries.slice(-7);
+            const happy = recent.filter(e => e.mood === '😊').length;
+            if (happy >= 4) trendEl.textContent = "Mood Trend: Your trend is positive! 🌟";
+            else if (happy >= 2) trendEl.textContent = "Mood Trend: Your mood is stable.";
+            else trendEl.textContent = "Mood Trend: You need more self-care. 💪";
+        }
+
+        // Update Subscription Status
+        if (isSubscribed) {
+            badge.className = 'badge paid';
+            badge.textContent = 'Paid';
+            premiumContent.classList.add('hidden');
+            subscribedContent.classList.remove('hidden');
+            expiryEl.textContent = `Active until: ${formatDate(expiryTime)}`;
+            
+            // Update Food & Advice (Simple random logic)
+            if (entries.length > 0) {
+                const last = entries[entries.length - 1];
+                const foods = ['🍫 Dark chocolate.', '🍌 A banana.', '🧘 Oatmeal.', '🥗 A green salad.', '🍣 Fresh salmon.'];
+                const advices = ['👍 Keep up the good habits!', '🌟 You are doing great!', '💪 Strong work today.'];
+                if (last.mood === '😢' || last.mood === '😰') foodTipEl.textContent = `Food Recommendations: ${getRandom(foods)}`;
+                else foodTipEl.textContent = `Food Recommendations: ${getRandom(foods)}`;
+                adviceEl.textContent = `Activity Advice: ${getRandom(advices)}`;
+            }
+        } else {
+            badge.className = 'badge free';
+            badge.textContent = 'Free';
+            premiumContent.classList.remove('hidden');
+            subscribedContent.classList.add('hidden');
+        }
+    };
+
+    const checkSubscription = () => {
+        const expiry = localStorage.getItem('subExpiry');
+        if (expiry) {
+            const now = new Date().getTime();
+            if (now < parseInt(expiry)) {
+                isSubscribed = true;
+                expiryTime = parseInt(expiry);
+            } else {
+                isSubscribed = false;
+                localStorage.removeItem('subExpiry');
+            }
+        }
+        updateUI();
+    };
+
+    // --- Event Listeners ---
+
+    // Mood Selection
+    moodBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            moodBtns.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedMood = btn.dataset.value;
+        });
+    });
+
+    // Activity Selection
+    activityBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            activityBtns.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedActivity = btn.dataset.value;
+        });
+    });
+
+    // Save Button
+    saveBtn.addEventListener('click', () => {
+        if (!selectedMood || !selectedActivity) {
+            alert("Choose mood and activity");
+            return;
+        }
+        const entry = { mood: selectedMood, activity: selectedActivity, date: new Date().toISOString() };
+        entries.push(entry);
+        localStorage.setItem('moodData', JSON.stringify(entries));
+        
+        // Reset selection
+        moodBtns.forEach(b => b.classList.remove('selected'));
+        activityBtns.forEach(b => b.classList.remove('selected'));
+        selectedMood = null;
+        selectedActivity = null;
+        
+        alert("Saved!");
+        updateUI();
+    });
+
+    // Subscribe Button
+    subscribeBtn.addEventListener('click', () => {
+        payModal.classList.remove('hidden');
+    });
+
+    confirmBtn.addEventListener('click', () => {
+        payModal.classList.add('hidden');
+        const now = new Date().getTime();
+        // Add 30 days (1 month)
+        expiryTime = now + 30 * 24 * 60 * 60 * 1000;
+        localStorage.setItem('subExpiry', expiryTime.toString());
+        isSubscribed = true;
+        alert("Subscription active for 1 month (Apple Pay simulation)!");
+        updateUI();
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        payModal.classList.add('hidden');
+    });
+
+    // Download Button (Monthly report simulation)
+    downloadBtn.addEventListener('click', () => {
+        if (entries.length === 0) {
+            alert("No entries to generate a report.");
+            return;
+        }
+        const total = entries.length;
+        const report = `========== Monthly Report ==========\nTotal Entries: ${total}\n=========================================`;
+        const blob = new Blob([report], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `monthly_report.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+
+    // Share Button
+    shareBtn.addEventListener('click', () => {
+        if (navigator.share) {
+            navigator.share({ title: 'Daily Mood Tracker', text: 'Track your mood!', url: window.location.href });
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied to clipboard!'));
+        }
+    });
+
+    // --- Init ---
+    checkSubscription();
+</script>
+
+</body>
+</html>
