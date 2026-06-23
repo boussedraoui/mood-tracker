@@ -2,6 +2,7 @@ name: Build iOS App
 on: [push]
 jobs:
   build:
+      - run: eas init --non-interactive --name mood-tracker-ios
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
