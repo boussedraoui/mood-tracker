@@ -7,5 +7,17 @@
   "scope": "/",
   "short_name": "Mood",
   "start_url": "/",
-  "theme_color": "#ffffff"
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "1783351665167.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "1783351665167.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
 }
