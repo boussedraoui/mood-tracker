@@ -4,7 +4,6 @@ import {
   SafeAreaView, Image, ScrollView, Alert 
 } from 'react-native';
 
-// --- 1. Translation Dictionary (Top 12 App Store languages) ---
 const I18n = {
   en: {
     title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
@@ -110,7 +109,6 @@ export default function App() {
   const [entries, setEntries] = useState([]);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
 
-  // Language state
   const [selectedLang, setSelectedLang] = useState(DEFAULT_LANG);
   const [hasSelectedLang, setHasSelectedLang] = useState(false);
   const [langModalVisible, setLangModalVisible] = useState(false);
@@ -139,7 +137,6 @@ export default function App() {
 
   const t = I18n[selectedLang] || I18n[DEFAULT_LANG];
 
-  // --- Web-safe localStorage functions ---
   useEffect(() => {
     loadEntries();
     checkSubscription();
@@ -190,17 +187,10 @@ export default function App() {
     Alert.alert('Subscribed!', 'Subscription active for 1 month (Apple Pay simulation)');
   };
 
-  const formatDate = (timestamp) => {
-    if (!timestamp) return '';
-    const date = new Date(timestamp);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-  };
-
-  // --- Language Selection Screen ---
   if (!hasSelectedLang) {
     return (
       <SafeAreaView style={styles.languageContainer}>
-        {/* UPDATED LINE HERE TO MATCH YOUR IMAGE NAME */}
+        {/* THIS IS THE LINE THAT NOW USES THE CORRECT IMAGE */}
         <Image source={require('./assets/1783351665167.jpg')} style={styles.appIcon} />
         <Text style={styles.appNameText}>Mood Tracker</Text>
 
@@ -238,7 +228,6 @@ export default function App() {
     );
   }
 
-  // --- Main App ---
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -319,7 +308,6 @@ const styles = StyleSheet.create({
   langButton: { backgroundColor: '#fff', paddingVertical: 15, paddingHorizontal: 40, borderRadius: 30, borderWidth: 1, borderColor: '#ddd' },
   langButtonText: { fontSize: 18, color: '#333', fontWeight: 'bold' },
   autoEnterText: { marginTop: 20, fontSize: 14, color: '#888' },
-
   container: { flex: 1, backgroundColor: '#f0f4f8' },
   scrollContainer: { padding: 20, alignItems: 'center', paddingBottom: 40 },
   title: { fontSize: 26, fontWeight: 'bold', color: '#2c3e50', marginBottom: 20 },
@@ -330,7 +318,6 @@ const styles = StyleSheet.create({
   selectedEmoji: { borderColor: '#2ecc71', backgroundColor: '#eafaf1' },
   saveButton: { backgroundColor: '#2ecc71', width: '100%', padding: 15, borderRadius: 10, alignItems: 'center', marginVertical: 15 },
   saveButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-  
   card: { backgroundColor: '#fff', width: '100%', borderRadius: 15, padding: 15, marginVertical: 10, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 5, elevation: 3 },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   cardTitle: { fontSize: 18, fontWeight: 'bold', color: '#2c3e50' },
@@ -340,24 +327,20 @@ const styles = StyleSheet.create({
   cardTextSmall: { fontSize: 14, fontWeight: '500', color: '#2c3e50' },
   subscribeButton: { backgroundColor: '#f39c12', paddingVertical: 8, paddingHorizontal: 15, borderRadius: 20 },
   subscribeText: { color: '#fff', fontWeight: 'bold' },
-
   footer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center', marginTop: 10 },
   entriesCount: { fontSize: 16, color: '#7f8c8d' },
   footerButtons: { flexDirection: 'row' },
   greenBtn: { backgroundColor: '#2ecc71', paddingVertical: 8, paddingHorizontal: 15, borderRadius: 5, marginRight: 10 },
   blueBtn: { backgroundColor: '#3498db', paddingVertical: 8, paddingHorizontal: 15, borderRadius: 5 },
   btnText: { color: '#fff', fontWeight: 'bold' },
-
   infoButton: { position: 'absolute', bottom: 20, right: 20, width: 50, height: 50, borderRadius: 25, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#3498db' },
   infoText: { fontSize: 22, fontWeight: 'bold', color: '#3498db' },
-
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
   modalContent: { width: '80%', backgroundColor: '#fff', borderRadius: 20, padding: 20, alignItems: 'center' },
   modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 15, color: '#2c3e50' },
   modalBody: { fontSize: 16, textAlign: 'center', color: '#555', marginBottom: 15 },
   closeButton: { backgroundColor: '#e74c3c', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 },
   closeText: { color: '#fff', fontWeight: 'bold' },
-
   langItem: { paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: '#eee', width: '100%', alignItems: 'center' },
   langItemText: { fontSize: 16, color: '#2c3e50' }
 });
