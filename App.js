@@ -200,7 +200,8 @@ export default function App() {
   if (!hasSelectedLang) {
     return (
       <SafeAreaView style={styles.languageContainer}>
-        <Image source={require('./assets/icon.png')} style={styles.appIcon} />
+        {/* UPDATED LINE HERE TO MATCH YOUR IMAGE NAME */}
+        <Image source={require('./assets/1783351665167.jpg')} style={styles.appIcon} />
         <Text style={styles.appNameText}>Mood Tracker</Text>
 
         <TouchableOpacity style={styles.langButton} onPress={handleToggleLanguageModal}>
