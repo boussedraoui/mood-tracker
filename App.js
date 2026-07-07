@@ -7,7 +7,7 @@ import {
 const I18n = {
   en: {
     title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
-    insights: 'Weekly Insights', trend: 'Weekly Trend:', recs: 'Recommendations:',
+    insights: 'Weekly Insights', trend: 'Trend:', recs: 'Recommendations:',
     subscribe: 'Subscribe ($4.99/mo)', entries: 'Entries:', download: 'Download', share: 'Share',
     info_title: 'About This App', info_text: 'Track your daily mood and activities to improve your mental health.',
     lang_btn: 'English', download_warning: 'Subscribe to unlock downloads', monthly_stats: 'Month Stats'
@@ -101,6 +101,35 @@ const LANG_LIST = [
   { code: 'ko', name: '한국어' }, { code: 'hi', name: 'हिन्दी' }
 ];
 
+// --- DYNAMIC DATA POOLS (Insights, Icons, Colors) ---
+const insightData = [
+  { text: "You're on a roll! Keep up the great energy.", icon: "🚀", color: "#4CAF50" },
+  { text: "You've been stressed lately. Try taking a short break.", icon: "🧘", color: "#F44336" },
+  { text: "Your mood is highly balanced. You're doing amazing.", icon: "🌟", color: "#2196F3" },
+  { text: "You seem overwhelmed. A walk might help clear your mind.", icon: "🌧️", color: "#607D8B" },
+  { text: "Productivity is at its peak! You're crushing your goals.", icon: "🎯", color: "#FF9800" },
+  { text: "Great rest detected! Self-care is extremely important.", icon: "💤", color: "#9C27B0" },
+  { text: "You're feeling social today! Connect with someone you love.", icon: "🤝", color: "#E91E63" },
+  { text: "Consistency is your superpower right now.", icon: "⚡", color: "#FFC107" },
+  { text: "Try to balance work and play for a happier day.", icon: "🪄", color: "#00BCD4" },
+  { text: "Your energy levels are high. A workout would be perfect.", icon: "💪", color: "#8BC34A" }
+];
+
+const recommendationData = [
+  { text: "Drink a glass of water and step away from the screen.", icon: "💧" },
+  { text: "Try the 5-4-3-2-1 grounding technique to reduce anxiety.", icon: "🌿" },
+  { text: "Call a friend or family member just to chat.", icon: "📞" },
+  { text: "Go for a 15-minute walk in the fresh air.", icon: "🚶" },
+  { text: "Read a book or listen to a podcast to relax.", icon: "🎧" },
+  { text: "Do a quick stretching routine to loosen up.", icon: "🤸" },
+  { text: "Write down 3 things you're grateful for today.", icon: "📝" },
+  { text: "Meditate for 5 minutes focusing on your breath.", icon: "🕯️" },
+  { text: "Listen to your favorite song and dance a little.", icon: "🎵" },
+  { text: "Try cooking or baking something new.", icon: "🍳" },
+  { text: "Tidy up your desk or room to clear your mind.", icon: "🧹" },
+  { text: "Take a power nap to recharge your batteries.", icon: "😴" }
+];
+
 export default function App() {
   const [mood, setMood] = useState(null);
   const [activity, setActivity] = useState(null);
@@ -108,6 +137,10 @@ export default function App() {
   const [expiryTime, setExpiryTime] = useState(null);
   const [entries, setEntries] = useState([]);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
+
+  // --- DYNAMIC INSIGHT STATES ---
+  const [currentInsight, setCurrentInsight] = useState(insightData[0]);
+  const [currentRecommendation, setCurrentRecommendation] = useState(recommendationData[0]);
 
   const [selectedLang, setSelectedLang] = useState(DEFAULT_LANG);
   const [hasSelectedLang, setHasSelectedLang] = useState(false);
@@ -141,6 +174,19 @@ export default function App() {
     loadEntries();
     checkSubscription();
   }, []);
+
+  // --- RANDOMIZER FOR INSIGHTS & RECOMMENDATIONS ---
+  useEffect(() => {
+    if (entries.length > 0) {
+      const randomInsightIndex = Math.floor(Math.random() * insightData.length);
+      const randomRecIndex = Math.floor(Math.random() * recommendationData.length);
+      setCurrentInsight(insightData[randomInsightIndex]);
+      setCurrentRecommendation(recommendationData[randomRecIndex]);
+    } else {
+      setCurrentInsight({ text: "Start tracking to see your insights!", icon: "📊", color: "#333" });
+      setCurrentRecommendation({ text: "Save your first mood entry.", icon: "✨" });
+    }
+  }, [entries]);
 
   const checkSubscription = () => {
     const expiry = localStorage.getItem('subExpiry');
@@ -197,7 +243,6 @@ export default function App() {
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
 
-    // Filter entries for the current month
     const monthlyEntries = entries.filter(entry => {
       const entryDate = new Date(entry.date);
       return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear;
@@ -212,7 +257,6 @@ export default function App() {
     const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     
-    // Trigger download in browser
     const link = document.createElement('a');
     link.href = url;
     link.download = `mood_stats_${currentYear}_${currentMonth + 1}.json`;
@@ -220,35 +264,6 @@ export default function App() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  };
-
-  // Weekly Statistics Logic
-  const getWeeklyStats = () => {
-    const now = new Date();
-    const sevenDaysAgo = new Date(now);
-    sevenDaysAgo.setDate(now.getDate() - 7);
-
-    const weekEntries = entries.filter(entry => {
-      const entryDate = new Date(entry.date);
-      return entryDate >= sevenDaysAgo;
-    });
-
-    if (weekEntries.length === 0) return 'No data this week';
-
-    const moodCounts = {};
-    weekEntries.forEach(e => {
-      moodCounts[e.mood] = (moodCounts[e.mood] || 0) + 1;
-    });
-    
-    let mostFrequent = '...';
-    let maxCount = 0;
-    for (const [mood, count] of Object.entries(moodCounts)) {
-      if (count > maxCount) {
-        maxCount = count;
-        mostFrequent = mood;
-      }
-    }
-    return `Most frequent: ${mostFrequent} (${maxCount} days)`;
   };
 
   if (!hasSelectedLang) {
@@ -308,14 +323,16 @@ export default function App() {
           <Text style={styles.saveButtonText}>{t.save}</Text>
         </TouchableOpacity>
 
-        <View style={styles.card}>
+        {/* Dynamic Insights & Recommendations Card */}
+        <View style={[styles.card, { borderLeftWidth: 6, borderLeftColor: currentInsight.color }]}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>{t.insights}</Text>
             <Text style={styles.freeBadge}>{isSubscribed ? 'Premium' : 'Free'}</Text>
           </View>
-          <Text style={styles.cardText}>{t.trend} {getWeeklyStats()}</Text>
+          <Text style={styles.cardText}>{t.trend} {currentInsight.icon} {currentInsight.text}</Text>
+          
           <View style={styles.cardFooter}>
-            <Text style={styles.cardTextSmall}>{t.recs}</Text>
+            <Text style={styles.cardTextSmall}>{t.recs} {currentRecommendation.icon} {currentRecommendation.text}</Text>
             <TouchableOpacity style={styles.subscribeButton} onPress={handleSubscribePress}>
               <Text style={styles.subscribeText}>{t.subscribe}</Text>
             </TouchableOpacity>
@@ -378,7 +395,7 @@ const styles = StyleSheet.create({
   freeBadge: { backgroundColor: '#eee', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 15, fontSize: 12, color: '#555' },
   cardText: { fontSize: 16, color: '#34495e', marginVertical: 10 },
   cardFooter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 },
-  cardTextSmall: { fontSize: 14, fontWeight: '500', color: '#2c3e50' },
+  cardTextSmall: { fontSize: 14, fontWeight: '500', color: '#2c3e50', flex: 1, marginRight: 10 },
   subscribeButton: { backgroundColor: '#f39c12', paddingVertical: 8, paddingHorizontal: 15, borderRadius: 20 },
   subscribeText: { color: '#fff', fontWeight: 'bold' },
   footer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%', alignItems: 'center', marginTop: 10 },
