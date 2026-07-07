@@ -3,9 +3,8 @@ import {
   StyleSheet, Text, View, TouchableOpacity, Modal, FlatList, 
   SafeAreaView, Image, ScrollView, Alert 
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// --- 1. قاموس الترجمة (12 لغة الأكثر مبيعاً في Apple) ---
+// --- 1. Translation Dictionary (Top 12 App Store languages) ---
 const I18n = {
   en: {
     title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
@@ -93,7 +92,6 @@ const I18n = {
   }
 };
 
-// --- 2. اللغة الافتراضية ---
 const DEFAULT_LANG = 'en';
 const LANG_LIST = [
   { code: 'en', name: 'English' }, { code: 'zh', name: '中文' },
@@ -105,7 +103,6 @@ const LANG_LIST = [
 ];
 
 export default function App() {
-  // --- 3. حالة التطبيق ---
   const [mood, setMood] = useState(null);
   const [activity, setActivity] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -113,25 +110,23 @@ export default function App() {
   const [entries, setEntries] = useState([]);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
 
-  // --- 4. حالة اللغة والدخول التلقائي ---
+  // Language state
   const [selectedLang, setSelectedLang] = useState(DEFAULT_LANG);
   const [hasSelectedLang, setHasSelectedLang] = useState(false);
   const [langModalVisible, setLangModalVisible] = useState(false);
   const timerRef = useRef(null);
 
   useEffect(() => {
-    // بدأ العد التنازلي للدخول التلقائي بعد 3 ثواني
     timerRef.current = setTimeout(() => {
       if (!hasSelectedLang) {
-        setHasSelectedLang(true); // يدخل التطبيق تلقائياً باللغة الإنجليزية
+        setHasSelectedLang(true); 
       }
     }, 3000);
-
     return () => clearTimeout(timerRef.current);
   }, [hasSelectedLang]);
 
   const handleToggleLanguageModal = () => {
-    clearTimeout(timerRef.current); // إيقاف العداد عند فتح القائمة
+    clearTimeout(timerRef.current);
     setLangModalVisible(!langModalVisible);
   };
 
@@ -144,14 +139,14 @@ export default function App() {
 
   const t = I18n[selectedLang] || I18n[DEFAULT_LANG];
 
-  // --- 5. دوال التخزين والمنطق (كما كانت لديك سابقاً) ---
+  // --- Web-safe localStorage functions ---
   useEffect(() => {
     loadEntries();
     checkSubscription();
   }, []);
 
-  const checkSubscription = async () => {
-    const expiry = await AsyncStorage.getItem('subExpiry');
+  const checkSubscription = () => {
+    const expiry = localStorage.getItem('subExpiry');
     if (expiry) {
       const now = new Date().getTime();
       if (now < parseInt(expiry)) {
@@ -159,27 +154,27 @@ export default function App() {
         setExpiryTime(parseInt(expiry));
       } else {
         setIsSubscribed(false);
-        await AsyncStorage.setItem('subExpiry', '0');
+        localStorage.setItem('subExpiry', '0');
       }
     } else {
       setIsSubscribed(false);
-      await AsyncStorage.setItem('subExpiry', '0');
+      localStorage.setItem('subExpiry', '0');
     }
   };
 
-  const loadEntries = async () => {
-    const data = await AsyncStorage.getItem('moodData');
+  const loadEntries = () => {
+    const data = localStorage.getItem('moodData');
     if (data) setEntries(JSON.parse(data));
   };
 
-  const saveEntry = async () => {
+  const saveEntry = () => {
     if (!mood || !activity) {
       Alert.alert('Error', 'Choose mood and activity');
       return;
     }
     const entry = { mood, activity, date: new Date().toISOString() };
     const updated = [...entries, entry];
-    await AsyncStorage.setItem('moodData', JSON.stringify(updated));
+    localStorage.setItem('moodData', JSON.stringify(updated));
     setEntries(updated);
     Alert.alert('Saved!');
     setMood(null);
@@ -189,7 +184,7 @@ export default function App() {
   const handleSubscribePress = () => {
     const now = new Date().getTime();
     const expiry = now + 30 * 24 * 60 * 60 * 1000;
-    AsyncStorage.setItem('subExpiry', expiry.toString());
+    localStorage.setItem('subExpiry', expiry.toString());
     setIsSubscribed(true);
     setExpiryTime(expiry);
     Alert.alert('Subscribed!', 'Subscription active for 1 month (Apple Pay simulation)');
@@ -201,12 +196,11 @@ export default function App() {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
   };
 
-  // --- 6. شاشة اختيار اللغة الأولية ---
+  // --- Language Selection Screen ---
   if (!hasSelectedLang) {
     return (
       <SafeAreaView style={styles.languageContainer}>
         <Image source={require('./assets/icon.png')} style={styles.appIcon} />
-        
         <Text style={styles.appNameText}>Mood Tracker</Text>
 
         <TouchableOpacity style={styles.langButton} onPress={handleToggleLanguageModal}>
@@ -243,7 +237,7 @@ export default function App() {
     );
   }
 
-  // --- 7. التطبيق الرئيسي (مترجم بالكامل) ---
+  // --- Main App ---
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -317,7 +311,6 @@ export default function App() {
   );
 }
 
-// --- 8. التنسيقات (Styles) ---
 const styles = StyleSheet.create({
   languageContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5' },
   appIcon: { width: 120, height: 120, marginBottom: 20, borderRadius: 25 },
