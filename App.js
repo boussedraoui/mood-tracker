@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   StyleSheet, Text, View, TouchableOpacity, Modal, FlatList, 
-  SafeAreaView, Image, ScrollView, Alert 
+  SafeAreaView, Image, ScrollView, Alert, Linking 
 } from 'react-native';
 
 const I18n = {
@@ -10,45 +10,28 @@ const I18n = {
     insights: 'Weekly Insights', trend: 'Weekly Trend:', recs: 'Recommendations:',
     subscribe: 'Subscribe ($4.99/mo)', entries: 'Entries:', download: 'Download', share: 'Share',
     info_title: 'About This App', info_text: 'Track your daily mood and activities to improve your mental health.',
-    lang_btn: 'English', download_warning: 'Subscribe to unlock downloads', monthly_stats: 'Month Stats'
+    lang_btn: 'English', download_warning: 'Subscribe to unlock downloads', monthly_stats: 'Month Stats',
+    pay_title: 'Subscribe via PayPal', pay_desc: 'You will be redirected to PayPal to complete the payment.', pay_btn: 'Pay with PayPal', pay_cancel: 'Cancel'
   },
-  zh: { title: '每日情绪追踪', mood: '心情:', activity: '活动:', save: '保存', insights: '每周洞察', trend: '每周趋势:', recs: '建议:', subscribe: '订阅 ($4.99/月)', entries: '记录:', download: '下载', share: '分享', info_title: '关于此应用', info_text: '追踪您每天的心情和活动，改善您的心理健康。', lang_btn: '中文', download_warning: '订阅以解锁下载', monthly_stats: '月度统计' },
-  es: { title: 'Rastreador de Estado de Ánimo', mood: 'Estado de ánimo:', activity: 'Actividad:', save: 'Guardar', insights: 'Perspectivas semanales', trend: 'Tendencia semanal:', recs: 'Recomendaciones:', subscribe: 'Suscribirse ($4.99/mes)', entries: 'Entradas:', download: 'Descargar', share: 'Compartir', info_title: 'Acerca de', info_text: 'Sigue tu estado de ánimo y actividades diarias.', lang_btn: 'Español', download_warning: 'Suscríbete para desbloquear descargas', monthly_stats: 'Estadísticas mensuales' },
-  ar: { title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ', insights: 'رؤى أسبوعية', trend: 'اتجاه الأسبوع:', recs: 'توصيات:', subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', download: 'تحميل', share: 'مشاركة', info_title: 'حول التطبيق', info_text: 'تتبع مزاجك وأنشطتك اليومية لتحسين صحتك النفسية.', lang_btn: 'العربية', download_warning: 'اشترك لتفعيل التحميل', monthly_stats: 'إحصائيات الشهر' },
-  fr: { title: 'Suivi d\'Humeur', mood: 'Humeur:', activity: 'Activité:', save: 'Enregistrer', insights: 'Aperçus hebdomadaires', trend: 'Tendance hebdo:', recs: 'Recommandations:', subscribe: 'S\'abonner ($4.99/mois)', entries: 'Entrées:', download: 'Télécharger', share: 'Partager', info_title: 'À propos', info_text: 'Suivez votre humeur et vos activités quotidiennes.', lang_btn: 'Français', download_warning: 'Abonnez-vous pour débloquer les téléchargements', monthly_stats: 'Statistiques mensuelles' },
-  de: { title: 'Stimmungs-Tracker', mood: 'Stimmung:', activity: 'Aktivität:', save: 'Speichern', insights: 'Wöchentliche Einblicke', trend: 'Wöchentlicher Trend:', recs: 'Empfehlungen:', subscribe: 'Abonnieren ($4.99/Monat)', entries: 'Einträge:', download: 'Herunterladen', share: 'Teilen', info_title: 'Über diese App', info_text: 'Verfolge deine Stimmung und täglichen Aktivitäten.', lang_btn: 'Deutsch', download_warning: 'Abonnieren, um Downloads freizuschalten', monthly_stats: 'Monatsstatistiken' },
-  ja: { title: '毎日の気分トラッカー', mood: '気分:', activity: '活動:', save: '保存', insights: '週間インサイト', trend: '週間トレンド:', recs: 'おすすめ:', subscribe: 'サブスク ($4.99/月)', entries: 'エントリー:', download: 'ダウンロード', share: '共有', info_title: 'アプリについて', info_text: '毎日の気分と活動を記録してメンタルヘルスを改善しましょう。', lang_btn: '日本語', download_warning: 'サブスクでダウンロードを解除', monthly_stats: '月間統計' },
-  ru: { title: 'Трекер настроения', mood: 'Настроение:', activity: 'Активность:', save: 'Сохранить', insights: 'Еженедельная аналитика', trend: 'Еженедельная тенденция:', recs: 'Рекомендации:', subscribe: 'Подписка ($4.99/мес)', entries: 'Записи:', download: 'Скачать', share: 'Поделиться', info_title: 'Об этом приложении', info_text: 'Отслеживайте настроение и ежедневные активности.', lang_btn: 'Русский', download_warning: 'Подпишитесь для скачивания', monthly_stats: 'Месячная статистика' },
-  pt: { title: 'Monitor de Humor', mood: 'Humor:', activity: 'Atividade:', save: 'Salvar', insights: 'Insights semanais', trend: 'Tendência semanal:', recs: 'Recomendações:', subscribe: 'Assinar ($4.99/mês)', entries: 'Entradas:', download: 'Baixar', share: 'Compartilhar', info_title: 'Sobre o App', info_text: 'Acompanhe seu humor e atividades diárias.', lang_btn: 'Português', download_warning: 'Assine para desbloquear downloads', monthly_stats: 'Estatísticas mensais' },
-  it: { title: 'Monitor Umore', mood: 'Umore:', activity: 'Attività:', save: 'Salva', insights: 'Approfondimenti settimanali', trend: 'Trend settimanale:', recs: 'Raccomandazioni:', subscribe: 'Abbonati ($4.99/mese)', entries: 'Voci:', download: 'Scarica', share: 'Condividi', info_title: 'Informazioni', info_text: 'Traccia il tuo umore e le attività quotidiane.', lang_btn: 'Italiano', download_warning: 'Abbonati per sbloccare i download', monthly_stats: 'Statistiche mensili' },
-  ko: { title: '일일 기분 추적기', mood: '기분:', activity: '활동:', save: '저장', insights: '주간 인사이트', trend: '주간 트렌드:', recs: '추천:', subscribe: '구독 ($4.99/월)', entries: '기록:', download: '다운로드', share: '공유', info_title: '앱 정보', info_text: '일일 기분과 활동을 추적하여 정신 건강을 개선하세요.', lang_btn: '한국어', download_warning: '구독하여 다운로드 잠금 해제', monthly_stats: '월간 통계' },
-  hi: { title: 'दैनिक मूड ट्रैकर', mood: 'मूड:', activity: 'गतिविधि:', save: 'सहेजें', insights: 'साप्ताहिक अंतर्दृष्टि', trend: 'साप्ताहिक रुझान:', recs: 'सिफ़ारिशें:', subscribe: 'सदस्यता ($4.99/महीना)', entries: 'प्रविष्टियाँ:', download: 'डाउनलोड', share: 'साझा करें', info_title: 'इस ऐप के बारे में', info_text: 'अपने दैनिक मूड और गतिविधियों को ट्रैक करें।', lang_btn: 'हिन्दी', download_warning: 'डाउनलोड के लिए सदस्यता लें', monthly_stats: 'मासिक आँकड़े' }
+  zh: { title: '每日情绪追踪', mood: '心情:', activity: '活动:', save: '保存', insights: '每周洞察', trend: '每周趋势:', recs: '建议:', subscribe: '订阅 ($4.99/月)', entries: '记录:', download: '下载', share: '分享', info_title: '关于此应用', info_text: '追踪您每天的心情和活动，改善您的心理健康。', lang_btn: '中文', download_warning: '订阅以解锁下载', monthly_stats: '月度统计', pay_title: '通过 PayPal 订阅', pay_desc: '您将跳转到 PayPal 完成付款。', pay_btn: '使用 PayPal 支付', pay_cancel: '取消' },
+  es: { title: 'Rastreador de Estado de Ánimo', mood: 'Estado de ánimo:', activity: 'Actividad:', save: 'Guardar', insights: 'Perspectivas semanales', trend: 'Tendencia semanal:', recs: 'Recomendaciones:', subscribe: 'Suscribirse ($4.99/mes)', entries: 'Entradas:', download: 'Descargar', share: 'Compartir', info_title: 'Acerca de', info_text: 'Sigue tu estado de ánimo y actividades diarias.', lang_btn: 'Español', download_warning: 'Suscríbete para desbloquear descargas', monthly_stats: 'Estadísticas mensuales', pay_title: 'Suscríbete vía PayPal', pay_desc: 'Serás redirigido a PayPal para completar el pago.', pay_btn: 'Pagar con PayPal', pay_cancel: 'Cancelar' },
+  ar: { title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ', insights: 'رؤى أسبوعية', trend: 'اتجاه الأسبوع:', recs: 'توصيات:', subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', download: 'تحميل', share: 'مشاركة', info_title: 'حول التطبيق', info_text: 'تتبع مزاجك وأنشطتك اليومية لتحسين صحتك النفسية.', lang_btn: 'العربية', download_warning: 'اشترك لتفعيل التحميل', monthly_stats: 'إحصائيات الشهر', pay_title: 'اشترك عبر PayPal', pay_desc: 'سيتم توجيهك إلى PayPal لإكمال الدفع.', pay_btn: 'الدفع عبر PayPal', pay_cancel: 'إلغاء' },
+  fr: { title: 'Suivi d\'Humeur', mood: 'Humeur:', activity: 'Activité:', save: 'Enregistrer', insights: 'Aperçus hebdomadaires', trend: 'Tendance hebdo:', recs: 'Recommandations:', subscribe: 'S\'abonner ($4.99/mois)', entries: 'Entrées:', download: 'Télécharger', share: 'Partager', info_title: 'À propos', info_text: 'Suivez votre humeur et vos activités quotidiennes.', lang_btn: 'Français', download_warning: 'Abonnez-vous pour débloquer les téléchargements', monthly_stats: 'Statistiques mensuelles', pay_title: 'Abonnez-vous via PayPal', pay_desc: 'Vous serez redirigé vers PayPal pour effectuer le paiement.', pay_btn: 'Payer avec PayPal', pay_cancel: 'Annuler' },
+  de: { title: 'Stimmungs-Tracker', mood: 'Stimmung:', activity: 'Aktivität:', save: 'Speichern', insights: 'Wöchentliche Einblicke', trend: 'Wöchentlicher Trend:', recs: 'Empfehlungen:', subscribe: 'Abonnieren ($4.99/Monat)', entries: 'Einträge:', download: 'Herunterladen', share: 'Teilen', info_title: 'Über diese App', info_text: 'Verfolge deine Stimmung und täglichen Aktivitäten.', lang_btn: 'Deutsch', download_warning: 'Abonnieren, um Downloads freizuschalten', monthly_stats: 'Monatsstatistiken', pay_title: 'Abonnieren über PayPal', pay_desc: 'Sie werden zu PayPal weitergeleitet, um die Zahlung abzuschließen.', pay_btn: 'Mit PayPal bezahlen', pay_cancel: 'Abbrechen' },
+  ja: { title: '毎日の気分トラッカー', mood: '気分:', activity: '活動:', save: '保存', insights: '週間インサイト', trend: '週間トレンド:', recs: 'おすすめ:', subscribe: 'サブスク ($4.99/月)', entries: 'エントリー:', download: 'ダウンロード', share: '共有', info_title: 'アプリについて', info_text: '毎日の気分と活動を記録してメンタルヘルスを改善しましょう。', lang_btn: '日本語', download_warning: 'サブスクでダウンロードを解除', monthly_stats: '月間統計', pay_title: 'PayPalでサブスク', pay_desc: 'PayPalにリダイレクトされ、支払いが完了します。', pay_btn: 'PayPalで支払う', pay_cancel: 'キャンセル' },
+  ru: { title: 'Трекер настроения', mood: 'Настроение:', activity: 'Активность:', save: 'Сохранить', insights: 'Еженедельная аналитика', trend: 'Еженедельная тенденция:', recs: 'Рекомендации:', subscribe: 'Подписка ($4.99/мес)', entries: 'Записи:', download: 'Скачать', share: 'Поделиться', info_title: 'Об этом приложении', info_text: 'Отслеживайте настроение и ежедневные активности.', lang_btn: 'Русский', download_warning: 'Подпишитесь для скачивания', monthly_stats: 'Месячная статистика', pay_title: 'Оформить подписку через PayPal', pay_desc: 'Вы будете перенаправлены в PayPal для оплаты.', pay_btn: 'Оплатить через PayPal', pay_cancel: 'Отмена' },
+  pt: { title: 'Monitor de Humor', mood: 'Humor:', activity: 'Atividade:', save: 'Salvar', insights: 'Insights semanais', trend: 'Tendência semanal:', recs: 'Recomendações:', subscribe: 'Assinar ($4.99/mês)', entries: 'Entradas:', download: 'Baixar', share: 'Compartilhar', info_title: 'Sobre o App', info_text: 'Acompanhe seu humor e atividades diárias.', lang_btn: 'Português', download_warning: 'Assine para desbloquear downloads', monthly_stats: 'Estatísticas mensais', pay_title: 'Assine via PayPal', pay_desc: 'Você será redirecionado ao PayPal para concluir o pagamento.', pay_btn: 'Pagar com PayPal', pay_cancel: 'Cancelar' },
+  it: { title: 'Monitor Umore', mood: 'Umore:', activity: 'Attività:', save: 'Salva', insights: 'Approfondimenti settimanali', trend: 'Trend settimanale:', recs: 'Raccomandazioni:', subscribe: 'Abbonati ($4.99/mese)', entries: 'Voci:', download: 'Scarica', share: 'Condividi', info_title: 'Informazioni', info_text: 'Traccia il tuo umore e le attività quotidiane.', lang_btn: 'Italiano', download_warning: 'Abbonati per sbloccare i download', monthly_stats: 'Statistiche mensili', pay_title: 'Abbonati via PayPal', pay_desc: 'Verrai reindirizzato su PayPal per completare il pagamento.', pay_btn: 'Paga con PayPal', pay_cancel: 'Annulla' },
+  ko: { title: '일일 기분 추적기', mood: '기분:', activity: '활동:', save: '저장', insights: '주간 인사이트', trend: '주간 트렌드:', recs: '추천:', subscribe: '구독 ($4.99/월)', entries: '기록:', download: '다운로드', share: '공유', info_title: '앱 정보', info_text: '일일 기분과 활동을 추적하여 정신 건강을 개선하세요.', lang_btn: '한국어', download_warning: '구독하여 다운로드 잠금 해제', monthly_stats: '월간 통계', pay_title: 'PayPal로 구독', pay_desc: 'PayPal로 이동하여 결제를 완료합니다.', pay_btn: 'PayPal로 결제', pay_cancel: '취소' },
+  hi: { title: 'दैनिक मूड ट्रैकर', mood: 'मूड:', activity: 'गतिविधि:', save: 'सहेजें', insights: 'साप्ताहिक अंतर्दृष्टि', trend: 'साप्ताहिक रुझान:', recs: 'सिफ़ारिशें:', subscribe: 'सदस्यता ($4.99/महीना)', entries: 'प्रविष्टियाँ:', download: 'डाउनलोड', share: 'साझा करें', info_title: 'इस ऐप के बारे में', info_text: 'अपने दैनिक मूड और गतिविधियों को ट्रैक करें।', lang_btn: 'हिन्दी', download_warning: 'डाउनलोड के लिए सदस्यता लें', monthly_stats: 'मासिक आँकड़े', pay_title: 'PayPal के माध्यम से सदस्यता लें', pay_desc: 'भुगतान पूरा करने के लिए आपको PayPal पर पुनर्निर्देशित किया जाएगा।', pay_btn: 'PayPal से भुगतान करें', pay_cancel: 'रद्द करें' }
 };
 
 const DEFAULT_LANG = 'en';
-const LANG_LIST = [
-  { code: 'en', name: 'English' }, { code: 'zh', name: '中文' },
-  { code: 'es', name: 'Español' }, { code: 'ar', name: 'العربية' },
-  { code: 'fr', name: 'Français' }, { code: 'de', name: 'Deutsch' },
-  { code: 'ja', name: '日本語' }, { code: 'ru', name: 'Русский' },
-  { code: 'pt', name: 'Português' }, { code: 'it', name: 'Italiano' },
-  { code: 'ko', name: '한국어' }, { code: 'hi', name: 'हिन्दी' }
-];
+const LANG_LIST = [ { code: 'en', name: 'English' }, { code: 'zh', name: '中文' }, { code: 'es', name: 'Español' }, { code: 'ar', name: 'العربية' }, { code: 'fr', name: 'Français' }, { code: 'de', name: 'Deutsch' }, { code: 'ja', name: '日本語' }, { code: 'ru', name: 'Русский' }, { code: 'pt', name: 'Português' }, { code: 'it', name: 'Italiano' }, { code: 'ko', name: '한국어' }, { code: 'hi', name: 'हिन्दी' } ];
 
-// Pools for Dynamic Icons, Colors, and Recommendations (Never repeats)
-const recommendationData = [
-  { text: "Drink a glass of water.", icon: "💧" }, { text: "Take a 5-minute break.", icon: "🧘" },
-  { text: "Call a friend to chat.", icon: "📞" }, { text: "Go for a short walk.", icon: "🚶" },
-  { text: "Listen to your favorite song.", icon: "🎵" }, { text: "Try a breathing exercise.", icon: "🌿" },
-  { text: "Write down 3 things you are grateful for.", icon: "📝" }, { text: "Do some quick stretches.", icon: "🤸" },
-  { text: "Read a few pages of a book.", icon: "📖" }, { text: "Meditate for 2 minutes.", icon: "🕯️" }
-];
+const recommendationData = [ { text: "Drink a glass of water.", icon: "💧" }, { text: "Take a 5-minute break.", icon: "🧘" }, { text: "Call a friend to chat.", icon: "📞" }, { text: "Go for a short walk.", icon: "🚶" }, { text: "Listen to your favorite song.", icon: "🎵" }, { text: "Try a breathing exercise.", icon: "🌿" }, { text: "Write down 3 things you are grateful for.", icon: "📝" }, { text: "Do some quick stretches.", icon: "🤸" }, { text: "Read a few pages of a book.", icon: "📖" }, { text: "Meditate for 2 minutes.", icon: "🕯️" } ];
 
-const statThemes = [
-  { icon: "🚀", color: "#4CAF50" }, { icon: "🌟", color: "#2196F3" },
-  { icon: "🎯", color: "#FF9800" }, { icon: "💪", color: "#8BC34A" },
-  { icon: "⚡", color: "#FFC107" }, { icon: "🌞", color: "#FF5722" }
-];
+const statThemes = [ { icon: "🚀", color: "#4CAF50" }, { icon: "🌟", color: "#2196F3" }, { icon: "🎯", color: "#FF9800" }, { icon: "💪", color: "#8BC34A" }, { icon: "⚡", color: "#FFC107" }, { icon: "🌞", color: "#FF5722" } ];
 
 export default function App() {
   const [mood, setMood] = useState(null);
@@ -57,7 +40,6 @@ export default function App() {
   const [entries, setEntries] = useState([]);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
 
-  // Dynamic states
   const [currentRec, setCurrentRec] = useState(recommendationData[0]);
   const [currentTheme, setCurrentTheme] = useState(statThemes[0]);
   const [weeklyStatText, setWeeklyStatText] = useState("Start tracking!");
@@ -66,6 +48,9 @@ export default function App() {
   const [hasSelectedLang, setHasSelectedLang] = useState(false);
   const [langModalVisible, setLangModalVisible] = useState(false);
   const timerRef = useRef(null);
+
+  // --- PAYPAL MODAL STATE ---
+  const [paypalModalVisible, setPaypalModalVisible] = useState(false);
 
   useEffect(() => {
     timerRef.current = setTimeout(() => {
@@ -93,7 +78,6 @@ export default function App() {
     checkSubscription();
   }, []);
 
-  // --- CALCULATE WEEKLY STATS ---
   useEffect(() => {
     if (entries.length === 0) {
       setWeeklyStatText("No data this week.");
@@ -102,7 +86,6 @@ export default function App() {
       return;
     }
 
-    // 1. Calculate data from the last 7 days
     const now = new Date();
     const sevenDaysAgo = new Date(now);
     sevenDaysAgo.setDate(now.getDate() - 7);
@@ -119,7 +102,6 @@ export default function App() {
       weekEntries.forEach(e => {
         moodCounts[e.mood] = (moodCounts[e.mood] || 0) + 1;
       });
-      
       let mostFrequent = '...';
       let maxCount = 0;
       for (const [mood, count] of Object.entries(moodCounts)) {
@@ -131,12 +113,10 @@ export default function App() {
       setWeeklyStatText(`Most frequent: ${mostFrequent} (${maxCount} days)`);
     }
 
-    // 2. Randomize the recommendation and theme
     const randomRec = recommendationData[Math.floor(Math.random() * recommendationData.length)];
     const randomTheme = statThemes[Math.floor(Math.random() * statThemes.length)];
     setCurrentRec(randomRec);
     setCurrentTheme(randomTheme);
-
   }, [entries]);
 
   const checkSubscription = () => {
@@ -174,11 +154,30 @@ export default function App() {
     setActivity(null);
   };
 
+  // --- NEW PAYPAL HANDLER ---
   const handleSubscribePress = () => {
+    // Opens the PayPal Modal instead of directly alerting
+    setPaypalModalVisible(true);
+  };
+
+  const handlePayWithPayPal = () => {
+    // --- IMPORTANT: REPLACE 'YOUR_PAYPAL_ME_USERNAME' WITH YOUR ACTUAL PAYPAL.ME LINK ---
+    const paypalLink = 'https://paypal.me/YOUR_PAYPAL_ME_USERNAME/4.99';
+    Linking.openURL(paypalLink);
+
+    // Simulate the callback. In a real production app, you would use a webhook to verify.
+    setTimeout(() => {
+      Alert.alert('Waiting for Payment', 'Please complete the payment in your browser. Close the tab and come back to confirm.');
+    }, 1000);
+  };
+
+  // Function to manually confirm subscription (for demo purposes)
+  const confirmSubscription = () => {
     const now = new Date().getTime();
     const expiry = now + 30 * 24 * 60 * 60 * 1000;
     localStorage.setItem('subExpiry', expiry.toString());
     setIsSubscribed(true);
+    setPaypalModalVisible(false);
     Alert.alert('Subscribed!', 'Subscription active for 1 month');
   };
 
@@ -266,7 +265,6 @@ export default function App() {
           <Text style={styles.saveButtonText}>{t.save}</Text>
         </TouchableOpacity>
 
-        {/* DYNAMIC INSIGHT CARD - CALCULATED STATS + RANDOM REC */}
         <View style={[styles.card, { borderLeftWidth: 6, borderLeftColor: currentTheme.color }]}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>{currentTheme.icon} {t.insights}</Text>
@@ -309,6 +307,31 @@ export default function App() {
             </View>
           </View>
         </Modal>
+
+        {/* --- PAYPAL SUBSCRIPTION MODAL --- */}
+        <Modal visible={paypalModalVisible} transparent animationType="slide">
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>{t.pay_title}</Text>
+              <Text style={styles.modalBody}>{t.pay_desc}</Text>
+              
+              <View style={styles.paypalButtonContainer}>
+                <TouchableOpacity style={styles.paypalButton} onPress={handlePayWithPayPal}>
+                  <Text style={styles.paypalButtonText}>${t.pay_btn}</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity style={styles.confirmButton} onPress={confirmSubscription}>
+                  <Text style={styles.confirmText}>Confirm Subscription (Demo)</Text>
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity style={styles.closeButton} onPress={() => setPaypalModalVisible(false)}>
+                <Text style={styles.closeText}>{t.pay_cancel}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -357,5 +380,12 @@ const styles = StyleSheet.create({
   closeButton: { backgroundColor: '#e74c3c', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 5 },
   closeText: { color: '#fff', fontWeight: 'bold' },
   langItem: { paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: '#eee', width: '100%', alignItems: 'center' },
-  langItemText: { fontSize: 16, color: '#2c3e50' }
+  langItemText: { fontSize: 16, color: '#2c3e50' },
+  
+  // PayPal Modal Styles
+  paypalButtonContainer: { width: '100%', marginVertical: 15, alignItems: 'center' },
+  paypalButton: { backgroundColor: '#0070ba', width: '100%', padding: 12, borderRadius: 5, alignItems: 'center', marginBottom: 10 },
+  paypalButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  confirmButton: { backgroundColor: '#2ecc71', width: '100%', padding: 10, borderRadius: 5, alignItems: 'center' },
+  confirmText: { color: '#fff', fontSize: 14, fontWeight: 'bold' }
 });
