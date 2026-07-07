@@ -7,87 +7,87 @@ import {
 const I18n = {
   en: {
     title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
-    insights: 'Your Insights', trend: 'Mood Trend:', recs: 'Recommendations:',
+    insights: 'Weekly Insights', trend: 'Weekly Trend:', recs: 'Recommendations:',
     subscribe: 'Subscribe ($4.99/mo)', entries: 'Entries:', download: 'Download', share: 'Share',
     info_title: 'About This App', info_text: 'Track your daily mood and activities to improve your mental health.',
-    lang_btn: 'English'
+    lang_btn: 'English', download_warning: 'Subscribe to unlock downloads', monthly_stats: 'Month Stats'
   },
   zh: {
     title: '每日情绪追踪', mood: '心情:', activity: '活动:', save: '保存',
-    insights: '你的洞察', trend: '情绪趋势:', recs: '建议:',
+    insights: '每周洞察', trend: '每周趋势:', recs: '建议:',
     subscribe: '订阅 ($4.99/月)', entries: '记录:', download: '下载', share: '分享',
     info_title: '关于此应用', info_text: '追踪您每天的心情和活动，改善您的心理健康。',
-    lang_btn: '中文'
+    lang_btn: '中文', download_warning: '订阅以解锁下载', monthly_stats: '月度统计'
   },
   es: {
     title: 'Rastreador de Estado de Ánimo', mood: 'Estado de ánimo:', activity: 'Actividad:', save: 'Guardar',
-    insights: 'Tus perspectivas', trend: 'Tendencia:', recs: 'Recomendaciones:',
+    insights: 'Perspectivas semanales', trend: 'Tendencia semanal:', recs: 'Recomendaciones:',
     subscribe: 'Suscribirse ($4.99/mes)', entries: 'Entradas:', download: 'Descargar', share: 'Compartir',
     info_title: 'Acerca de', info_text: 'Sigue tu estado de ánimo y actividades diarias.',
-    lang_btn: 'Español'
+    lang_btn: 'Español', download_warning: 'Suscríbete para desbloquear descargas', monthly_stats: 'Estadísticas mensuales'
   },
   ar: {
     title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ',
-    insights: 'رؤيتك', trend: 'اتجاه المزاج:', recs: 'توصيات:',
+    insights: 'رؤى أسبوعية', trend: 'اتجاه الأسبوع:', recs: 'توصيات:',
     subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', download: 'تحميل', share: 'مشاركة',
     info_title: 'حول التطبيق', info_text: 'تتبع مزاجك وأنشطتك اليومية لتحسين صحتك النفسية.',
-    lang_btn: 'العربية'
+    lang_btn: 'العربية', download_warning: 'اشترك لتفعيل التحميل', monthly_stats: 'إحصائيات الشهر'
   },
   fr: {
     title: 'Suivi d\'Humeur', mood: 'Humeur:', activity: 'Activité:', save: 'Enregistrer',
-    insights: 'Vos insights', trend: 'Tendance:', recs: 'Recommandations:',
+    insights: 'Aperçus hebdomadaires', trend: 'Tendance hebdo:', recs: 'Recommandations:',
     subscribe: 'S\'abonner ($4.99/mois)', entries: 'Entrées:', download: 'Télécharger', share: 'Partager',
     info_title: 'À propos', info_text: 'Suivez votre humeur et vos activités quotidiennes.',
-    lang_btn: 'Français'
+    lang_btn: 'Français', download_warning: 'Abonnez-vous pour débloquer les téléchargements', monthly_stats: 'Statistiques mensuelles'
   },
   de: {
     title: 'Stimmungs-Tracker', mood: 'Stimmung:', activity: 'Aktivität:', save: 'Speichern',
-    insights: 'Deine Einblicke', trend: 'Stimmungstrend:', recs: 'Empfehlungen:',
+    insights: 'Wöchentliche Einblicke', trend: 'Wöchentlicher Trend:', recs: 'Empfehlungen:',
     subscribe: 'Abonnieren ($4.99/Monat)', entries: 'Einträge:', download: 'Herunterladen', share: 'Teilen',
     info_title: 'Über diese App', info_text: 'Verfolge deine Stimmung und täglichen Aktivitäten.',
-    lang_btn: 'Deutsch'
+    lang_btn: 'Deutsch', download_warning: 'Abonnieren, um Downloads freizuschalten', monthly_stats: 'Monatsstatistiken'
   },
   ja: {
     title: '毎日の気分トラッカー', mood: '気分:', activity: '活動:', save: '保存',
-    insights: 'あなたの洞察', trend: '気分の傾向:', recs: 'おすすめ:',
+    insights: '週間インサイト', trend: '週間トレンド:', recs: 'おすすめ:',
     subscribe: 'サブスク ($4.99/月)', entries: 'エントリー:', download: 'ダウンロード', share: '共有',
     info_title: 'アプリについて', info_text: '毎日の気分と活動を記録してメンタルヘルスを改善しましょう。',
-    lang_btn: '日本語'
+    lang_btn: '日本語', download_warning: 'サブスクでダウンロードを解除', monthly_stats: '月間統計'
   },
   ru: {
     title: 'Трекер настроения', mood: 'Настроение:', activity: 'Активность:', save: 'Сохранить',
-    insights: 'Ваши инсайты', trend: 'Тенденция:', recs: 'Рекомендации:',
+    insights: 'Еженедельная аналитика', trend: 'Еженедельная тенденция:', recs: 'Рекомендации:',
     subscribe: 'Подписка ($4.99/мес)', entries: 'Записи:', download: 'Скачать', share: 'Поделиться',
     info_title: 'Об этом приложении', info_text: 'Отслеживайте настроение и ежедневные активности.',
-    lang_btn: 'Русский'
+    lang_btn: 'Русский', download_warning: 'Подпишитесь для скачивания', monthly_stats: 'Месячная статистика'
   },
   pt: {
     title: 'Monitor de Humor', mood: 'Humor:', activity: 'Atividade:', save: 'Salvar',
-    insights: 'Seus insights', trend: 'Tendência:', recs: 'Recomendações:',
+    insights: 'Insights semanais', trend: 'Tendência semanal:', recs: 'Recomendações:',
     subscribe: 'Assinar ($4.99/mês)', entries: 'Entradas:', download: 'Baixar', share: 'Compartilhar',
     info_title: 'Sobre o App', info_text: 'Acompanhe seu humor e atividades diárias.',
-    lang_btn: 'Português'
+    lang_btn: 'Português', download_warning: 'Assine para desbloquear downloads', monthly_stats: 'Estatísticas mensais'
   },
   it: {
     title: 'Monitor Umore', mood: 'Umore:', activity: 'Attività:', save: 'Salva',
-    insights: 'I tuoi insight', trend: 'Trend umore:', recs: 'Raccomandazioni:',
+    insights: 'Approfondimenti settimanali', trend: 'Trend settimanale:', recs: 'Raccomandazioni:',
     subscribe: 'Abbonati ($4.99/mese)', entries: 'Voci:', download: 'Scarica', share: 'Condividi',
     info_title: 'Informazioni', info_text: 'Traccia il tuo umore e le attività quotidiane.',
-    lang_btn: 'Italiano'
+    lang_btn: 'Italiano', download_warning: 'Abbonati per sbloccare i download', monthly_stats: 'Statistiche mensili'
   },
   ko: {
     title: '일일 기분 추적기', mood: '기분:', activity: '활동:', save: '저장',
-    insights: '당신의 인사이트', trend: '기분 트렌드:', recs: '추천:',
+    insights: '주간 인사이트', trend: '주간 트렌드:', recs: '추천:',
     subscribe: '구독 ($4.99/월)', entries: '기록:', download: '다운로드', share: '공유',
     info_title: '앱 정보', info_text: '일일 기분과 활동을 추적하여 정신 건강을 개선하세요.',
-    lang_btn: '한국어'
+    lang_btn: '한국어', download_warning: '구독하여 다운로드 잠금 해제', monthly_stats: '월간 통계'
   },
   hi: {
     title: 'दैनिक मूड ट्रैकर', mood: 'मूड:', activity: 'गतिविधि:', save: 'सहेजें',
-    insights: 'आपकी अंतर्दृष्टि', trend: 'मूड रुझान:', recs: 'सिफ़ारिशें:',
+    insights: 'साप्ताहिक अंतर्दृष्टि', trend: 'साप्ताहिक रुझान:', recs: 'सिफ़ारिशें:',
     subscribe: 'सदस्यता ($4.99/महीना)', entries: 'प्रविष्टियाँ:', download: 'डाउनलोड', share: 'साझा करें',
     info_title: 'इस ऐप के बारे में', info_text: 'अपने दैनिक मूड और गतिविधियों को ट्रैक करें।',
-    lang_btn: 'हिन्दी'
+    lang_btn: 'हिन्दी', download_warning: 'डाउनलोड के लिए सदस्यता लें', monthly_stats: 'मासिक आँकड़े'
   }
 };
 
@@ -184,28 +184,84 @@ export default function App() {
     localStorage.setItem('subExpiry', expiry.toString());
     setIsSubscribed(true);
     setExpiryTime(expiry);
-    Alert.alert('Subscribed!', 'Subscription active for 1 month (Apple Pay simulation)');
+    Alert.alert('Subscribed!', 'Subscription active for 1 month');
+  };
+
+  const handleDownload = () => {
+    if (!isSubscribed) {
+      Alert.alert('Locked', t.download_warning);
+      return;
+    }
+
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    // Filter entries for the current month
+    const monthlyEntries = entries.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear;
+    });
+
+    if (monthlyEntries.length === 0) {
+      Alert.alert('No Data', 'No entries found for this month.');
+      return;
+    }
+
+    const dataStr = JSON.stringify(monthlyEntries, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    // Trigger download in browser
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `mood_stats_${currentYear}_${currentMonth + 1}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Weekly Statistics Logic
+  const getWeeklyStats = () => {
+    const now = new Date();
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(now.getDate() - 7);
+
+    const weekEntries = entries.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return entryDate >= sevenDaysAgo;
+    });
+
+    if (weekEntries.length === 0) return 'No data this week';
+
+    const moodCounts = {};
+    weekEntries.forEach(e => {
+      moodCounts[e.mood] = (moodCounts[e.mood] || 0) + 1;
+    });
+    
+    let mostFrequent = '...';
+    let maxCount = 0;
+    for (const [mood, count] of Object.entries(moodCounts)) {
+      if (count > maxCount) {
+        maxCount = count;
+        mostFrequent = mood;
+      }
+    }
+    return `Most frequent: ${mostFrequent} (${maxCount} days)`;
   };
 
   if (!hasSelectedLang) {
     return (
       <SafeAreaView style={styles.languageContainer}>
-        {/* THIS IS THE LINE THAT NOW USES THE CORRECT IMAGE */}
         <Image source={require('./assets/1783351665167.jpg')} style={styles.appIcon} />
         <Text style={styles.appNameText}>Mood Tracker</Text>
-
         <TouchableOpacity style={styles.langButton} onPress={handleToggleLanguageModal}>
           <Text style={styles.langButtonText}>{t.lang_btn}</Text>
         </TouchableOpacity>
-
         <Text style={styles.autoEnterText}>Entering in 3 seconds...</Text>
 
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={langModalVisible}
-          onRequestClose={() => setLangModalVisible(false)}
-        >
+        <Modal animationType="fade" transparent={true} visible={langModalVisible} onRequestClose={() => setLangModalVisible(false)}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>Choose Language</Text>
@@ -213,10 +269,7 @@ export default function App() {
                 data={LANG_LIST}
                 keyExtractor={(item) => item.code}
                 renderItem={({ item }) => (
-                  <TouchableOpacity 
-                    style={styles.langItem} 
-                    onPress={() => handleSelectLanguage(item.code)}
-                  >
+                  <TouchableOpacity style={styles.langItem} onPress={() => handleSelectLanguage(item.code)}>
                     <Text style={styles.langItemText}>{item.name}</Text>
                   </TouchableOpacity>
                 )}
@@ -258,9 +311,9 @@ export default function App() {
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>{t.insights}</Text>
-            <Text style={styles.freeBadge}>Free</Text>
+            <Text style={styles.freeBadge}>{isSubscribed ? 'Premium' : 'Free'}</Text>
           </View>
-          <Text style={styles.cardText}>{t.trend} {entries.length > 0 ? 'You need more self-care.' : 'Start tracking!'} 💪</Text>
+          <Text style={styles.cardText}>{t.trend} {getWeeklyStats()}</Text>
           <View style={styles.cardFooter}>
             <Text style={styles.cardTextSmall}>{t.recs}</Text>
             <TouchableOpacity style={styles.subscribeButton} onPress={handleSubscribePress}>
@@ -272,7 +325,7 @@ export default function App() {
         <View style={styles.footer}>
           <Text style={styles.entriesCount}>{t.entries} {entries.length}</Text>
           <View style={styles.footerButtons}>
-            <TouchableOpacity style={styles.greenBtn}>
+            <TouchableOpacity style={[styles.greenBtn, !isSubscribed && styles.disabledBtn]} onPress={handleDownload}>
               <Text style={styles.btnText}>{t.download}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.blueBtn}>
@@ -280,6 +333,7 @@ export default function App() {
             </TouchableOpacity>
           </View>
         </View>
+        {!isSubscribed && <Text style={styles.downloadWarningText}>{t.download_warning}</Text>}
 
         <TouchableOpacity style={styles.infoButton} onPress={() => setInfoModalVisible(true)}>
           <Text style={styles.infoText}>i</Text>
@@ -333,6 +387,8 @@ const styles = StyleSheet.create({
   greenBtn: { backgroundColor: '#2ecc71', paddingVertical: 8, paddingHorizontal: 15, borderRadius: 5, marginRight: 10 },
   blueBtn: { backgroundColor: '#3498db', paddingVertical: 8, paddingHorizontal: 15, borderRadius: 5 },
   btnText: { color: '#fff', fontWeight: 'bold' },
+  disabledBtn: { backgroundColor: '#95a5a6', opacity: 0.7 },
+  downloadWarningText: { fontSize: 12, color: '#e74c3c', marginTop: 5, alignSelf: 'center' },
   infoButton: { position: 'absolute', bottom: 20, right: 20, width: 50, height: 50, borderRadius: 25, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: '#3498db' },
   infoText: { fontSize: 22, fontWeight: 'bold', color: '#3498db' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
