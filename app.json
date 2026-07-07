@@ -13,10 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourname.moodtracker",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
+      "bundleIdentifier": "com.yourname.moodtracker"
     },
     "android": {
       "adaptiveIcon": {
