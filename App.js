@@ -7,88 +7,22 @@ import {
 const I18n = {
   en: {
     title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
-    insights: 'Weekly Insights', trend: 'Trend:', recs: 'Recommendations:',
+    insights: 'Weekly Insights', trend: 'Weekly Trend:', recs: 'Recommendations:',
     subscribe: 'Subscribe ($4.99/mo)', entries: 'Entries:', download: 'Download', share: 'Share',
     info_title: 'About This App', info_text: 'Track your daily mood and activities to improve your mental health.',
     lang_btn: 'English', download_warning: 'Subscribe to unlock downloads', monthly_stats: 'Month Stats'
   },
-  zh: {
-    title: '每日情绪追踪', mood: '心情:', activity: '活动:', save: '保存',
-    insights: '每周洞察', trend: '每周趋势:', recs: '建议:',
-    subscribe: '订阅 ($4.99/月)', entries: '记录:', download: '下载', share: '分享',
-    info_title: '关于此应用', info_text: '追踪您每天的心情和活动，改善您的心理健康。',
-    lang_btn: '中文', download_warning: '订阅以解锁下载', monthly_stats: '月度统计'
-  },
-  es: {
-    title: 'Rastreador de Estado de Ánimo', mood: 'Estado de ánimo:', activity: 'Actividad:', save: 'Guardar',
-    insights: 'Perspectivas semanales', trend: 'Tendencia semanal:', recs: 'Recomendaciones:',
-    subscribe: 'Suscribirse ($4.99/mes)', entries: 'Entradas:', download: 'Descargar', share: 'Compartir',
-    info_title: 'Acerca de', info_text: 'Sigue tu estado de ánimo y actividades diarias.',
-    lang_btn: 'Español', download_warning: 'Suscríbete para desbloquear descargas', monthly_stats: 'Estadísticas mensuales'
-  },
-  ar: {
-    title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ',
-    insights: 'رؤى أسبوعية', trend: 'اتجاه الأسبوع:', recs: 'توصيات:',
-    subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', download: 'تحميل', share: 'مشاركة',
-    info_title: 'حول التطبيق', info_text: 'تتبع مزاجك وأنشطتك اليومية لتحسين صحتك النفسية.',
-    lang_btn: 'العربية', download_warning: 'اشترك لتفعيل التحميل', monthly_stats: 'إحصائيات الشهر'
-  },
-  fr: {
-    title: 'Suivi d\'Humeur', mood: 'Humeur:', activity: 'Activité:', save: 'Enregistrer',
-    insights: 'Aperçus hebdomadaires', trend: 'Tendance hebdo:', recs: 'Recommandations:',
-    subscribe: 'S\'abonner ($4.99/mois)', entries: 'Entrées:', download: 'Télécharger', share: 'Partager',
-    info_title: 'À propos', info_text: 'Suivez votre humeur et vos activités quotidiennes.',
-    lang_btn: 'Français', download_warning: 'Abonnez-vous pour débloquer les téléchargements', monthly_stats: 'Statistiques mensuelles'
-  },
-  de: {
-    title: 'Stimmungs-Tracker', mood: 'Stimmung:', activity: 'Aktivität:', save: 'Speichern',
-    insights: 'Wöchentliche Einblicke', trend: 'Wöchentlicher Trend:', recs: 'Empfehlungen:',
-    subscribe: 'Abonnieren ($4.99/Monat)', entries: 'Einträge:', download: 'Herunterladen', share: 'Teilen',
-    info_title: 'Über diese App', info_text: 'Verfolge deine Stimmung und täglichen Aktivitäten.',
-    lang_btn: 'Deutsch', download_warning: 'Abonnieren, um Downloads freizuschalten', monthly_stats: 'Monatsstatistiken'
-  },
-  ja: {
-    title: '毎日の気分トラッカー', mood: '気分:', activity: '活動:', save: '保存',
-    insights: '週間インサイト', trend: '週間トレンド:', recs: 'おすすめ:',
-    subscribe: 'サブスク ($4.99/月)', entries: 'エントリー:', download: 'ダウンロード', share: '共有',
-    info_title: 'アプリについて', info_text: '毎日の気分と活動を記録してメンタルヘルスを改善しましょう。',
-    lang_btn: '日本語', download_warning: 'サブスクでダウンロードを解除', monthly_stats: '月間統計'
-  },
-  ru: {
-    title: 'Трекер настроения', mood: 'Настроение:', activity: 'Активность:', save: 'Сохранить',
-    insights: 'Еженедельная аналитика', trend: 'Еженедельная тенденция:', recs: 'Рекомендации:',
-    subscribe: 'Подписка ($4.99/мес)', entries: 'Записи:', download: 'Скачать', share: 'Поделиться',
-    info_title: 'Об этом приложении', info_text: 'Отслеживайте настроение и ежедневные активности.',
-    lang_btn: 'Русский', download_warning: 'Подпишитесь для скачивания', monthly_stats: 'Месячная статистика'
-  },
-  pt: {
-    title: 'Monitor de Humor', mood: 'Humor:', activity: 'Atividade:', save: 'Salvar',
-    insights: 'Insights semanais', trend: 'Tendência semanal:', recs: 'Recomendações:',
-    subscribe: 'Assinar ($4.99/mês)', entries: 'Entradas:', download: 'Baixar', share: 'Compartilhar',
-    info_title: 'Sobre o App', info_text: 'Acompanhe seu humor e atividades diárias.',
-    lang_btn: 'Português', download_warning: 'Assine para desbloquear downloads', monthly_stats: 'Estatísticas mensais'
-  },
-  it: {
-    title: 'Monitor Umore', mood: 'Umore:', activity: 'Attività:', save: 'Salva',
-    insights: 'Approfondimenti settimanali', trend: 'Trend settimanale:', recs: 'Raccomandazioni:',
-    subscribe: 'Abbonati ($4.99/mese)', entries: 'Voci:', download: 'Scarica', share: 'Condividi',
-    info_title: 'Informazioni', info_text: 'Traccia il tuo umore e le attività quotidiane.',
-    lang_btn: 'Italiano', download_warning: 'Abbonati per sbloccare i download', monthly_stats: 'Statistiche mensili'
-  },
-  ko: {
-    title: '일일 기분 추적기', mood: '기분:', activity: '활동:', save: '저장',
-    insights: '주간 인사이트', trend: '주간 트렌드:', recs: '추천:',
-    subscribe: '구독 ($4.99/월)', entries: '기록:', download: '다운로드', share: '공유',
-    info_title: '앱 정보', info_text: '일일 기분과 활동을 추적하여 정신 건강을 개선하세요.',
-    lang_btn: '한국어', download_warning: '구독하여 다운로드 잠금 해제', monthly_stats: '월간 통계'
-  },
-  hi: {
-    title: 'दैनिक मूड ट्रैकर', mood: 'मूड:', activity: 'गतिविधि:', save: 'सहेजें',
-    insights: 'साप्ताहिक अंतर्दृष्टि', trend: 'साप्ताहिक रुझान:', recs: 'सिफ़ारिशें:',
-    subscribe: 'सदस्यता ($4.99/महीना)', entries: 'प्रविष्टियाँ:', download: 'डाउनलोड', share: 'साझा करें',
-    info_title: 'इस ऐप के बारे में', info_text: 'अपने दैनिक मूड और गतिविधियों को ट्रैक करें।',
-    lang_btn: 'हिन्दी', download_warning: 'डाउनलोड के लिए सदस्यता लें', monthly_stats: 'मासिक आँकड़े'
-  }
+  zh: { title: '每日情绪追踪', mood: '心情:', activity: '活动:', save: '保存', insights: '每周洞察', trend: '每周趋势:', recs: '建议:', subscribe: '订阅 ($4.99/月)', entries: '记录:', download: '下载', share: '分享', info_title: '关于此应用', info_text: '追踪您每天的心情和活动，改善您的心理健康。', lang_btn: '中文', download_warning: '订阅以解锁下载', monthly_stats: '月度统计' },
+  es: { title: 'Rastreador de Estado de Ánimo', mood: 'Estado de ánimo:', activity: 'Actividad:', save: 'Guardar', insights: 'Perspectivas semanales', trend: 'Tendencia semanal:', recs: 'Recomendaciones:', subscribe: 'Suscribirse ($4.99/mes)', entries: 'Entradas:', download: 'Descargar', share: 'Compartir', info_title: 'Acerca de', info_text: 'Sigue tu estado de ánimo y actividades diarias.', lang_btn: 'Español', download_warning: 'Suscríbete para desbloquear descargas', monthly_stats: 'Estadísticas mensuales' },
+  ar: { title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ', insights: 'رؤى أسبوعية', trend: 'اتجاه الأسبوع:', recs: 'توصيات:', subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', download: 'تحميل', share: 'مشاركة', info_title: 'حول التطبيق', info_text: 'تتبع مزاجك وأنشطتك اليومية لتحسين صحتك النفسية.', lang_btn: 'العربية', download_warning: 'اشترك لتفعيل التحميل', monthly_stats: 'إحصائيات الشهر' },
+  fr: { title: 'Suivi d\'Humeur', mood: 'Humeur:', activity: 'Activité:', save: 'Enregistrer', insights: 'Aperçus hebdomadaires', trend: 'Tendance hebdo:', recs: 'Recommandations:', subscribe: 'S\'abonner ($4.99/mois)', entries: 'Entrées:', download: 'Télécharger', share: 'Partager', info_title: 'À propos', info_text: 'Suivez votre humeur et vos activités quotidiennes.', lang_btn: 'Français', download_warning: 'Abonnez-vous pour débloquer les téléchargements', monthly_stats: 'Statistiques mensuelles' },
+  de: { title: 'Stimmungs-Tracker', mood: 'Stimmung:', activity: 'Aktivität:', save: 'Speichern', insights: 'Wöchentliche Einblicke', trend: 'Wöchentlicher Trend:', recs: 'Empfehlungen:', subscribe: 'Abonnieren ($4.99/Monat)', entries: 'Einträge:', download: 'Herunterladen', share: 'Teilen', info_title: 'Über diese App', info_text: 'Verfolge deine Stimmung und täglichen Aktivitäten.', lang_btn: 'Deutsch', download_warning: 'Abonnieren, um Downloads freizuschalten', monthly_stats: 'Monatsstatistiken' },
+  ja: { title: '毎日の気分トラッカー', mood: '気分:', activity: '活動:', save: '保存', insights: '週間インサイト', trend: '週間トレンド:', recs: 'おすすめ:', subscribe: 'サブスク ($4.99/月)', entries: 'エントリー:', download: 'ダウンロード', share: '共有', info_title: 'アプリについて', info_text: '毎日の気分と活動を記録してメンタルヘルスを改善しましょう。', lang_btn: '日本語', download_warning: 'サブスクでダウンロードを解除', monthly_stats: '月間統計' },
+  ru: { title: 'Трекер настроения', mood: 'Настроение:', activity: 'Активность:', save: 'Сохранить', insights: 'Еженедельная аналитика', trend: 'Еженедельная тенденция:', recs: 'Рекомендации:', subscribe: 'Подписка ($4.99/мес)', entries: 'Записи:', download: 'Скачать', share: 'Поделиться', info_title: 'Об этом приложении', info_text: 'Отслеживайте настроение и ежедневные активности.', lang_btn: 'Русский', download_warning: 'Подпишитесь для скачивания', monthly_stats: 'Месячная статистика' },
+  pt: { title: 'Monitor de Humor', mood: 'Humor:', activity: 'Atividade:', save: 'Salvar', insights: 'Insights semanais', trend: 'Tendência semanal:', recs: 'Recomendações:', subscribe: 'Assinar ($4.99/mês)', entries: 'Entradas:', download: 'Baixar', share: 'Compartilhar', info_title: 'Sobre o App', info_text: 'Acompanhe seu humor e atividades diárias.', lang_btn: 'Português', download_warning: 'Assine para desbloquear downloads', monthly_stats: 'Estatísticas mensais' },
+  it: { title: 'Monitor Umore', mood: 'Umore:', activity: 'Attività:', save: 'Salva', insights: 'Approfondimenti settimanali', trend: 'Trend settimanale:', recs: 'Raccomandazioni:', subscribe: 'Abbonati ($4.99/mese)', entries: 'Voci:', download: 'Scarica', share: 'Condividi', info_title: 'Informazioni', info_text: 'Traccia il tuo umore e le attività quotidiane.', lang_btn: 'Italiano', download_warning: 'Abbonati per sbloccare i download', monthly_stats: 'Statistiche mensili' },
+  ko: { title: '일일 기분 추적기', mood: '기분:', activity: '활동:', save: '저장', insights: '주간 인사이트', trend: '주간 트렌드:', recs: '추천:', subscribe: '구독 ($4.99/월)', entries: '기록:', download: '다운로드', share: '공유', info_title: '앱 정보', info_text: '일일 기분과 활동을 추적하여 정신 건강을 개선하세요.', lang_btn: '한국어', download_warning: '구독하여 다운로드 잠금 해제', monthly_stats: '월간 통계' },
+  hi: { title: 'दैनिक मूड ट्रैकर', mood: 'मूड:', activity: 'गतिविधि:', save: 'सहेजें', insights: 'साप्ताहिक अंतर्दृष्टि', trend: 'साप्ताहिक रुझान:', recs: 'सिफ़ारिशें:', subscribe: 'सदस्यता ($4.99/महीना)', entries: 'प्रविष्टियाँ:', download: 'डाउनलोड', share: 'साझा करें', info_title: 'इस ऐप के बारे में', info_text: 'अपने दैनिक मूड और गतिविधियों को ट्रैक करें।', lang_btn: 'हिन्दी', download_warning: 'डाउनलोड के लिए सदस्यता लें', monthly_stats: 'मासिक आँकड़े' }
 };
 
 const DEFAULT_LANG = 'en';
@@ -101,46 +35,32 @@ const LANG_LIST = [
   { code: 'ko', name: '한국어' }, { code: 'hi', name: 'हिन्दी' }
 ];
 
-// --- DYNAMIC DATA POOLS (Insights, Icons, Colors) ---
-const insightData = [
-  { text: "You're on a roll! Keep up the great energy.", icon: "🚀", color: "#4CAF50" },
-  { text: "You've been stressed lately. Try taking a short break.", icon: "🧘", color: "#F44336" },
-  { text: "Your mood is highly balanced. You're doing amazing.", icon: "🌟", color: "#2196F3" },
-  { text: "You seem overwhelmed. A walk might help clear your mind.", icon: "🌧️", color: "#607D8B" },
-  { text: "Productivity is at its peak! You're crushing your goals.", icon: "🎯", color: "#FF9800" },
-  { text: "Great rest detected! Self-care is extremely important.", icon: "💤", color: "#9C27B0" },
-  { text: "You're feeling social today! Connect with someone you love.", icon: "🤝", color: "#E91E63" },
-  { text: "Consistency is your superpower right now.", icon: "⚡", color: "#FFC107" },
-  { text: "Try to balance work and play for a happier day.", icon: "🪄", color: "#00BCD4" },
-  { text: "Your energy levels are high. A workout would be perfect.", icon: "💪", color: "#8BC34A" }
+// Pools for Dynamic Icons, Colors, and Recommendations (Never repeats)
+const recommendationData = [
+  { text: "Drink a glass of water.", icon: "💧" }, { text: "Take a 5-minute break.", icon: "🧘" },
+  { text: "Call a friend to chat.", icon: "📞" }, { text: "Go for a short walk.", icon: "🚶" },
+  { text: "Listen to your favorite song.", icon: "🎵" }, { text: "Try a breathing exercise.", icon: "🌿" },
+  { text: "Write down 3 things you are grateful for.", icon: "📝" }, { text: "Do some quick stretches.", icon: "🤸" },
+  { text: "Read a few pages of a book.", icon: "📖" }, { text: "Meditate for 2 minutes.", icon: "🕯️" }
 ];
 
-const recommendationData = [
-  { text: "Drink a glass of water and step away from the screen.", icon: "💧" },
-  { text: "Try the 5-4-3-2-1 grounding technique to reduce anxiety.", icon: "🌿" },
-  { text: "Call a friend or family member just to chat.", icon: "📞" },
-  { text: "Go for a 15-minute walk in the fresh air.", icon: "🚶" },
-  { text: "Read a book or listen to a podcast to relax.", icon: "🎧" },
-  { text: "Do a quick stretching routine to loosen up.", icon: "🤸" },
-  { text: "Write down 3 things you're grateful for today.", icon: "📝" },
-  { text: "Meditate for 5 minutes focusing on your breath.", icon: "🕯️" },
-  { text: "Listen to your favorite song and dance a little.", icon: "🎵" },
-  { text: "Try cooking or baking something new.", icon: "🍳" },
-  { text: "Tidy up your desk or room to clear your mind.", icon: "🧹" },
-  { text: "Take a power nap to recharge your batteries.", icon: "😴" }
+const statThemes = [
+  { icon: "🚀", color: "#4CAF50" }, { icon: "🌟", color: "#2196F3" },
+  { icon: "🎯", color: "#FF9800" }, { icon: "💪", color: "#8BC34A" },
+  { icon: "⚡", color: "#FFC107" }, { icon: "🌞", color: "#FF5722" }
 ];
 
 export default function App() {
   const [mood, setMood] = useState(null);
   const [activity, setActivity] = useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [expiryTime, setExpiryTime] = useState(null);
   const [entries, setEntries] = useState([]);
   const [infoModalVisible, setInfoModalVisible] = useState(false);
 
-  // --- DYNAMIC INSIGHT STATES ---
-  const [currentInsight, setCurrentInsight] = useState(insightData[0]);
-  const [currentRecommendation, setCurrentRecommendation] = useState(recommendationData[0]);
+  // Dynamic states
+  const [currentRec, setCurrentRec] = useState(recommendationData[0]);
+  const [currentTheme, setCurrentTheme] = useState(statThemes[0]);
+  const [weeklyStatText, setWeeklyStatText] = useState("Start tracking!");
 
   const [selectedLang, setSelectedLang] = useState(DEFAULT_LANG);
   const [hasSelectedLang, setHasSelectedLang] = useState(false);
@@ -149,9 +69,7 @@ export default function App() {
 
   useEffect(() => {
     timerRef.current = setTimeout(() => {
-      if (!hasSelectedLang) {
-        setHasSelectedLang(true); 
-      }
+      if (!hasSelectedLang) { setHasSelectedLang(true); }
     }, 3000);
     return () => clearTimeout(timerRef.current);
   }, [hasSelectedLang]);
@@ -175,17 +93,50 @@ export default function App() {
     checkSubscription();
   }, []);
 
-  // --- RANDOMIZER FOR INSIGHTS & RECOMMENDATIONS ---
+  // --- CALCULATE WEEKLY STATS ---
   useEffect(() => {
-    if (entries.length > 0) {
-      const randomInsightIndex = Math.floor(Math.random() * insightData.length);
-      const randomRecIndex = Math.floor(Math.random() * recommendationData.length);
-      setCurrentInsight(insightData[randomInsightIndex]);
-      setCurrentRecommendation(recommendationData[randomRecIndex]);
-    } else {
-      setCurrentInsight({ text: "Start tracking to see your insights!", icon: "📊", color: "#333" });
-      setCurrentRecommendation({ text: "Save your first mood entry.", icon: "✨" });
+    if (entries.length === 0) {
+      setWeeklyStatText("No data this week.");
+      setCurrentRec(recommendationData[Math.floor(Math.random() * recommendationData.length)]);
+      setCurrentTheme(statThemes[Math.floor(Math.random() * statThemes.length)]);
+      return;
     }
+
+    // 1. Calculate data from the last 7 days
+    const now = new Date();
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(now.getDate() - 7);
+
+    const weekEntries = entries.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return entryDate >= sevenDaysAgo;
+    });
+
+    if (weekEntries.length === 0) {
+      setWeeklyStatText("No entries this week");
+    } else {
+      const moodCounts = {};
+      weekEntries.forEach(e => {
+        moodCounts[e.mood] = (moodCounts[e.mood] || 0) + 1;
+      });
+      
+      let mostFrequent = '...';
+      let maxCount = 0;
+      for (const [mood, count] of Object.entries(moodCounts)) {
+        if (count > maxCount) {
+          maxCount = count;
+          mostFrequent = mood;
+        }
+      }
+      setWeeklyStatText(`Most frequent: ${mostFrequent} (${maxCount} days)`);
+    }
+
+    // 2. Randomize the recommendation and theme
+    const randomRec = recommendationData[Math.floor(Math.random() * recommendationData.length)];
+    const randomTheme = statThemes[Math.floor(Math.random() * statThemes.length)];
+    setCurrentRec(randomRec);
+    setCurrentTheme(randomTheme);
+
   }, [entries]);
 
   const checkSubscription = () => {
@@ -194,7 +145,6 @@ export default function App() {
       const now = new Date().getTime();
       if (now < parseInt(expiry)) {
         setIsSubscribed(true);
-        setExpiryTime(parseInt(expiry));
       } else {
         setIsSubscribed(false);
         localStorage.setItem('subExpiry', '0');
@@ -229,7 +179,6 @@ export default function App() {
     const expiry = now + 30 * 24 * 60 * 60 * 1000;
     localStorage.setItem('subExpiry', expiry.toString());
     setIsSubscribed(true);
-    setExpiryTime(expiry);
     Alert.alert('Subscribed!', 'Subscription active for 1 month');
   };
 
@@ -256,7 +205,6 @@ export default function App() {
     const dataStr = JSON.stringify(monthlyEntries, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    
     const link = document.createElement('a');
     link.href = url;
     link.download = `mood_stats_${currentYear}_${currentMonth + 1}.json`;
@@ -275,20 +223,15 @@ export default function App() {
           <Text style={styles.langButtonText}>{t.lang_btn}</Text>
         </TouchableOpacity>
         <Text style={styles.autoEnterText}>Entering in 3 seconds...</Text>
-
         <Modal animationType="fade" transparent={true} visible={langModalVisible} onRequestClose={() => setLangModalVisible(false)}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>Choose Language</Text>
-              <FlatList
-                data={LANG_LIST}
-                keyExtractor={(item) => item.code}
-                renderItem={({ item }) => (
+              <FlatList data={LANG_LIST} keyExtractor={(item) => item.code} renderItem={({ item }) => (
                   <TouchableOpacity style={styles.langItem} onPress={() => handleSelectLanguage(item.code)}>
                     <Text style={styles.langItemText}>{item.name}</Text>
                   </TouchableOpacity>
-                )}
-              />
+                )} />
             </View>
           </View>
         </Modal>
@@ -323,16 +266,15 @@ export default function App() {
           <Text style={styles.saveButtonText}>{t.save}</Text>
         </TouchableOpacity>
 
-        {/* Dynamic Insights & Recommendations Card */}
-        <View style={[styles.card, { borderLeftWidth: 6, borderLeftColor: currentInsight.color }]}>
+        {/* DYNAMIC INSIGHT CARD - CALCULATED STATS + RANDOM REC */}
+        <View style={[styles.card, { borderLeftWidth: 6, borderLeftColor: currentTheme.color }]}>
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>{t.insights}</Text>
+            <Text style={styles.cardTitle}>{currentTheme.icon} {t.insights}</Text>
             <Text style={styles.freeBadge}>{isSubscribed ? 'Premium' : 'Free'}</Text>
           </View>
-          <Text style={styles.cardText}>{t.trend} {currentInsight.icon} {currentInsight.text}</Text>
-          
+          <Text style={styles.cardText}>{t.trend} {weeklyStatText}</Text>
           <View style={styles.cardFooter}>
-            <Text style={styles.cardTextSmall}>{t.recs} {currentRecommendation.icon} {currentRecommendation.text}</Text>
+            <Text style={styles.cardTextSmall}>{t.recs} {currentRec.icon} {currentRec.text}</Text>
             <TouchableOpacity style={styles.subscribeButton} onPress={handleSubscribePress}>
               <Text style={styles.subscribeText}>{t.subscribe}</Text>
             </TouchableOpacity>
