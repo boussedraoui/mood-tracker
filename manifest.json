@@ -10,11 +10,11 @@
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "./assets/1783351665167.jpg",
+      "src": "./assets/1783351665167.png",
       "sizes": "192x192"
     },
     {
-      "src": "./assets/1783351665167.jpg",
+      "src": "./assets/1783351665167.png",
       "sizes": "512x512"
     }
   ]
