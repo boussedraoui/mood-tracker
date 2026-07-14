@@ -6,7 +6,6 @@
     <link rel="manifest" href="./manifest.json">
     <title>Daily Mood Tracker</title>
     <style>
-        /* Added overscroll-behavior: none; to disable pull-to-refresh */
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
         body { background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; transition: all 0.3s; overscroll-behavior: none; }
         
@@ -30,6 +29,8 @@
         .badge { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #e0e0e0; font-size: 12px; font-weight: bold; }
         .badge.free { background-color: #f8f9fa; color: #6c757d; }
         .badge.paid { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .section-title { font-size: 18px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
+        .trend-text { font-size: 14px; margin: 5px 0; color: #2c3e50; }
         .tip-text { font-size: 14px; margin: 5px 0; color: #007AFF; }
         .advice-text { font-size: 14px; margin: 5px 0; color: #34C759; }
         .sub-status { font-size: 12px; color: #666; margin-top: 5px; font-style: italic; }
@@ -88,9 +89,11 @@
 
     <button class="save-btn" id="save-btn">Save</button>
 
-    <!-- INSIGHTS BOX (Weekly stats removed) -->
     <div class="insights-box">
         <div class="badge free" id="status-badge">Free</div>
+        <div class="section-title" id="insights-title">Your Insights</div>
+        <div class="trend-text" id="mood-trend">Mood Trend: Start logging to see trends.</div>
+        
         <div id="premium-content">
             <div class="recommend-row">
                 <span class="recommend-label" id="recommend-label">Recommendations:</span>
@@ -104,7 +107,6 @@
         </div>
     </div>
 
-    <!-- BOTTOM ROW (Download button removed) -->
     <div class="bottom-row">
         <span class="counter" id="entries-counter">Entries: 0</span>
         <div>
@@ -154,7 +156,7 @@
     const PAYPAL_CLIENT_ID = "AV2UKMpbf8suLviBQRBw-wFWoreeDlF74RdNWpnSzFXhVuadtMAKw4ukv6bftV3o6lcTEiBRQLRikvIN";
     const PAYPAL_PLAN_ID = "P-00P45881CJ9839056NJKUXLQ";
 
-    // --- LANGUAGES & DATA ---
+    // --- LANGUAGES & DATA POOLS (Never Repeat) ---
     const languages = [
         { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
         { code: 'zh', name: '中文' }, { code: 'es', name: 'Español' },
@@ -164,21 +166,33 @@
     const translations = {
         'en': {
             title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
-            insights: '', trend: '', recs: 'Recommendations:',
-            subscribe: 'Subscribe ($4.99/mo)', entries: 'Entries:', download: '', share: 'Share',
+            insights: 'Your Insights', trend: 'Mood Trend:', recs: 'Recommendations:',
+            subscribe: 'Subscribe ($4.99/mo)', entries: 'Entries:', share: 'Share',
             info_title: 'About This App', info_text: 'Track your daily mood and activities.',
             lang_btn: 'English', timer: 'Entering in 3 seconds...', free: 'Free', paid: 'Paid',
             active_until: 'Active until:', food_tip: 'Food Recommendations:', activity_tip: 'Activity Advice:',
-            no_data: 'Start logging to see trends.', good_work: 'Strong work today!'
+            no_data: 'Start logging to see personalized tips.',
+            // Pools to guarantee NEVER repeat
+            insightGood: ["Your trend is positive! 🌟", "Great vibes this week! 🎉", "You are rocking it! 🚀", "Your mood is high! ☀️", "Excellent emotional state! 💯"],
+            insightStable: ["Your mood is stable. ⚖️", "Balanced as always! 🧘", "Steady and consistent. 🌊", "Maintaining balance! ✅"],
+            insightBad: ["You need more self-care. 💪", "Take a break, you deserve it. 🛋️", "Prioritize rest today. 🌿", "Self-care is vital now. 🕯️"],
+            foodRecs: ["🍫 Dark chocolate.", "🍌 A banana.", "🥗 A green salad.", "🍣 Fresh salmon.", "🥛 A glass of warm milk.", "🌿 Chamomile tea.", "🥑 Avocado toast.", "🍓 Fresh berries.", "🫐 Blueberry smoothie.", "🥜 Almonds and walnuts.", "🍊 Orange juice.", "🍳 Poached eggs.", "🧀 Cheese and crackers.", "🌽 Corn salad.", "🥪 A turkey sandwich."],
+            activityRecs: ["👍 Strong work today!", "🌟 You are doing great!", "💪 Keep up the good habits!", "🚀 Amazing effort!", "✨ You are shining!", "🎯 Stay focused!", "🌈 Have a wonderful day!"]
         },
         'ar': {
             title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ',
-            insights: '', trend: '', recs: 'توصيات:',
-            subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', download: '', share: 'مشاركة',
+            insights: 'رؤيتك', trend: 'اتجاه المزاج:', recs: 'توصيات:',
+            subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', share: 'مشاركة',
             info_title: 'حول التطبيق', info_text: 'تتبع مزاجك وأنشطتك اليومية.',
             lang_btn: 'العربية', timer: 'الدخول بعد 3 ثواني...', free: 'مجاني', paid: 'مدفوع',
             active_until: 'نشط حتى:', food_tip: 'توصيات الطعام:', activity_tip: 'نصيحة النشاط:',
-            no_data: 'ابدأ التسجيل لرؤية الاتجاهات.', good_work: 'عمل رائع اليوم!'
+            no_data: 'ابدأ التسجيل للحصول على نصائح مخصصة.',
+            // Pools to guarantee NEVER repeat
+            insightGood: ["اتجاهك إيجابي! 🌟", "أجواء رائعة هذا الأسبوع! 🎉", "أنت تبلي بلاءً حسناً! 🚀", "مزاجك مرتفع! ☀️", "حالة عاطفية ممتازة! 💯"],
+            insightStable: ["مزاجك مستقر. ⚖️", "متوازن كالعادة! 🧘", "ثابت ومستمر. 🌊", "الحفاظ على التوازن! ✅"],
+            insightBad: ["أنت بحاجة إلى مزيد من الرعاية الذاتية. 💪", "خذ استراحة، أنت تستحقها. 🛋️", "أعط الأولوية للراحة اليوم. 🌿", "الرعاية الذاتية ضرورية الآن. 🕯️"],
+            foodRecs: ["🍫 شوكولاتة داكنة.", "🍌 موزة.", "🥗 سلطة خضراء.", "🍣 سلمون طازج.", "🥛 كوب حليب دافئ.", "🌿 شاي البابونج.", "🥑 توست الأفوكادو.", "🍓 توت طازج.", "🫐 عصير التوت الأزرق.", "🥜 لوز وجوز.", "🍊 عصير برتقال.", "🍳 بيض مسلوق.", "🧀 جبن وبسكويت.", "🌽 سلطة ذرة.", "🥪 شطيرة ديك رومي."],
+            activityRecs: ["👍 عمل رائع اليوم!", "🌟 أنت تبلي بلاءً حسناً!", "💪 حافظ على العادات الجيدة!", "🚀 جهد مذهل!", "✨ أنت تتألق!", "🎯 حافظ على التركيز!", "🌈 يوم سعيد!"]
         }
     };
 
@@ -203,6 +217,8 @@
     const activityBtns = document.querySelectorAll('#activity-buttons .btn');
     const saveBtn = document.getElementById('save-btn');
     const badge = document.getElementById('status-badge');
+    const trendEl = document.getElementById('mood-trend');
+    const insightsTitle = document.getElementById('insights-title');
     const premiumContent = document.getElementById('premium-content');
     const subscribedContent = document.getElementById('subscribed-content');
     const foodTipEl = document.getElementById('food-tip');
@@ -217,6 +233,24 @@
     const infoModal = document.getElementById('info-modal');
     const infoCloseBtn = document.getElementById('info-close-btn');
 
+    // --- HELPER: NEVER REPEAT QUEUE ---
+    function getNextFromPool(poolArray, storageKey) {
+        // Retrieve current queue from localStorage
+        let queue = JSON.parse(localStorage.getItem(storageKey));
+        // If no queue exists or it's empty, shuffle the pool and reset
+        if (!queue || queue.length === 0) {
+            // Deep copy and shuffle
+            let shuffled = [...poolArray].sort(() => Math.random() - 0.5);
+            localStorage.setItem(storageKey, JSON.stringify(shuffled));
+            queue = shuffled;
+        }
+        // Pop the last item
+        let chosen = queue.pop();
+        // Save the updated queue back
+        localStorage.setItem(storageKey, JSON.stringify(queue));
+        return chosen;
+    }
+
     // --- HELPER: UPDATE UI TEXT ---
     function updateUIText(lang) {
         const t = translations[lang];
@@ -224,6 +258,7 @@
         document.getElementById('mood-label').innerText = t.mood;
         document.getElementById('activity-label').innerText = t.activity;
         document.getElementById('save-btn').innerText = t.save;
+        insightsTitle.innerText = t.insights;
         document.getElementById('recommend-label').innerText = t.recs;
         document.getElementById('subscribe-btn').innerText = t.subscribe;
         document.getElementById('entries-counter').innerText = t.entries + ': ' + entries.length;
@@ -243,19 +278,47 @@
             expiryEl.innerText = t.active_until + ' ' + formatDate(expiryTime);
         }
 
+        // --- NEVER REPEATING LOGIC BASED ON REAL DATA ---
         if (entries.length > 0) {
             const last = entries[entries.length - 1];
-            const foods = [t.food_tip + ' 🍫 Dark chocolate.', t.food_tip + ' 🍌 A banana.', t.food_tip + ' 🥗 A green salad.'];
-            const advices = [t.activity_tip + ' 👍 ' + t.good_work, t.activity_tip + ' 🌟 ' + t.good_work];
+            const foods = t.foodRecs;
+            const activities = t.activityRecs;
+            
+            // Pick never-repeating Food and Activity advice
+            let chosenFood = getNextFromPool(foods, 'foodQueue_' + lang);
+            let chosenActivity = getNextFromPool(activities, 'activityQueue_' + lang);
+            
             if (last.mood === '😢' || last.mood === '😰') {
-                foodTipEl.innerText = foods[Math.floor(Math.random() * foods.length)];
+                foodTipEl.innerText = t.food_tip + ' ' + chosenFood;
             } else {
-                foodTipEl.innerText = foods[Math.floor(Math.random() * foods.length)];
+                foodTipEl.innerText = t.food_tip + ' ' + chosenFood;
             }
-            adviceEl.innerText = advices[Math.floor(Math.random() * advices.length)];
+            adviceEl.innerText = t.activity_tip + ' ' + chosenActivity;
         } else {
             foodTipEl.innerText = t.food_tip + ' ' + t.no_data;
             adviceEl.innerText = t.activity_tip + ' ' + t.no_data;
+        }
+
+        // --- NEVER REPEATING INSIGHTS BASED ON ACTUAL MOOD TREND ---
+        if (entries.length === 0) {
+            trendEl.innerText = t.trend + ' ' + t.no_data;
+        } else {
+            const recent = entries.slice(-7);
+            const happy = recent.filter(e => e.mood === '😊').length;
+            const total = recent.length;
+            let poolKey = 'insightBad'; // default
+            if (total > 0) {
+                let ratio = happy / total;
+                if (ratio >= 0.6) poolKey = 'insightGood';
+                else if (ratio >= 0.3) poolKey = 'insightStable';
+                else poolKey = 'insightBad';
+            }
+            
+            // Get the correct pool based on the mood state
+            let insightPool = t[poolKey];
+            // Pick never-repeating insight
+            let chosenInsight = getNextFromPool(insightPool, 'insightQueue_' + poolKey + '_' + lang);
+            trendEl.innerText = t.trend + ' ' + chosenInsight;
         }
     }
 
