@@ -1,100 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="manifest" href="./manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="./manifest.json">
     <title>Daily Mood Tracker</title>
     <style>
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-        body { background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        body { background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; transition: all 0.3s; }
         
-        /* App container */
-        #app { width: 100%; max-width: 420px; background-color: #ffffff; border-radius: 24px; padding: 20px 20px 70px 20px; box-shadow: 0px 10px 30px rgba(0,0,0,0.08); position: relative; }
-        
-        /* Info button - moved INSIDE the app */
-        .info-btn { 
-            position: absolute; 
-            bottom: 15px; 
-            right: 15px; 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            background-color: #ffffff; 
-            border: 2px solid #007AFF; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 20px; 
-            font-style: italic; 
-            font-weight: bold; 
-            color: #007AFF; 
-            cursor: pointer; 
-            box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s;
-            z-index: 10;
-        }
-        .info-btn:hover { background-color: #f0f8ff; transform: scale(1.05); }
+        /* --- START SCREEN --- */
+        #start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #f0f4f8; z-index: 100; }
+        .start-icon { width: 120px; height: 120px; border-radius: 25px; margin-bottom: 20px; }
+        .start-title { font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 30px; }
+        .lang-btn { background: #fff; padding: 15px 40px; border-radius: 30px; border: 1px solid #ddd; font-size: 18px; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
+        .timer-text { font-size: 14px; color: #888; }
+        .hidden { display: none !important; }
 
+        /* --- APP CONTAINER --- */
+        #app { width: 100%; max-width: 420px; background-color: #ffffff; border-radius: 24px; padding: 20px 20px 70px 20px; box-shadow: 0px 10px 30px rgba(0,0,0,0.08); position: relative; display: none; }
+        
+        .info-btn { 
+            position: absolute; bottom: 15px; right: 15px; width: 40px; height: 40px; border-radius: 50%; background-color: #ffffff; border: 2px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 20px; font-style: italic; font-weight: bold; color: #007AFF; cursor: pointer; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); z-index: 10; }
         .title { font-size: 24px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
         .label { font-size: 16px; font-weight: 600; color: #34495e; margin-top: 10px; margin-bottom: 5px; }
         .row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .btn { padding: 12px; border-radius: 50%; background-color: #fff; min-width: 50px; text-align: center; box-shadow: 0px 2px 4px rgba(0,0,0,0.05); border: none; cursor: pointer; transition: 0.2s; font-size: 28px; }
         .btn.selected { background-color: #007AFF; box-shadow: 0px 4px 8px rgba(0,122,255,0.4); transform: scale(1.05); }
-        
         .save-btn { background-color: #34C759; border: none; padding: 14px; border-radius: 30px; width: 100%; color: white; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0px 4px 10px rgba(52,199,89,0.3); margin-top: 5px; }
         .save-btn:active { transform: scale(0.95); }
-
         .insights-box { background-color: #fff; padding: 20px; border-radius: 20px; width: 100%; margin-top: 20px; box-shadow: 0px 4px 10px rgba(0,0,0,0.05); position: relative; border: 1px solid #f0f0f0; }
-        
         .badge { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #e0e0e0; font-size: 12px; font-weight: bold; }
         .badge.free { background-color: #f8f9fa; color: #6c757d; }
         .badge.paid { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
-
         .section-title { font-size: 18px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
         .trend-text { font-size: 14px; margin: 5px 0; color: #2c3e50; }
         .tip-text { font-size: 14px; margin: 5px 0; color: #007AFF; }
         .advice-text { font-size: 14px; margin: 5px 0; color: #34C759; }
         .sub-status { font-size: 12px; color: #666; margin-top: 5px; font-style: italic; }
-        
         .recommend-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
         .recommend-label { font-size: 14px; font-weight: 600; color: #2c3e50; }
         .subscribe-btn-small { background-color: #FF9500; border: none; padding: 6px 12px; border-radius: 20px; color: white; font-weight: bold; font-size: 12px; cursor: pointer; }
-        
         .bottom-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; padding-bottom: 10px; }
         .counter { font-size: 14px; color: #888; }
         .action-btn { border: none; padding: 8px 16px; border-radius: 20px; color: white; font-weight: bold; font-size: 14px; cursor: pointer; }
         .share-btn { background-color: #007AFF; }
         .download-btn { background-color: #34C759; }
 
-        /* --- Modals --- */
+        /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
-        
         .modal-content { background: white; border-radius: 24px; padding: 30px; width: 85%; max-width: 380px; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; position: relative; }
-        
-        /* --- Info Modal Styling --- */
         .info-modal-title { font-size: 22px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #f0f4f8; padding-bottom: 10px; }
         .info-modal-text p { font-size: 14px; line-height: 1.6; color: #333; margin-bottom: 15px; }
-        .info-modal-text .highlight { color: #007AFF; font-weight: 600; }
-        .info-modal-text .highlight-green { color: #34C759; font-weight: 600; }
         .info-close-btn { display: block; width: 100%; padding: 12px; margin-top: 20px; background-color: #007AFF; color: white; border: none; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; }
-
-        /* --- Pay Modal --- */
         .pay-modal-title { font-size: 20px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
         .pay-modal-desc { font-size: 16px; color: #666; text-align: center; margin-bottom: 20px; }
         .modal-btn { border: none; padding: 12px; border-radius: 30px; width: 100%; font-weight: bold; font-size: 16px; margin-bottom: 10px; cursor: pointer; }
         .modal-confirm { background-color: #007AFF; color: white; }
         .modal-cancel { background-color: #f0f0f0; color: #666; }
 
-        .hidden { display: none !important; }
+        /* Language Modal */
+        .lang-modal-title { font-size: 20px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
+        .lang-list-item { padding: 12px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; text-align: center; font-size: 16px; color: #333; }
+        .lang-list-item:hover { background-color: #f9f9f9; }
     </style>
 </head>
 <body>
 
-<div id="app">
-    <div class="title">Daily Mood Tracker</div>
+<!-- ================= START SCREEN ================= -->
+<div id="start-screen">
+    <img src="./assets/1783351665167.png" class="start-icon" alt="App Icon">
+    <div class="start-title">Mood Tracker</div>
+    <button class="lang-btn" id="lang-select-btn">English</button>
+    <div class="timer-text" id="timer-text">Entering in 3 seconds...</div>
+</div>
 
-    <div class="label">Mood:</div>
+<!-- ================= MAIN APP ================= -->
+<div id="app">
+    <div class="title" id="app-title">Daily Mood Tracker</div>
+
+    <div class="label" id="mood-label">Mood:</div>
     <div class="row" id="mood-buttons">
         <button class="btn" data-value="😊">😊</button>
         <button class="btn" data-value="😢">😢</button>
@@ -102,7 +87,7 @@
         <button class="btn" data-value="😰">😰</button>
     </div>
 
-    <div class="label">Activity:</div>
+    <div class="label" id="activity-label">Activity:</div>
     <div class="row" id="activity-buttons">
         <button class="btn" data-value="💼">💼</button>
         <button class="btn" data-value="🏃">🏃</button>
@@ -113,15 +98,13 @@
     <button class="save-btn" id="save-btn">Save</button>
 
     <div class="insights-box">
-        <!-- BADGE Free / Paid -->
         <div class="badge free" id="status-badge">Free</div>
-
-        <div class="section-title">Your Insights</div>
+        <div class="section-title" id="insights-title">Your Insights</div>
         <div class="trend-text" id="mood-trend">Mood Trend: Start logging to see trends.</div>
 
         <div id="premium-content">
             <div class="recommend-row">
-                <span class="recommend-label">Recommendations:</span>
+                <span class="recommend-label" id="recommend-label">Recommendations:</span>
                 <button class="subscribe-btn-small" id="subscribe-btn">Subscribe ($4.99/mo)</button>
             </div>
         </div>
@@ -141,40 +124,18 @@
         </div>
     </div>
 
-    <!-- زر المعلومات (i) داخل التطبيق في الزاوية السفلية اليمنى -->
     <button class="info-btn" id="info-btn">i</button>
 </div>
 
-<!-- Info Modal (النافذة المنبثقة للمعلومات) -->
+<!-- Modals -->
 <div class="modal-overlay hidden" id="info-modal">
     <div class="modal-content info-modal-text">
-        <div class="info-modal-title">🌟 About This App</div>
-        
-        <p><strong>🧠 A Product of Collective Wisdom</strong><br>
-        This application has been rigorously tested and refined by <span class="highlight">professionals across technical, medical, and scientific fields</span>. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p>
-
-        <p><strong>🎯 Simplicity Above All</strong><br>
-        We believe in the power of minimalism. There are <span class="highlight">no distracting audio or visual effects</span>—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p>
-
-        <p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>
-        Our intelligent advice engine ensures that <span class="highlight">tips and instructions never repeat</span>. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p>
-
-        <p><strong>🔒 The Value of Commitment</strong><br>
-        Why do we recommend our small monthly subscription? Because <span class="highlight-green">commitment brings focus</span>. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p>
-
-        <p><strong>🚀 Why We Are Different</strong><br>
-        We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. <span class="highlight">We are different.</span> We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p>
-
-        <p><strong>🌍 A Global Movement</strong><br>
-        This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p>
-
-        <p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>
-
+        <div class="info-modal-title">About This App</div>
+        <p>Track your daily mood and activities to improve your mental health.</p>
         <button class="info-close-btn" id="info-close-btn">Close</button>
     </div>
 </div>
 
-<!-- Subscription Modal -->
 <div class="modal-overlay hidden" id="pay-modal">
     <div class="modal-content">
         <div class="pay-modal-title">Apple Pay (Simulation)</div>
@@ -184,15 +145,62 @@
     </div>
 </div>
 
+<!-- ================= LANGUAGE MODAL ================= -->
+<div class="modal-overlay hidden" id="lang-modal">
+    <div class="modal-content">
+        <div class="lang-modal-title">Choose Language</div>
+        <div id="lang-list-container"></div>
+        <button class="modal-btn modal-cancel" id="close-lang-modal" style="margin-top:10px;">Cancel</button>
+    </div>
+</div>
+
 <script>
-    // --- State ---
+    // --- LANGUAGES & DATA ---
+    const languages = [
+        { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
+        { code: 'zh', name: '中文' }, { code: 'es', name: 'Español' },
+        { code: 'fr', name: 'Français' }, { code: 'de', name: 'Deutsch' }
+    ];
+    
+    const translations = {
+        'en': {
+            title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
+            insights: 'Your Insights', trend: 'Mood Trend:', recs: 'Recommendations:',
+            subscribe: 'Subscribe ($4.99/mo)', entries: 'Entries:', download: 'Download', share: 'Share',
+            info_title: 'About This App', info_text: 'Track your daily mood and activities.',
+            lang_btn: 'English', timer: 'Entering in 3 seconds...', free: 'Free', paid: 'Paid',
+            active_until: 'Active until:', food_tip: 'Food Recommendations:', activity_tip: 'Activity Advice:',
+            no_data: 'Start logging to see trends.', good_work: 'Strong work today!'
+        },
+        'ar': {
+            title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ',
+            insights: 'رؤيتك', trend: 'اتجاه المزاج:', recs: 'توصيات:',
+            subscribe: 'اشتراك ($4.99/شهر)', entries: 'المدخلات:', download: 'تحميل', share: 'مشاركة',
+            info_title: 'حول التطبيق', info_text: 'تتبع مزاجك وأنشطتك اليومية.',
+            lang_btn: 'العربية', timer: 'الدخول بعد 3 ثواني...', free: 'مجاني', paid: 'مدفوع',
+            active_until: 'نشط حتى:', food_tip: 'توصيات الطعام:', activity_tip: 'نصيحة النشاط:',
+            no_data: 'ابدأ التسجيل لرؤية الاتجاهات.', good_work: 'عمل رائع اليوم!'
+        }
+    };
+
+    // --- STATE ---
+    let currentLang = 'en';
     let selectedMood = null;
     let selectedActivity = null;
     let entries = JSON.parse(localStorage.getItem('moodData')) || [];
     let isSubscribed = false;
     let expiryTime = null;
+    let timerInterval = null;
 
-    // --- Elements ---
+    // --- ELEMENTS ---
+    const startScreen = document.getElementById('start-screen');
+    const appContainer = document.getElementById('app');
+    const langBtn = document.getElementById('lang-select-btn');
+    const timerText = document.getElementById('timer-text');
+    const langModal = document.getElementById('lang-modal');
+    const langListContainer = document.getElementById('lang-list-container');
+    
+    // App elements
     const moodBtns = document.querySelectorAll('#mood-buttons .btn');
     const activityBtns = document.querySelectorAll('#activity-buttons .btn');
     const saveBtn = document.getElementById('save-btn');
@@ -210,94 +218,162 @@
     const cancelBtn = document.getElementById('cancel-subscribe');
     const downloadBtn = document.getElementById('download-btn');
     const shareBtn = document.getElementById('share-btn');
-
-    // --- Info Modal Elements ---
     const infoBtn = document.getElementById('info-btn');
     const infoModal = document.getElementById('info-modal');
     const infoCloseBtn = document.getElementById('info-close-btn');
 
-    // --- Helper Functions ---
-    const formatDate = (timestamp) => {
-        if (!timestamp) return '--';
-        const date = new Date(timestamp);
-        return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-    };
-
-    const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-    const updateUI = () => {
-        counterEl.textContent = `Entries: ${entries.length}`;
+    // --- HELPER: UPDATE UI TEXT ---
+    function updateUIText(lang) {
+        const t = translations[lang];
+        document.getElementById('app-title').innerText = t.title;
+        document.getElementById('mood-label').innerText = t.mood;
+        document.getElementById('activity-label').innerText = t.activity;
+        document.getElementById('save-btn').innerText = t.save;
+        document.getElementById('insights-title').innerText = t.insights;
+        document.getElementById('recommend-label').innerText = t.recs;
+        document.getElementById('subscribe-btn').innerText = t.subscribe;
+        document.getElementById('entries-counter').innerText = t.entries + ': ' + entries.length;
+        document.getElementById('download-btn').innerText = '⬇️ ' + t.download;
+        document.getElementById('share-btn').innerText = '🔗 ' + t.share;
+        document.querySelector('.info-modal-title').innerText = t.info_title;
+        document.querySelector('.info-modal-text p').innerText = t.info_text;
+        document.getElementById('info-close-btn').innerText = 'Close';
+        document.querySelector('.pay-modal-title').innerText = 'Apple Pay (Simulation)';
+        document.querySelector('.pay-modal-desc').innerText = t.subscribe;
+        document.getElementById('confirm-subscribe').innerText = 'Confirm Subscription';
+        document.getElementById('cancel-subscribe').innerText = 'Cancel';
+        langBtn.innerText = t.lang_btn;
+        timerText.innerText = t.timer;
         
+        if (!isSubscribed) {
+            badge.innerText = t.free;
+        } else {
+            badge.innerText = t.paid;
+            expiryEl.innerText = t.active_until + ' ' + formatDate(expiryTime);
+        }
+
+        // Update premium texts
+        if (entries.length > 0) {
+            const last = entries[entries.length - 1];
+            const foods = [t.food_tip + ' 🍫 Dark chocolate.', t.food_tip + ' 🍌 A banana.', t.food_tip + ' 🥗 A green salad.'];
+            const advices = [t.activity_tip + ' 👍 ' + t.good_work, t.activity_tip + ' 🌟 ' + t.good_work];
+            if (last.mood === '😢' || last.mood === '😰') {
+                foodTipEl.innerText = foods[Math.floor(Math.random() * foods.length)];
+            } else {
+                foodTipEl.innerText = foods[Math.floor(Math.random() * foods.length)];
+            }
+            adviceEl.innerText = advices[Math.floor(Math.random() * advices.length)];
+        } else {
+            foodTipEl.innerText = t.food_tip + ' ' + t.no_data;
+            adviceEl.innerText = t.activity_tip + ' ' + t.no_data;
+        }
+        
+        // Trend logic
         if (entries.length === 0) {
-            trendEl.textContent = "Mood Trend: Not enough data. Start logging!";
+            trendEl.innerText = t.trend + ' ' + t.no_data;
         } else {
             const recent = entries.slice(-7);
             const happy = recent.filter(e => e.mood === '😊').length;
-            if (happy >= 4) trendEl.textContent = "Mood Trend: Your trend is positive! 🌟";
-            else if (happy >= 2) trendEl.textContent = "Mood Trend: Your mood is stable.";
-            else trendEl.textContent = "Mood Trend: You need more self-care. 💪";
+            if (happy >= 4) trendEl.innerText = t.trend + ' Your trend is positive! 🌟';
+            else if (happy >= 2) trendEl.innerText = t.trend + ' Your mood is stable.';
+            else trendEl.innerText = t.trend + ' You need more self-care. 💪';
         }
+    }
 
-        if (isSubscribed) {
-            badge.className = 'badge paid';
-            badge.textContent = 'Paid';
-            premiumContent.classList.add('hidden');
-            subscribedContent.classList.remove('hidden');
-            expiryEl.textContent = `Active until: ${formatDate(expiryTime)}`;
-            
-            if (entries.length > 0) {
-                const last = entries[entries.length - 1];
-                const foods = ['🍫 Dark chocolate.', '🍌 A banana.', '🧘 Oatmeal.', '🥗 A green salad.', '🍣 Fresh salmon.'];
-                const advices = ['👍 Keep up the good habits!', '🌟 You are doing great!', '💪 Strong work today.'];
-                if (last.mood === '😢' || last.mood === '😰') foodTipEl.textContent = `Food Recommendations: ${getRandom(foods)}`;
-                else foodTipEl.textContent = `Food Recommendations: ${getRandom(foods)}`;
-                adviceEl.textContent = `Activity Advice: ${getRandom(advices)}`;
+    // --- HELPER: FORMAT DATE ---
+    function formatDate(timestamp) {
+        if (!timestamp) return '--';
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    }
+
+    // --- LANGUAGE MODAL LOGIC ---
+    function renderLanguageList() {
+        langListContainer.innerHTML = '';
+        languages.forEach(lang => {
+            const div = document.createElement('div');
+            div.className = 'lang-list-item';
+            div.innerText = lang.name;
+            div.onclick = () => selectLanguage(lang.code);
+            langListContainer.appendChild(div);
+        });
+    }
+
+    function selectLanguage(code) {
+        currentLang = code;
+        localStorage.setItem('appLang', code);
+        langModal.classList.add('hidden');
+        startScreen.classList.add('hidden');
+        appContainer.style.display = 'block';
+        updateUIText(code);
+    }
+
+    // --- START SCREEN TIMER ---
+    let countdown = 3;
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            countdown -= 1;
+            timerText.innerText = translations[currentLang].timer.replace('3', countdown);
+            if (countdown <= 0) {
+                clearInterval(timerInterval);
+                // Auto-select English if no language chosen
+                selectLanguage('en');
             }
+        }, 1000);
+    }
+
+    // --- INIT START SCREEN ---
+    function initStartScreen() {
+        const savedLang = localStorage.getItem('appLang');
+        if (savedLang && languages.find(l => l.code === savedLang)) {
+            currentLang = savedLang;
+            startScreen.classList.add('hidden');
+            appContainer.style.display = 'block';
+            updateUIText(savedLang);
+            loadEntries();
+            checkSubscription();
         } else {
-            badge.className = 'badge free';
-            badge.textContent = 'Free';
-            premiumContent.classList.remove('hidden');
-            subscribedContent.classList.add('hidden');
+            // Show start screen
+            startScreen.classList.remove('hidden');
+            appContainer.style.display = 'none';
+            currentLang = 'en'; // Default for display
+            langBtn.innerText = translations['en'].lang_btn;
+            timerText.innerText = translations['en'].timer;
+            renderLanguageList();
+            startTimer();
+        }
+    }
+
+    // --- EVENTS ---
+    langBtn.onclick = () => {
+        clearInterval(timerInterval);
+        langModal.classList.remove('hidden');
+    };
+    document.getElementById('close-lang-modal').onclick = () => {
+        langModal.classList.add('hidden');
+        if (!document.getElementById('app').style.display || document.getElementById('app').style.display === 'none') {
+            startTimer();
         }
     };
 
-    const checkSubscription = () => {
-        const expiry = localStorage.getItem('subExpiry');
-        if (expiry) {
-            const now = new Date().getTime();
-            if (now < parseInt(expiry)) {
-                isSubscribed = true;
-                expiryTime = parseInt(expiry);
-            } else {
-                isSubscribed = false;
-                localStorage.removeItem('subExpiry');
-            }
-        }
-        updateUI();
-    };
-
-    // --- Event Listeners ---
-
-    // Mood Selection
+    // Mood/Activity buttons
     moodBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.onclick = () => {
             moodBtns.forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             selectedMood = btn.dataset.value;
-        });
+        };
     });
-
-    // Activity Selection
     activityBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.onclick = () => {
             activityBtns.forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             selectedActivity = btn.dataset.value;
-        });
+        };
     });
 
-    // Save Button
-    saveBtn.addEventListener('click', () => {
+    // Save
+    saveBtn.onclick = () => {
         if (!selectedMood || !selectedActivity) {
             alert("Choose mood and activity");
             return;
@@ -305,81 +381,77 @@
         const entry = { mood: selectedMood, activity: selectedActivity, date: new Date().toISOString() };
         entries.push(entry);
         localStorage.setItem('moodData', JSON.stringify(entries));
-        
         moodBtns.forEach(b => b.classList.remove('selected'));
         activityBtns.forEach(b => b.classList.remove('selected'));
         selectedMood = null;
         selectedActivity = null;
-        
         alert("Saved!");
-        updateUI();
-    });
+        updateUIText(currentLang);
+    };
 
-    // Subscribe Button
-    subscribeBtn.addEventListener('click', () => {
-        payModal.classList.remove('hidden');
-    });
-
-    confirmBtn.addEventListener('click', () => {
+    // Subscription
+    subscribeBtn.onclick = () => { payModal.classList.remove('hidden'); };
+    confirmBtn.onclick = () => {
         payModal.classList.add('hidden');
         const now = new Date().getTime();
         expiryTime = now + 30 * 24 * 60 * 60 * 1000;
         localStorage.setItem('subExpiry', expiryTime.toString());
         isSubscribed = true;
-        alert("Subscription active for 1 month (Apple Pay simulation)!");
-        updateUI();
-    });
+        alert("Subscription active for 1 month!");
+        updateUIText(currentLang);
+    };
+    cancelBtn.onclick = () => { payModal.classList.add('hidden'); };
 
-    cancelBtn.addEventListener('click', () => {
-        payModal.classList.add('hidden');
-    });
-
-    // Download Button
-    downloadBtn.addEventListener('click', () => {
-        if (entries.length === 0) {
-            alert("No entries to generate a report.");
-            return;
-        }
-        const total = entries.length;
-        const report = `========== Monthly Report ==========\nTotal Entries: ${total}\n=========================================`;
-        const blob = new Blob([report], { type: 'text/plain' });
+    // Download / Share
+    downloadBtn.onclick = () => {
+        if (!isSubscribed) { alert("Subscribe to unlock downloads."); return; }
+        const dataStr = JSON.stringify(entries, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `monthly_report.txt`;
+        a.download = `mood_stats.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    });
+    };
+    shareBtn.onclick = () => {
+        if (navigator.share) { navigator.share({ title: 'Daily Mood Tracker', url: window.location.href }); }
+        else { navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied!')); }
+    };
 
-    // Share Button
-    shareBtn.addEventListener('click', () => {
-        if (navigator.share) {
-            navigator.share({ title: 'Daily Mood Tracker', text: 'Track your mood!', url: window.location.href });
-        } else {
-            navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied to clipboard!'));
+    // Info Modal
+    infoBtn.onclick = () => { infoModal.classList.remove('hidden'); };
+    infoCloseBtn.onclick = () => { infoModal.classList.add('hidden'); };
+    window.onclick = (e) => { if (e.target === infoModal) infoModal.classList.add('hidden'); };
+
+    // --- APP LOGIC ---
+    function checkSubscription() {
+        const expiry = localStorage.getItem('subExpiry');
+        if (expiry) {
+            const now = new Date().getTime();
+            if (now < parseInt(expiry)) {
+                isSubscribed = true;
+                expiryTime = parseInt(expiry);
+                badge.className = 'badge paid';
+                premiumContent.classList.add('hidden');
+                subscribedContent.classList.remove('hidden');
+            } else {
+                isSubscribed = false;
+                localStorage.removeItem('subExpiry');
+            }
         }
-    });
+        updateUIText(currentLang);
+    }
 
-    // --- Info Button Event Listeners ---
-    infoBtn.addEventListener('click', () => {
-        infoModal.classList.remove('hidden');
-    });
+    function loadEntries() {
+        const data = localStorage.getItem('moodData');
+        if (data) entries = JSON.parse(data);
+        updateUIText(currentLang);
+    }
 
-    infoCloseBtn.addEventListener('click', () => {
-        infoModal.classList.add('hidden');
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === infoModal) {
-            infoModal.classList.add('hidden');
-        }
-    });
-
-    // --- Init ---
-    checkSubscription();
+    // Start
+    initStartScreen();
 </script>
-
 </body>
 </html>
