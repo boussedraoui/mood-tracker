@@ -127,15 +127,36 @@
     <button class="info-btn" id="info-btn">i</button>
 </div>
 
-<!-- Modals -->
+<!-- ================= INFO MODAL ================= -->
 <div class="modal-overlay hidden" id="info-modal">
     <div class="modal-content info-modal-text">
-        <div class="info-modal-title">About This App</div>
-        <p>Track your daily mood and activities to improve your mental health.</p>
+        <div class="info-modal-title">🌟 About This App</div>
+        
+        <p><strong>🧠 A Product of Collective Wisdom</strong><br>
+        This application has been rigorously tested and refined by <span style="color:#007AFF; font-weight:600;">professionals across technical, medical, and scientific fields</span>. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p>
+
+        <p><strong>🎯 Simplicity Above All</strong><br>
+        We believe in the power of minimalism. There are <span style="color:#007AFF; font-weight:600;">no distracting audio or visual effects</span>—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p>
+
+        <p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>
+        Our intelligent advice engine ensures that <span style="color:#007AFF; font-weight:600;">tips and instructions never repeat</span>. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p>
+
+        <p><strong>🔒 The Value of Commitment</strong><br>
+        Why do we recommend our small monthly subscription? Because <span style="color:#34C759; font-weight:600;">commitment brings focus</span>. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p>
+
+        <p><strong>🚀 Why We Are Different</strong><br>
+        We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. <span style="color:#007AFF; font-weight:600;">We are different.</span> We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p>
+
+        <p><strong>🌍 A Global Movement</strong><br>
+        This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p>
+
+        <p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>
+
         <button class="info-close-btn" id="info-close-btn">Close</button>
     </div>
 </div>
 
+<!-- ================= PAY MODAL ================= -->
 <div class="modal-overlay hidden" id="pay-modal">
     <div class="modal-content">
         <div class="pay-modal-title">Apple Pay (Simulation)</div>
@@ -236,7 +257,6 @@
         document.getElementById('download-btn').innerText = '⬇️ ' + t.download;
         document.getElementById('share-btn').innerText = '🔗 ' + t.share;
         document.querySelector('.info-modal-title').innerText = t.info_title;
-        document.querySelector('.info-modal-text p').innerText = t.info_text;
         document.getElementById('info-close-btn').innerText = 'Close';
         document.querySelector('.pay-modal-title').innerText = 'Apple Pay (Simulation)';
         document.querySelector('.pay-modal-desc').innerText = t.subscribe;
