@@ -9,7 +9,6 @@
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
         body { background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; transition: all 0.3s; }
         
-        /* --- START SCREEN --- */
         #start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #f0f4f8; z-index: 100; }
         .start-icon { width: 120px; height: 120px; border-radius: 25px; margin-bottom: 20px; }
         .start-title { font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 30px; }
@@ -17,11 +16,8 @@
         .timer-text { font-size: 14px; color: #888; }
         .hidden { display: none !important; }
 
-        /* --- APP CONTAINER --- */
         #app { width: 100%; max-width: 420px; background-color: #ffffff; border-radius: 24px; padding: 20px 20px 70px 20px; box-shadow: 0px 10px 30px rgba(0,0,0,0.08); position: relative; display: none; }
-        
-        .info-btn { 
-            position: absolute; bottom: 15px; right: 15px; width: 40px; height: 40px; border-radius: 50%; background-color: #ffffff; border: 2px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 20px; font-style: italic; font-weight: bold; color: #007AFF; cursor: pointer; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); z-index: 10; }
+        .info-btn { position: absolute; bottom: 15px; right: 15px; width: 40px; height: 40px; border-radius: 50%; background-color: #ffffff; border: 2px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 20px; font-style: italic; font-weight: bold; color: #007AFF; cursor: pointer; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); z-index: 10; }
         .title { font-size: 24px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
         .label { font-size: 16px; font-weight: 600; color: #34495e; margin-top: 10px; margin-bottom: 5px; }
         .row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
@@ -47,27 +43,25 @@
         .share-btn { background-color: #007AFF; }
         .download-btn { background-color: #34C759; }
 
-        /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
         .modal-content { background: white; border-radius: 24px; padding: 30px; width: 85%; max-width: 380px; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; position: relative; }
         .info-modal-title { font-size: 22px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; border-bottom: 2px solid #f0f4f8; padding-bottom: 10px; }
         .info-modal-text p { font-size: 14px; line-height: 1.6; color: #333; margin-bottom: 15px; }
         .info-close-btn { display: block; width: 100%; padding: 12px; margin-top: 20px; background-color: #007AFF; color: white; border: none; border-radius: 30px; font-weight: bold; font-size: 16px; cursor: pointer; }
-        .pay-modal-title { font-size: 20px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
-        .pay-modal-desc { font-size: 16px; color: #666; text-align: center; margin-bottom: 20px; }
-        .modal-btn { border: none; padding: 12px; border-radius: 30px; width: 100%; font-weight: bold; font-size: 16px; margin-bottom: 10px; cursor: pointer; }
-        .modal-confirm { background-color: #007AFF; color: white; }
-        .modal-cancel { background-color: #f0f0f0; color: #666; }
 
-        /* Language Modal */
         .lang-modal-title { font-size: 20px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
         .lang-list-item { padding: 12px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; text-align: center; font-size: 16px; color: #333; }
         .lang-list-item:hover { background-color: #f9f9f9; }
+
+        /* PayPal Modal */
+        .paypal-modal-title { font-size: 20px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 15px; }
+        .paypal-modal-desc { font-size: 16px; color: #666; text-align: center; margin-bottom: 20px; }
+        #paypal-button-container { width: 100%; margin: 15px 0; min-height: 50px; }
     </style>
 </head>
 <body>
 
-<!-- ================= START SCREEN ================= -->
+<!-- START SCREEN -->
 <div id="start-screen">
     <img src="./assets/1783351665167.png" class="start-icon" alt="App Icon">
     <div class="start-title">Mood Tracker</div>
@@ -75,7 +69,7 @@
     <div class="timer-text" id="timer-text">Entering in 3 seconds...</div>
 </div>
 
-<!-- ================= MAIN APP ================= -->
+<!-- MAIN APP -->
 <div id="app">
     <div class="title" id="app-title">Daily Mood Tracker</div>
 
@@ -127,46 +121,32 @@
     <button class="info-btn" id="info-btn">i</button>
 </div>
 
-<!-- ================= INFO MODAL ================= -->
+<!-- INFO MODAL -->
 <div class="modal-overlay hidden" id="info-modal">
     <div class="modal-content info-modal-text">
         <div class="info-modal-title">🌟 About This App</div>
-        
-        <p><strong>🧠 A Product of Collective Wisdom</strong><br>
-        This application has been rigorously tested and refined by <span style="color:#007AFF; font-weight:600;">professionals across technical, medical, and scientific fields</span>. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p>
-
-        <p><strong>🎯 Simplicity Above All</strong><br>
-        We believe in the power of minimalism. There are <span style="color:#007AFF; font-weight:600;">no distracting audio or visual effects</span>—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p>
-
-        <p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>
-        Our intelligent advice engine ensures that <span style="color:#007AFF; font-weight:600;">tips and instructions never repeat</span>. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p>
-
-        <p><strong>🔒 The Value of Commitment</strong><br>
-        Why do we recommend our small monthly subscription? Because <span style="color:#34C759; font-weight:600;">commitment brings focus</span>. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p>
-
-        <p><strong>🚀 Why We Are Different</strong><br>
-        We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. <span style="color:#007AFF; font-weight:600;">We are different.</span> We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p>
-
-        <p><strong>🌍 A Global Movement</strong><br>
-        This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p>
-
+        <p><strong>🧠 A Product of Collective Wisdom</strong><br>This application has been rigorously tested and refined by <span style="color:#007AFF; font-weight:600;">professionals across technical, medical, and scientific fields</span>. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p>
+        <p><strong>🎯 Simplicity Above All</strong><br>We believe in the power of minimalism. There are <span style="color:#007AFF; font-weight:600;">no distracting audio or visual effects</span>—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p>
+        <p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>Our intelligent advice engine ensures that <span style="color:#007AFF; font-weight:600;">tips and instructions never repeat</span>. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p>
+        <p><strong>🔒 The Value of Commitment</strong><br>Why do we recommend our small monthly subscription? Because <span style="color:#34C759; font-weight:600;">commitment brings focus</span>. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p>
+        <p><strong>🚀 Why We Are Different</strong><br>We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. <span style="color:#007AFF; font-weight:600;">We are different.</span> We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p>
+        <p><strong>🌍 A Global Movement</strong><br>This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p>
         <p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>
-
         <button class="info-close-btn" id="info-close-btn">Close</button>
     </div>
 </div>
 
-<!-- ================= PAY MODAL ================= -->
-<div class="modal-overlay hidden" id="pay-modal">
+<!-- REAL PAYPAL MODAL -->
+<div class="modal-overlay hidden" id="paypal-modal">
     <div class="modal-content">
-        <div class="pay-modal-title">Apple Pay (Simulation)</div>
-        <div class="pay-modal-desc">Monthly Subscription: $4.99</div>
-        <button class="modal-btn modal-confirm" id="confirm-subscribe">Confirm Subscription</button>
-        <button class="modal-btn modal-cancel" id="cancel-subscribe">Cancel</button>
+        <div class="paypal-modal-title">Subscribe via PayPal</div>
+        <div class="paypal-modal-desc">Monthly recurring payment: $4.99</div>
+        <div id="paypal-button-container"></div>
+        <button class="modal-btn modal-cancel" id="cancel-paypal-modal" style="margin-top: 10px;">Cancel</button>
     </div>
 </div>
 
-<!-- ================= LANGUAGE MODAL ================= -->
+<!-- LANGUAGE MODAL -->
 <div class="modal-overlay hidden" id="lang-modal">
     <div class="modal-content">
         <div class="lang-modal-title">Choose Language</div>
@@ -176,6 +156,10 @@
 </div>
 
 <script>
+    // --- PAYPAL CREDENTIALS ---
+    const PAYPAL_CLIENT_ID = "AV2UKMpbf8suLviBQRBw-wFWoreeDlF74RdNWpnSzFXhVuadtMAKw4ukv6bftV3o6lcTEiBRQLRikvIN";
+    const PAYPAL_PLAN_ID = "P-00P45881CJ9839056NJKUXLQ";
+
     // --- LANGUAGES & DATA ---
     const languages = [
         { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
@@ -221,7 +205,6 @@
     const langModal = document.getElementById('lang-modal');
     const langListContainer = document.getElementById('lang-list-container');
     
-    // App elements
     const moodBtns = document.querySelectorAll('#mood-buttons .btn');
     const activityBtns = document.querySelectorAll('#activity-buttons .btn');
     const saveBtn = document.getElementById('save-btn');
@@ -234,9 +217,8 @@
     const expiryEl = document.getElementById('expiry-text');
     const counterEl = document.getElementById('entries-counter');
     const subscribeBtn = document.getElementById('subscribe-btn');
-    const payModal = document.getElementById('pay-modal');
-    const confirmBtn = document.getElementById('confirm-subscribe');
-    const cancelBtn = document.getElementById('cancel-subscribe');
+    const paypalModal = document.getElementById('paypal-modal');
+    const cancelPaypalBtn = document.getElementById('cancel-paypal-modal');
     const downloadBtn = document.getElementById('download-btn');
     const shareBtn = document.getElementById('share-btn');
     const infoBtn = document.getElementById('info-btn');
@@ -258,10 +240,9 @@
         document.getElementById('share-btn').innerText = '🔗 ' + t.share;
         document.querySelector('.info-modal-title').innerText = t.info_title;
         document.getElementById('info-close-btn').innerText = 'Close';
-        document.querySelector('.pay-modal-title').innerText = 'Apple Pay (Simulation)';
-        document.querySelector('.pay-modal-desc').innerText = t.subscribe;
-        document.getElementById('confirm-subscribe').innerText = 'Confirm Subscription';
-        document.getElementById('cancel-subscribe').innerText = 'Cancel';
+        document.querySelector('.paypal-modal-title').innerText = t.subscribe;
+        document.querySelector('.paypal-modal-desc').innerText = t.subscribe;
+        document.getElementById('cancel-paypal-modal').innerText = 'Cancel';
         langBtn.innerText = t.lang_btn;
         timerText.innerText = t.timer;
         
@@ -272,7 +253,6 @@
             expiryEl.innerText = t.active_until + ' ' + formatDate(expiryTime);
         }
 
-        // Update premium texts
         if (entries.length > 0) {
             const last = entries[entries.length - 1];
             const foods = [t.food_tip + ' 🍫 Dark chocolate.', t.food_tip + ' 🍌 A banana.', t.food_tip + ' 🥗 A green salad.'];
@@ -288,7 +268,6 @@
             adviceEl.innerText = t.activity_tip + ' ' + t.no_data;
         }
         
-        // Trend logic
         if (entries.length === 0) {
             trendEl.innerText = t.trend + ' ' + t.no_data;
         } else {
@@ -300,7 +279,6 @@
         }
     }
 
-    // --- HELPER: FORMAT DATE ---
     function formatDate(timestamp) {
         if (!timestamp) return '--';
         const date = new Date(timestamp);
@@ -336,7 +314,6 @@
             timerText.innerText = translations[currentLang].timer.replace('3', countdown);
             if (countdown <= 0) {
                 clearInterval(timerInterval);
-                // Auto-select English if no language chosen
                 selectLanguage('en');
             }
         }, 1000);
@@ -353,10 +330,9 @@
             loadEntries();
             checkSubscription();
         } else {
-            // Show start screen
             startScreen.classList.remove('hidden');
             appContainer.style.display = 'none';
-            currentLang = 'en'; // Default for display
+            currentLang = 'en';
             langBtn.innerText = translations['en'].lang_btn;
             timerText.innerText = translations['en'].timer;
             renderLanguageList();
@@ -376,7 +352,6 @@
         }
     };
 
-    // Mood/Activity buttons
     moodBtns.forEach(btn => {
         btn.onclick = () => {
             moodBtns.forEach(b => b.classList.remove('selected'));
@@ -392,7 +367,6 @@
         };
     });
 
-    // Save
     saveBtn.onclick = () => {
         if (!selectedMood || !selectedActivity) {
             alert("Choose mood and activity");
@@ -409,20 +383,64 @@
         updateUIText(currentLang);
     };
 
-    // Subscription
-    subscribeBtn.onclick = () => { payModal.classList.remove('hidden'); };
-    confirmBtn.onclick = () => {
-        payModal.classList.add('hidden');
-        const now = new Date().getTime();
-        expiryTime = now + 30 * 24 * 60 * 60 * 1000;
-        localStorage.setItem('subExpiry', expiryTime.toString());
-        isSubscribed = true;
-        alert("Subscription active for 1 month!");
-        updateUIText(currentLang);
+    // --- REAL PAYPAL IMPLEMENTATION ---
+    subscribeBtn.onclick = () => {
+        paypalModal.classList.remove('hidden');
+        loadPayPalSDK();
     };
-    cancelBtn.onclick = () => { payModal.classList.add('hidden'); };
+    
+    cancelPaypalBtn.onclick = () => {
+        paypalModal.classList.add('hidden');
+    };
 
-    // Download / Share
+    function loadPayPalSDK() {
+        const container = document.getElementById('paypal-button-container');
+        container.innerHTML = ''; // Clear previous
+
+        if (typeof paypal !== 'undefined') {
+            renderPayPalButton();
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&vault=true&intent=subscription`;
+        script.async = true;
+        script.onload = () => renderPayPalButton();
+        document.body.appendChild(script);
+    }
+
+    function renderPayPalButton() {
+        const container = document.getElementById('paypal-button-container');
+        if (!container || typeof paypal === 'undefined') return;
+
+        paypal.Buttons({
+            style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
+            createSubscription: function(data, actions) {
+                return actions.subscription.create({
+                    plan_id: PAYPAL_PLAN_ID
+                });
+            },
+            onApprove: function(data, actions) {
+                const now = new Date().getTime();
+                const expiry = now + 30 * 24 * 60 * 60 * 1000;
+                localStorage.setItem('subExpiry', expiry.toString());
+                isSubscribed = true;
+                expiryTime = expiry;
+                paypalModal.classList.add('hidden');
+                updateUIText(currentLang);
+                alert("Payment successful! Premium features unlocked.");
+            },
+            onCancel: function(data) {
+                alert("Payment cancelled.");
+            },
+            onError: function(err) {
+                console.error('PayPal Error:', err);
+                alert("An error occurred with PayPal.");
+            }
+        }).render('#paypal-button-container');
+    }
+
+    // --- DOWNLOAD / SHARE ---
     downloadBtn.onclick = () => {
         if (!isSubscribed) { alert("Subscribe to unlock downloads."); return; }
         const dataStr = JSON.stringify(entries, null, 2);
@@ -470,7 +488,6 @@
         updateUIText(currentLang);
     }
 
-    // Start
     initStartScreen();
 </script>
 </body>
