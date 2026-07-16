@@ -10,644 +10,1241 @@
     <link rel="manifest" href="./manifest.json">
     <title>Daily Mood Tracker</title>
     <style>
-        /* Native Feel: Disable text selection and touch callouts */
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-        /* Native Feel: Respect iPhone Notch Safe Areas */
-        body { background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); transition: all 0.3s; overscroll-behavior: none; }
-        
-        #start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #f0f4f8; z-index: 100; }
-        .start-icon { width: 150px; height: 150px; border-radius: 30px; margin-bottom: 30px; }
-        .start-title { font-size: 32px; font-weight: bold; color: #2c3e50; margin-bottom: 40px; }
-        .lang-btn { background: #fff; padding: 20px 55px; border-radius: 35px; border: 1px solid #ddd; font-size: 22px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
-        .timer-text { font-size: 18px; color: #888; }
-        .hidden { display: none !important; }
+        /* ── reset & base ── */
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
 
-        #app { width: 100%; max-width: 520px; background-color: #ffffff; border-radius: 30px; padding: 30px 30px 100px 30px; box-shadow: 0px 10px 30px rgba(0,0,0,0.08); position: relative; display: none; }
-        
-        .info-btn { 
-            position: absolute; bottom: 25px; right: 25px; width: 60px; height: 60px; border-radius: 50%; background-color: #ffffff; border: 2px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 28px; font-style: italic; font-weight: bold; color: #007AFF; cursor: pointer; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); z-index: 10; }
-        
-        .title { font-size: 32px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 35px; }
-        .label { font-size: 24px; font-weight: 600; color: #34495e; margin-top: 15px; margin-bottom: 15px; }
-        
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; justify-items: center; width: 100%; margin-bottom: 20px; }
-        
-        .btn { 
-            width: 100%; padding: 20px 0; background-color: #fff; border-radius: 60px; text-align: center; box-shadow: 0px 2px 4px rgba(0,0,0,0.05); border: none; cursor: pointer; transition: 0.2s; font-size: 46px; }
-        .btn.selected { background-color: #007AFF; box-shadow: 0px 4px 8px rgba(0,122,255,0.4); transform: scale(1.05); }
-        
-        .save-btn { background-color: #34C759; border: none; padding: 22px; border-radius: 35px; width: 100%; color: white; font-weight: bold; font-size: 26px; cursor: pointer; box-shadow: 0px 4px 10px rgba(52,199,89,0.3); margin-top: 15px; }
-        .save-btn:active { transform: scale(0.95); }
+        html,
+        body {
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            margin: 0;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overscroll-behavior: none;
+        }
 
-        .insights-box { background-color: #fff; padding: 30px; border-radius: 30px; width: 100%; margin-top: 30px; box-shadow: 0px 4px 10px rgba(0,0,0,0.05); position: relative; border: 1px solid #f0f0f0; }
-        
-        .section-title { font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; }
-        .trend-text { font-size: 20px; margin: 12px 0; color: #2c3e50; line-height: 1.6; }
-        .tip-text { font-size: 20px; margin: 12px 0; color: #007AFF; line-height: 1.6; }
-        .advice-text { font-size: 20px; margin: 12px 0; color: #34C759; line-height: 1.6; }
-        .sub-status { font-size: 17px; color: #666; margin-top: 10px; font-style: italic; }
-        
-        .recommend-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; flex-wrap: wrap; gap: 10px; }
-        .recommend-label { font-size: 20px; font-weight: 600; color: #2c3e50; }
-        .subscribe-btn-small { background-color: #FF9500; border: none; padding: 12px 24px; border-radius: 30px; color: white; font-weight: bold; font-size: 18px; cursor: pointer; }
+        /* ── start screen ── */
+        #start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #f0f4f8;
+            z-index: 100;
+            padding: 16px;
+        }
+        .start-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            margin-bottom: 14px;
+        }
+        .start-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .lang-btn {
+            background: #fff;
+            padding: 14px 40px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+        .timer-text {
+            font-size: 15px;
+            color: #888;
+        }
+        .hidden {
+            display: none !important;
+        }
 
-        .bottom-row { display: flex; justify-content: center; width: 100%; margin-top: 25px; }
-        .share-btn { border: none; padding: 18px 40px; border-radius: 35px; color: white; font-weight: bold; font-size: 24px; cursor: pointer; background-color: #007AFF; }
+        /* ── main app – FITS IN ONE VIEWPORT ── */
+        #app {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            height: 100dvh;
+            background-color: #ffffff;
+            border-radius: 0;
+            padding: 10px 14px 12px 14px;
+            box-shadow: none;
+            position: relative;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
-        .modal-content { background: white; border-radius: 24px; padding: 30px; width: 85%; max-width: 400px; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; position: relative; }
-        .info-modal-title { font-size: 26px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #f0f4f8; padding-bottom: 15px; }
-        .info-modal-text p { font-size: 18px; line-height: 1.6; color: #333; margin-bottom: 15px; }
-        .info-close-btn { display: block; width: 100%; padding: 15px; margin-top: 20px; background-color: #007AFF; color: white; border: none; border-radius: 30px; font-weight: bold; font-size: 20px; cursor: pointer; }
+        /* ── info button (absolute, bottom-right) ── */
+        .info-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 2px solid #007AFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-style: italic;
+            font-weight: bold;
+            color: #007AFF;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+        }
 
-        .lang-modal-title { font-size: 24px; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 20px; }
-        .lang-list-item { padding: 18px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; text-align: center; font-size: 20px; color: #333; }
-        .lang-list-item:hover { background-color: #f9f9f9; }
+        /* ── title ── */
+        .title {
+            font-size: clamp(20px, 3.6vh, 28px);
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+            line-height: 1.2;
+        }
 
-        .paypal-modal { /* Only button and cancel */ }
-        #paypal-button-container { width: 100%; margin: 15px 0; min-height: 50px; }
-        .modal-btn { border: none; padding: 15px; border-radius: 30px; width: 100%; font-weight: bold; font-size: 18px; margin-bottom: 10px; cursor: pointer; }
-        .modal-cancel { background-color: #f0f0f0; color: #666; }
+        /* ── labels ── */
+        .label {
+            font-size: clamp(14px, 2.2vh, 18px);
+            font-weight: 600;
+            color: #34495e;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+            line-height: 1.3;
+        }
+
+        /* ── mood & activity rows (2x2 grids) ── */
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            justify-items: center;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 8px 0;
+            background-color: #fff;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: clamp(30px, 5vh, 40px);
+            line-height: 1.2;
+        }
+        .btn.selected {
+            background-color: #007AFF;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.35);
+            transform: scale(1.02);
+        }
+
+        /* ── save button ── */
+        .save-btn {
+            background-color: #34C759;
+            border: none;
+            padding: 10px 0;
+            border-radius: 30px;
+            width: 100%;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(18px, 2.8vh, 22px);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.25);
+            margin-top: 6px;
+            flex-shrink: 0;
+            line-height: 1.2;
+        }
+        .save-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ── insights box – takes remaining height ── */
+        .insights-box {
+            background-color: #fff;
+            padding: 10px 14px 10px 14px;
+            border-radius: 20px;
+            width: 100%;
+            margin-top: 6px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f0f0f0;
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: clamp(15px, 2.2vh, 18px);
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+
+        .trend-text {
+            font-size: clamp(13px, 1.8vh, 16px);
+            margin: 2px 0 4px 0;
+            color: #2c3e50;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+
+        .tip-text,
+        .advice-text {
+            font-size: clamp(13px, 1.8vh, 16px);
+            margin: 2px 0;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+        .tip-text {
+            color: #007AFF;
+        }
+        .advice-text {
+            color: #34C759;
+        }
+        .sub-status {
+            font-size: clamp(12px, 1.6vh, 14px);
+            color: #666;
+            margin-top: 2px;
+            font-style: italic;
+            flex-shrink: 0;
+        }
+
+        /* ── recommendation row ── */
+        .recommend-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            flex-wrap: nowrap;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .recommend-label {
+            font-size: clamp(13px, 1.8vh, 16px);
+            font-weight: 600;
+            color: #2c3e50;
+            white-space: nowrap;
+        }
+        .subscribe-btn-small {
+            background-color: #FF9500;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(12px, 1.6vh, 15px);
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ── subscribed content ── */
+        #subscribed-content {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+        #subscribed-content .tip-text,
+        #subscribed-content .advice-text,
+        #subscribed-content .sub-status {
+            flex-shrink: 0;
+        }
+
+        /* ── bottom row (share) ── */
+        .bottom-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        .share-btn {
+            border: none;
+            padding: 10px 28px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(16px, 2.4vh, 20px);
+            cursor: pointer;
+            background-color: #007AFF;
+            line-height: 1.2;
+        }
+        .share-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* ── modals ── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 16px;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 20px 20px 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .info-modal-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 14px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 12px;
+        }
+        .info-modal-text p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .info-close-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 16px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .lang-modal-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .lang-list-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+        .lang-list-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .modal-btn {
+            border: none;
+            padding: 12px;
+            border-radius: 30px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .modal-cancel {
+            background-color: #f0f0f0;
+            color: #666;
+        }
+
+        #paypal-button-container {
+            width: 100%;
+            margin: 10px 0;
+            min-height: 40px;
+        }
+
+        /* ── tiny screens: further compact ── */
+        @media (max-height: 640px) {
+            #app {
+                padding: 6px 10px 8px 10px;
+            }
+            .title {
+                font-size: clamp(16px, 3vh, 20px);
+                margin-bottom: 2px;
+            }
+            .label {
+                font-size: clamp(11px, 1.8vh, 14px);
+                margin-top: 2px;
+                margin-bottom: 2px;
+            }
+            .row {
+                gap: 5px;
+            }
+            .btn {
+                font-size: clamp(22px, 4vh, 30px);
+                padding: 4px 0;
+                border-radius: 30px;
+            }
+            .save-btn {
+                font-size: clamp(14px, 2.2vh, 17px);
+                padding: 6px 0;
+                margin-top: 4px;
+            }
+            .insights-box {
+                padding: 6px 10px 6px 10px;
+                margin-top: 4px;
+                border-radius: 14px;
+            }
+            .section-title {
+                font-size: clamp(12px, 1.8vh, 15px);
+                margin-bottom: 2px;
+            }
+            .trend-text,
+            .tip-text,
+            .advice-text {
+                font-size: clamp(11px, 1.6vh, 13px);
+                margin: 1px 0;
+            }
+            .sub-status {
+                font-size: clamp(10px, 1.4vh, 12px);
+            }
+            .recommend-label {
+                font-size: clamp(11px, 1.6vh, 13px);
+            }
+            .subscribe-btn-small {
+                font-size: clamp(10px, 1.4vh, 12px);
+                padding: 4px 10px;
+            }
+            .share-btn {
+                font-size: clamp(13px, 2vh, 16px);
+                padding: 6px 18px;
+            }
+            .bottom-row {
+                margin-top: 4px;
+            }
+            .info-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+                bottom: 6px;
+                right: 8px;
+            }
+        }
+
+        /* ── very tall screens: more breathing room ── */
+        @media (min-height: 800px) {
+            #app {
+                padding: 18px 24px 20px 24px;
+                border-radius: 28px;
+                max-width: 500px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            }
+            .title {
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+            .label {
+                font-size: 20px;
+                margin-top: 8px;
+                margin-bottom: 8px;
+            }
+            .row {
+                gap: 14px;
+            }
+            .btn {
+                font-size: 44px;
+                padding: 14px 0;
+            }
+            .save-btn {
+                font-size: 24px;
+                padding: 16px 0;
+                margin-top: 10px;
+            }
+            .insights-box {
+                padding: 18px 22px 16px 22px;
+                margin-top: 12px;
+            }
+            .section-title {
+                font-size: 22px;
+                margin-bottom: 8px;
+            }
+            .trend-text,
+            .tip-text,
+            .advice-text {
+                font-size: 18px;
+                margin: 4px 0;
+            }
+            .sub-status {
+                font-size: 15px;
+            }
+            .recommend-label {
+                font-size: 18px;
+            }
+            .subscribe-btn-small {
+                font-size: 16px;
+                padding: 10px 22px;
+            }
+            .share-btn {
+                font-size: 22px;
+                padding: 14px 40px;
+            }
+            .bottom-row {
+                margin-top: 12px;
+            }
+            .info-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 24px;
+                bottom: 18px;
+                right: 20px;
+            }
+        }
+
+        /* ── ensure no overflow anywhere ── */
+        #app,
+        .insights-box,
+        #subscribed-content {
+            overflow: hidden;
+        }
+
+        /* ── hide scrollbar on modal content ── */
+        .modal-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
 
-<!-- START SCREEN -->
-<div id="start-screen">
-    <img src="./assets/1783351665167.png" class="start-icon" alt="App Icon">
-    <div class="start-title">Mood Tracker</div>
-    <button class="lang-btn" id="lang-select-btn">English</button>
-    <div class="timer-text" id="timer-text">Entering in 3 seconds...</div>
-</div>
-
-<!-- MAIN APP -->
-<div id="app">
-    <div class="title" id="app-title">Daily Mood Tracker</div>
-
-    <div class="label" id="mood-label">Mood:</div>
-    <div class="row" id="mood-buttons">
-        <button class="btn" data-value="😊">😊</button>
-        <button class="btn" data-value="😢">😢</button>
-        <button class="btn" data-value="😤">😤</button>
-        <button class="btn" data-value="😰">😰</button>
+    <!-- START SCREEN -->
+    <div id="start-screen">
+        <img src="./assets/1783351665167.png" class="start-icon" alt="App Icon">
+        <div class="start-title">Mood Tracker</div>
+        <button class="lang-btn" id="lang-select-btn">English</button>
+        <div class="timer-text" id="timer-text">Entering in 3 seconds...</div>
     </div>
 
-    <div class="label" id="activity-label">Activity:</div>
-    <div class="row" id="activity-buttons">
-        <button class="btn" data-value="💼">💼</button>
-        <button class="btn" data-value="🏃">🏃</button>
-        <button class="btn" data-value="🛌">🛌</button>
-        <button class="btn" data-value="🍽️">🍽️</button>
-    </div>
+    <!-- MAIN APP -->
+    <div id="app">
+        <div class="title" id="app-title">Daily Mood Tracker</div>
 
-    <button class="save-btn" id="save-btn">Save</button>
+        <div class="label" id="mood-label">Mood:</div>
+        <div class="row" id="mood-buttons">
+            <button class="btn" data-value="😊">😊</button>
+            <button class="btn" data-value="😢">😢</button>
+            <button class="btn" data-value="😤">😤</button>
+            <button class="btn" data-value="😰">😰</button>
+        </div>
 
-    <div class="insights-box">
-        <div class="section-title" id="insights-title">Your Insights</div>
-        <div class="trend-text" id="mood-trend">Mood Trend: Start logging to see trends.</div>
-        
-        <div id="premium-content">
-            <div class="recommend-row">
-                <span class="recommend-label" id="recommend-label">Recommendations:</span>
-                <button class="subscribe-btn-small" id="subscribe-btn">Subscribe ($4.99/mo)</button>
+        <div class="label" id="activity-label">Activity:</div>
+        <div class="row" id="activity-buttons">
+            <button class="btn" data-value="💼">💼</button>
+            <button class="btn" data-value="🏃">🏃</button>
+            <button class="btn" data-value="🛌">🛌</button>
+            <button class="btn" data-value="🍽️">🍽️</button>
+        </div>
+
+        <button class="save-btn" id="save-btn">Save</button>
+
+        <div class="insights-box">
+            <div class="section-title" id="insights-title">Your Insights</div>
+            <div class="trend-text" id="mood-trend">Mood Trend: Start logging to see trends.</div>
+
+            <div id="premium-content">
+                <div class="recommend-row">
+                    <span class="recommend-label" id="recommend-label">Recommendations:</span>
+                    <button class="subscribe-btn-small" id="subscribe-btn">Subscribe ($4.99/mo)</button>
+                </div>
+            </div>
+            <div id="subscribed-content" class="hidden">
+                <div class="tip-text" id="food-tip">Food Recommendations: Log a mood to get tips.</div>
+                <div class="advice-text" id="activity-advice">Activity Advice: Log 3 entries for advice.</div>
+                <div class="sub-status" id="expiry-text">Active until: --</div>
             </div>
         </div>
-        <div id="subscribed-content" class="hidden">
-            <div class="tip-text" id="food-tip">Food Recommendations: Log a mood to get tips.</div>
-            <div class="advice-text" id="activity-advice">Activity Advice: Log 3 entries for advice.</div>
-            <div class="sub-status" id="expiry-text">Active until: --</div>
+
+        <div class="bottom-row">
+            <button class="share-btn" id="share-btn">🔗 Share</button>
+        </div>
+
+        <button class="info-btn" id="info-btn">i</button>
+    </div>
+
+    <!-- INFO MODAL -->
+    <div class="modal-overlay hidden" id="info-modal">
+        <div class="modal-content info-modal-text">
+            <div class="info-modal-title">🌟 About This App</div>
+            <div id="info-text-content">
+                <p><strong>🧠 A Product of Collective Wisdom</strong><br>This application has been rigorously tested and refined by professionals across technical, medical, and scientific fields. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p>
+                <p><strong>🎯 Simplicity Above All</strong><br>We believe in the power of minimalism. There are no distracting audio or visual effects—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p>
+                <p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>Our intelligent advice engine ensures that tips and instructions never repeat. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p>
+                <p><strong>🔒 The Value of Commitment</strong><br>Why do we recommend our small monthly subscription? Because commitment brings focus. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p>
+                <p><strong>🚀 Why We Are Different</strong><br>We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. We are different. We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p>
+                <p><strong>🌍 A Global Movement</strong><br>This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p>
+                <p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>
+            </div>
+            <button class="info-close-btn" id="info-close-btn">Close</button>
         </div>
     </div>
 
-    <div class="bottom-row">
-        <button class="share-btn" id="share-btn">🔗 Share</button>
-    </div>
-
-    <button class="info-btn" id="info-btn">i</button>
-</div>
-
-<!-- INFO MODAL -->
-<div class="modal-overlay hidden" id="info-modal">
-    <div class="modal-content info-modal-text">
-        <div class="info-modal-title">🌟 About This App</div>
-        <div id="info-text-content">
-            <p><strong>🧠 A Product of Collective Wisdom</strong><br>This application has been rigorously tested and refined by professionals across technical, medical, and scientific fields. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p>
-            <p><strong>🎯 Simplicity Above All</strong><br>We believe in the power of minimalism. There are no distracting audio or visual effects—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p>
-            <p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>Our intelligent advice engine ensures that tips and instructions never repeat. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p>
-            <p><strong>🔒 The Value of Commitment</strong><br>Why do we recommend our small monthly subscription? Because commitment brings focus. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p>
-            <p><strong>🚀 Why We Are Different</strong><br>We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. We are different. We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p>
-            <p><strong>🌍 A Global Movement</strong><br>This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p>
-            <p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>
+    <!-- REAL PAYPAL MODAL -->
+    <div class="modal-overlay hidden" id="paypal-modal">
+        <div class="modal-content">
+            <div id="paypal-button-container"></div>
+            <button class="modal-btn modal-cancel" id="cancel-paypal-modal" style="margin-top: 10px;">Cancel</button>
         </div>
-        <button class="info-close-btn" id="info-close-btn">Close</button>
     </div>
-</div>
 
-<!-- REAL PAYPAL MODAL -->
-<div class="modal-overlay hidden" id="paypal-modal">
-    <div class="modal-content">
-        <div id="paypal-button-container"></div>
-        <button class="modal-btn modal-cancel" id="cancel-paypal-modal" style="margin-top: 10px;">Cancel</button>
+    <!-- LANGUAGE MODAL -->
+    <div class="modal-overlay hidden" id="lang-modal">
+        <div class="modal-content">
+            <div class="lang-modal-title">Choose Language</div>
+            <div id="lang-list-container"></div>
+            <button class="modal-btn modal-cancel" id="close-lang-modal" style="margin-top:10px;">Cancel</button>
+        </div>
     </div>
-</div>
 
-<!-- LANGUAGE MODAL -->
-<div class="modal-overlay hidden" id="lang-modal">
-    <div class="modal-content">
-        <div class="lang-modal-title">Choose Language</div>
-        <div id="lang-list-container"></div>
-        <button class="modal-btn modal-cancel" id="close-lang-modal" style="margin-top:10px;">Cancel</button>
-    </div>
-</div>
+    <script>
+        // ── PAYPAL CREDENTIALS ──
+        const PAYPAL_CLIENT_ID = "AV2UKMpbf8suLviBQRBw-wFWoreeDlF74RdNWpnSzFXhVuadtMAKw4ukv6bftV3o6lcTEiBRQLRikvIN";
+        const PAYPAL_PLAN_ID = "P-00P45881CJ9839056NJKUXLQ";
 
-<script>
-    // --- PAYPAL CREDENTIALS ---
-    const PAYPAL_CLIENT_ID = "AV2UKMpbf8suLviBQRBw-wFWoreeDlF74RdNWpnSzFXhVuadtMAKw4ukv6bftV3o6lcTEiBRQLRikvIN";
-    const PAYPAL_PLAN_ID = "P-00P45881CJ9839056NJKUXLQ";
+        const languages = [
+            { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
+            { code: 'zh', name: '中文' }, { code: 'es', name: 'Español' },
+            { code: 'fr', name: 'Français' }, { code: 'de', name: 'Deutsch' },
+            { code: 'ja', name: '日本語' }, { code: 'ru', name: 'Русский' },
+            { code: 'pt', name: 'Português' }, { code: 'it', name: 'Italiano' },
+            { code: 'ko', name: '한국어' }, { code: 'hi', name: 'हिन्दी' }
+        ];
 
-    const languages = [
-        { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
-        { code: 'zh', name: '中文' }, { code: 'es', name: 'Español' },
-        { code: 'fr', name: 'Français' }, { code: 'de', name: 'Deutsch' },
-        { code: 'ja', name: '日本語' }, { code: 'ru', name: 'Русский' },
-        { code: 'pt', name: 'Português' }, { code: 'it', name: 'Italiano' },
-        { code: 'ko', name: '한국어' }, { code: 'hi', name: 'हिन्दी' }
-    ];
-    
-    const translations = {
-        'en': {
-            title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
-            insights: 'Your Insights', trend: 'Mood Trend:', recs: 'Recommendations:',
-            subscribe: 'Subscribe ($4.99/mo)', share: 'Share',
-            info_title: '🌟 About This App', 
-            info_text: `<p><strong>🧠 A Product of Collective Wisdom</strong><br>This application has been rigorously tested and refined by professionals across technical, medical, and scientific fields. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p><p><strong>🎯 Simplicity Above All</strong><br>We believe in the power of minimalism. There are no distracting audio or visual effects—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p><p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>Our intelligent advice engine ensures that tips and instructions never repeat. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p><p><strong>🔒 The Value of Commitment</strong><br>Why do we recommend our small monthly subscription? Because commitment brings focus. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p><p><strong>🚀 Why We Are Different</strong><br>We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. We are different. We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p><p><strong>🌍 A Global Movement</strong><br>This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>`,
-            lang_btn: 'English', timer: 'Entering in 3 seconds...',
-            active_until: 'Active until:', food_tip: 'Food Recommendations:', activity_tip: 'Activity Advice:',
-            no_data: 'Start logging to see personalized tips.',
-            insightGood: ["Your trend is positive! 🌟", "Great vibes this week! 🎉", "You are rocking it! 🚀", "Your mood is high! ☀️", "Excellent emotional state! 💯"],
-            insightStable: ["Your mood is stable. ⚖️", "Balanced as always! 🧘", "Steady and consistent. 🌊", "Maintaining balance! ✅"],
-            insightBad: ["You need more self-care. 💪", "Take a break, you deserve it. 🛋️", "Prioritize rest today. 🌿", "Self-care is vital now. 🕯️"],
-            foodRecs: ["🍫 Dark chocolate.", "🍌 A banana.", "🥗 A green salad.", "🍣 Fresh salmon.", "🥛 A glass of warm milk.", "🌿 Chamomile tea.", "🥑 Avocado toast.", "🍓 Fresh berries.", "🫐 Blueberry smoothie.", "🥜 Almonds and walnuts.", "🍊 Orange juice.", "🍳 Poached eggs.", "🧀 Cheese and crackers.", "🌽 Corn salad.", "🥪 A turkey sandwich."],
-            activityRecs: ["👍 Strong work today!", "🌟 You are doing great!", "💪 Keep up the good habits!", "🚀 Amazing effort!", "✨ You are shining!", "🎯 Stay focused!", "🌈 Have a wonderful day!"]
-        },
-        'ar': {
-            title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ',
-            insights: 'رؤيتك', trend: 'اتجاه المزاج:', recs: 'توصيات:',
-            subscribe: 'اشتراك ($4.99/شهر)', share: 'مشاركة',
-            info_title: '🌟 حول هذا التطبيق',
-            info_text: `<p><strong>🧠 منتج الحكمة الجماعية</strong><br>تم اختبار هذا التطبيق وتحسينه بدقة من قبل محترفين في المجالات التقنية والطبية والعلمية. إنه تتويج لأبحاث عميقة، تم تقطيرها في أداة بسيطة وأنيقة لحياتك اليومية.</p><p><strong>🎯 البساطة قبل كل شيء</strong><br>نحن نؤمن بقوة التبسيط. لا توجد مؤثرات صوتية أو بصرية مشتتة للانتباه - فقط تفاعل نقي وهادف مصمم للراحة والفائدة العقلية القصوى.</p><p><strong>🤖 رفيقك اليومي، الخاص بك فقط</strong><br>يضمن محرك النصائح الذكي لدينا أن النصائح والتعليمات لا تتكرر أبدًا. إنه يتطور معك، ويرشدك يومًا بعد يوم نحو نسخة أفضل وأكثر صحة من نفسك. كل جملة هي مفتاح لسعادتك اليومية.</p><p><strong>🔒 قيمة الالتزام</strong><br>لماذا نوصي باشتراكنا الشهري الصغير؟ لأن الالتزام يجلب التركيز. عندما تستثمر، فإنك تنتبه. يؤيد المحترفون هذا النموذج لأن المستخدم الملتزم هو مستخدم مزدهر. مقابل تكلفة استشارة واحدة مع مدرب أو طبيب، تحصل على الوصول إلى ثروة من الحكمة المقطرة من خبراء التغذية وعلماء النفس وخبراء الصحة - كل ذلك في مكان واحد.</p><p><strong>🚀 لماذا نحن مختلفون</strong><br>لقد راجعنا بدقة عددًا لا يحصى من التطبيقات والمواقع الأخرى. معظمها يقصفك بمقالات طويلة وعامة غير مصممة خصيصًا لحالتك الذهنية المحددة. نحن مختلفون. نقدم إرشادات موجزة ومركزة ومدعومة علميًا بالضبط عندما تحتاج إليها.</p><p><strong>🌍 حركة عالمية</strong><br>هذا ليس مجرد تطبيق ؛ إنها حركة عالمية. لقد غيرت بالفعل الحياة اليومية للناس في جميع أنحاء العالم، مزاج واحد في كل مرة.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">ابدأ رحلتك اليوم. جرعتك اليومية من الوضوح على بعد نقرة واحدة. ✨</p>`,
-            lang_btn: 'العربية', timer: 'الدخول بعد 3 ثواني...',
-            active_until: 'نشط حتى:', food_tip: 'توصيات الطعام:', activity_tip: 'نصيحة النشاط:',
-            no_data: 'ابدأ التسجيل للحصول على نصائح مخصصة.',
-            insightGood: ["اتجاهك إيجابي! 🌟", "أجواء رائعة هذا الأسبوع! 🎉", "أنت تبلي بلاءً حسناً! 🚀", "مزاجك مرتفع! ☀️", "حالة عاطفية ممتازة! 💯"],
-            insightStable: ["مزاجك مستقر. ⚖️", "متوازن كالعادة! 🧘", "ثابت ومستمر. 🌊", "الحفاظ على التوازن! ✅"],
-            insightBad: ["أنت بحاجة إلى مزيد من الرعاية الذاتية. 💪", "خذ استراحة، أنت تستحقها. 🛋️", "أعط الأولوية للراحة اليوم. 🌿", "الرعاية الذاتية ضرورية الآن. 🕯️"],
-            foodRecs: ["🍫 شوكولاتة داكنة.", "🍌 موزة.", "🥗 سلطة خضراء.", "🍣 سلمون طازج.", "🥛 كوب حليب دافئ.", "🌿 شاي البابونج.", "🥑 توست الأفوكادو.", "🍓 توت طازج.", "🫐 عصير التوت الأزرق.", "🥜 لوز وجوز.", "🍊 عصير برتقال.", "🍳 بيض مسلوق.", "🧀 جبن وبسكويت.", "🌽 سلطة ذرة.", "🥪 شطيرة ديك رومي."],
-            activityRecs: ["👍 عمل رائع اليوم!", "🌟 أنت تبلي بلاءً حسناً!", "💪 حافظ على العادات الجيدة!", "🚀 جهد مذهل!", "✨ أنت تتألق!", "🎯 حافظ على التركيز!", "🌈 يوم سعيد!"]
-        },
-        'zh': {
-            title: '每日情绪追踪', mood: '心情:', activity: '活动:', save: '保存',
-            insights: '您的洞察', trend: '情绪趋势:', recs: '建议:',
-            subscribe: '订阅 ($4.99/月)', share: '分享',
-            info_title: '🌟 关于此应用',
-            info_text: `<p><strong>🧠 集体智慧的结晶</strong><br>此应用经过技术、医学和科学领域专业人士的严格测试和完善。它是深入研究的结晶，提炼成简单、优雅的工具，用于您的日常生活。</p><p><strong>🎯 极简至上</strong><br>我们相信极简主义的力量。没有分散注意力的音频或视觉效果—只有纯粹、有目的的交互设计，旨在提供舒适感和最大的心理益处。</p><p><strong>🤖 您的日常伴侣，独一无二</strong><br>我们的智能建议引擎确保提示和说明永不重复。它会随着您的发展而发展，引导您日复一日地走向更好、更健康的自己。每一句话都是您日常幸福的关键。</p><p><strong>🔒 承诺的价值</strong><br>我们为什么要推荐我们的小额月度订阅？因为承诺带来专注。当您投资时，您会集中注意力。专业人士认可这种模式，因为专注的用户是茁壮成长的用户。只需一次与教练或医生咨询的费用，您就能获得来自营养师、心理学家和健康专家的终身智慧精华—全部集中在一个地方。</p><p><strong>🚀 我们为何不同</strong><br>我们彻底审查了无数其他应用和网站。大多数会用冗长、通用的文章轰炸您，这些文章不适合您特定的心态。我们不同。我们提供简洁、有针对性、有科学依据的指导，就在您最需要的时候。</p><p><strong>🌍 全球运动</strong><br>这不仅仅是一个应用；这是一场全球运动。它已经改变了世界各地人们的日常生活，一次一个情绪。</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">今天就开始您的旅程。您的每日清晰一触即达。 ✨</p>`,
-            lang_btn: '中文', timer: '3秒后进入...',
-            active_until: '有效期至:', food_tip: '食物建议:', activity_tip: '活动建议:',
-            no_data: '开始记录以获取个性化提示。',
-            insightGood: ["您的趋势是积极的! 🌟", "本周气氛很棒! 🎉", "您做得很好! 🚀", "您的心情很高! ☀️", "情绪状态极佳! 💯"],
-            insightStable: ["您的心情很稳定。 ⚖️", "一如既往的平衡! 🧘", "稳定且一致。 🌊", "保持平衡! ✅"],
-            insightBad: ["您需要更多的自我关怀。 💪", "休息一下，这是您应得的。 🛋️", "今天优先休息。 🌿", "自我关怀现在至关重要。 🕯️"],
-            foodRecs: ["🍫 黑巧克力。", "🍌 一根香蕉。", "🥗 一份绿色沙拉。", "🍣 新鲜三文鱼。", "🥛 一杯温牛奶。", "🌿 洋甘菊茶。", "🥑 牛油果吐司。", "🍓 新鲜浆果。", "🫐 蓝莓冰沙。", "🥜 杏仁和核桃。", "🍊 橙汁。", "🍳 水波蛋。", "🧀 奶酪和饼干。", "🌽 玉米沙拉。", "🥪 火鸡三明治。"],
-            activityRecs: ["👍 今天工作很棒!", "🌟 您做得很好!", "💪 保持好习惯!", "🚀 了不起的努力!", "✨ 您闪闪发光!", "🎯 保持专注!", "🌈 祝您有美好的一天!"]
-        },
-        'es': {
-            title: 'Rastreador de Estado de Ánimo', mood: 'Estado de ánimo:', activity: 'Actividad:', save: 'Guardar',
-            insights: 'Tus perspectivas', trend: 'Tendencia del estado de ánimo:', recs: 'Recomendaciones:',
-            subscribe: 'Suscribirse ($4.99/mes)', share: 'Compartir',
-            info_title: '🌟 Sobre esta aplicación',
-            info_text: `<p><strong>🧠 Un producto de sabiduría colectiva</strong><br>Esta aplicación ha sido probada y refinada rigurosamente por profesionales de los campos técnico, médico y científico. Es la culminación de una profunda investigación, destilada en una herramienta simple y elegante para su vida diaria.</p><p><strong>🎯 Simplicidad ante todo</strong><br>Creemos en el poder del minimalismo. No hay efectos de audio o visuales que distraigan, solo una interacción pura y con propósito diseñada para la comodidad y el máximo beneficio mental.</p><p><strong>🤖 Su compañero diario, exclusivamente suyo</strong><br>Nuestro motor de consejos inteligente garantiza que los consejos e instrucciones nunca se repitan. Evoluciona con usted, guiándolo día a día hacia una versión mejor y más saludable de sí mismo. Cada frase es una clave para su felicidad diaria.</p><p><strong>🔒 El valor del compromiso</strong><br>¿Por qué recomendamos nuestra pequeña suscripción mensual? Porque el compromiso trae concentración. Cuando inviertes, prestas atención. Los profesionales respaldan este modelo porque un usuario dedicado es un usuario próspero. Por el precio de una sola consulta con un entrenador o médico, obtiene acceso a una vida de sabiduría destilada de nutricionistas, psicólogos y expertos en bienestar, todo en un solo lugar.</p><p><strong>🚀 Por qué somos diferentes</strong><br>Hemos revisado minuciosamente innumerables otras aplicaciones y sitios web. La mayoría lo bombardea con artículos largos y genéricos que no se adaptan a su estado mental específico. Nosotros somos diferentes. Brindamos orientación concisa, específica y respaldada científicamente exactamente cuando la necesita.</p><p><strong>🌍 Un movimiento global</strong><br>Esto no es solo una aplicación; es un movimiento global. Ya ha transformado las vidas diarias de personas en todo el mundo, un estado de ánimo a la vez.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Comience su viaje hoy. Su dosis diaria de claridad está a solo un toque de distancia. ✨</p>`,
-            lang_btn: 'Español', timer: 'Entrando en 3 segundos...',
-            active_until: 'Activo hasta:', food_tip: 'Recomendaciones de comida:', activity_tip: 'Consejos de actividad:',
-            no_data: 'Comience a registrar para ver consejos personalizados.',
-            insightGood: ["¡Su tendencia es positiva! 🌟", "¡Grandes vibras esta semana! 🎉", "¡Lo está haciendo genial! 🚀", "¡Su estado de ánimo es alto! ☀️", "¡Excelente estado emocional! 💯"],
-            insightStable: ["Su estado de ánimo es estable. ⚖️", "¡Equilibrado como siempre! 🧘", "Constante y consistente. 🌊", "¡Manteniendo el equilibrio! ✅"],
-            insightBad: ["Necesita más autocuidado. 💪", "Tómese un descanso, se lo merece. 🛋️", "Priorice el descanso hoy. 🌿", "El autocuidado es vital ahora. 🕯️"],
-            foodRecs: ["🍫 Chocolate negro.", "🍌 Un plátano.", "🥗 Una ensalada verde.", "🍣 Salmón fresco.", "🥛 Un vaso de leche tibia.", "🌿 Té de manzanilla.", "🥑 Tostada de aguacate.", "🍓 Bayas frescas.", "🫐 Batido de arándanos.", "🥜 Almendras y nueces.", "🍊 Jugo de naranja.", "🍳 Huevos escalfados.", "🧀 Queso y galletas.", "🌽 Ensalada de maíz.", "🥪 Sándwich de pavo."],
-            activityRecs: ["👍 ¡Gran trabajo hoy!", "🌟 ¡Lo está haciendo genial!", "💪 ¡Mantenga los buenos hábitos!", "🚀 ¡Esfuerzo increíble!", "✨ ¡Está brillando!", "🎯 ¡Manténgase enfocado!", "🌈 ¡Tenga un día maravilloso!"]
-        },
-        'fr': {
-            title: 'Suivi d\'Humeur', mood: 'Humeur:', activity: 'Activité:', save: 'Enregistrer',
-            insights: 'Vos aperçus', trend: 'Tendance d\'humeur:', recs: 'Recommandations:',
-            subscribe: 'S\'abonner ($4.99/mois)', share: 'Partager',
-            info_title: '🌟 À propos de cette application',
-            info_text: `<p><strong>🧠 Un produit de sagesse collective</strong><br>Cette application a été rigoureusement testée et affinée par des professionnels des domaines techniques, médicaux et scientifiques. Elle est l'aboutissement de recherches approfondies, distillées dans un outil simple et élégant pour votre vie quotidienne.</p><p><strong>🎯 La simplicité avant tout</strong><br>Nous croyons au pouvoir du minimalisme. Il n'y a pas d'effets audio ou visuels distrayants, seulement une interaction pure et ciblée conçue pour le confort et un bénéfice mental maximal.</p><p><strong>🤖 Votre compagnon quotidien, uniquement vôtre</strong><br>Notre moteur de conseils intelligent garantit que les conseils et instructions ne se répètent jamais. Il évolue avec vous, vous guidant jour après jour vers une version meilleure et plus saine de vous-même. Chaque phrase est une clé pour votre bonheur quotidien.</p><p><strong>🔒 La valeur de l'engagement</strong><br>Pourquoi recommandons-nous notre petit abonnement mensuel ? Parce que l'engagement apporte de la concentration. Lorsque vous investissez, vous faites attention. Les professionnels approuvent ce modèle car un utilisateur dédié est un utilisateur qui s'épanouit. Pour le prix d'une seule consultation avec un coach ou un médecin, vous accédez à une vie de sagesse distillée de nutritionnistes, psychologues et experts en bien-être, tout en un seul endroit.</p><p><strong>🚀 Pourquoi nous sommes différents</strong><br>Nous avons examiné en profondeur d'innombrables autres applications et sites Web. La plupart vous bombardent d'articles longs et génériques qui ne sont pas adaptés à votre état d'esprit spécifique. Nous sommes différents. Nous fournissons des conseils concis, ciblés et soutenus scientifiquement exactement quand vous en avez besoin.</p><p><strong>🌍 Un mouvement mondial</strong><br>Ce n'est pas juste une application ; c'est un mouvement mondial. Elle a déjà transformé la vie quotidienne de personnes dans le monde entier, une humeur à la fois.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Commencez votre voyage aujourd'hui. Votre dose quotidienne de clarté est à un seul clic. ✨</p>`,
-            lang_btn: 'Français', timer: 'Entrée dans 3 secondes...',
-            active_until: 'Actif jusqu\'au:', food_tip: 'Recommandations alimentaires:', activity_tip: 'Conseils d\'activité:',
-            no_data: 'Commencez à enregistrer pour obtenir des conseils personnalisés.',
-            insightGood: ["Votre tendance est positive ! 🌟", "Bonne vibes cette semaine ! 🎉", "Vous assurez ! 🚀", "Votre humeur est élevée ! ☀️", "Excellent état émotionnel ! 💯"],
-            insightStable: ["Votre humeur est stable. ⚖️", "Équilibré comme toujours ! 🧘", "Régulier et constant. 🌊", "Maintenir l'équilibre ! ✅"],
-            insightBad: ["Vous avez besoin de plus d'auto-soins. 💪", "Prenez une pause, vous le méritez. 🛋️", "Priorisez le repos aujourd'hui. 🌿", "L'auto-soin est vital maintenant. 🕯️"],
-            foodRecs: ["🍫 Chocolat noir.", "🍌 Une banane.", "🥗 Une salade verte.", "🍣 Saumon frais.", "🥛 Un verre de lait chaud.", "🌿 Tisane à la camomille.", "🥑 Toast à l'avocat.", "🍓 Baies fraîches.", "🫐 Smoothie aux myrtilles.", "🥜 Amandes et noix.", "🍊 Jus d'orange.", "🍳 Œufs pochés.", "🧀 Fromage et crackers.", "🌽 Salade de maïs.", "🥪 Sandwich à la dinde."],
-            activityRecs: ["👍 Du bon travail aujourd'hui !", "🌟 Vous faites du bon travail !", "💪 Continuez les bonnes habitudes !", "🚀 Un effort incroyable !", "✨ Vous brillez !", "🎯 Restez concentré !", "🌈 Passez une merveilleuse journée !"]
-        },
-        'de': {
-            title: 'Stimmungs-Tracker', mood: 'Stimmung:', activity: 'Aktivität:', save: 'Speichern',
-            insights: 'Deine Einblicke', trend: 'Stimmungstrend:', recs: 'Empfehlungen:',
-            subscribe: 'Abonnieren ($4.99/Monat)', share: 'Teilen',
-            info_title: '🌟 Über diese App',
-            info_text: `<p><strong>🧠 Ein Produkt kollektiver Weisheit</strong><br>Diese App wurde von Fachleuten aus den Bereichen Technik, Medizin und Wissenschaft streng getestet und verfeinert. Sie ist der Höhepunkt tiefer Forschung, destilliert in ein einfaches, elegantes Werkzeug für Ihren täglichen Gebrauch.</p><p><strong>🎯 Einfachheit über alles</strong><br>Wir glauben an die Kraft des Minimalismus. Es gibt keine ablenkenden Audio- oder visuellen Effekte – nur reine, zielgerichtete Interaktion, die auf Komfort und maximalen mentalen Nutzen ausgelegt ist.</p><p><strong>🤖 Ihr täglicher Begleiter, einzigartig für Sie</strong><br>Unsere intelligente Ratschlag-Engine stellt sicher, dass sich Tipps und Anweisungen nie wiederholen. Sie entwickelt sich mit Ihnen weiter und führt Sie Tag für Tag zu einer besseren, gesünderen Version Ihrer selbst. Jeder Satz ist ein Schlüssel zu Ihrem täglichen Glück.</p><p><strong>🔒 Der Wert des Engagements</strong><br>Warum empfehlen wir unser kleines monatliches Abonnement? Weil Engagement Fokus bringt. Wenn Sie investieren, zahlen Sie aufmerksam. Fachleute befürworten dieses Modell, weil ein engagierter Nutzer ein gedeihender Nutzer ist. Für den Preis einer einzigen Beratung mit einem Coach oder Arzt erhalten Sie Zugang zu einem Leben voller destillierter Weisheit von Ernährungswissenschaftlern, Psychologen und Wellness-Experten – alles an einem Ort.</p><p><strong>🚀 Warum wir anders sind</strong><br>Wir haben unzählige andere Apps und Websites gründlich überprüft. Die meisten bombardieren Sie mit langen, allgemeinen Artikeln, die nicht auf Ihren spezifischen Geisteszustand zugeschnitten sind. Wir sind anders. Wir liefern prägnante, zielgerichtete und wissenschaftlich fundierte Anleitungen genau dann, wenn Sie sie brauchen.</p><p><strong>🌍 Eine globale Bewegung</strong><br>Dies ist nicht nur eine App; es ist eine globale Bewegung. Sie hat bereits das tägliche Leben von Menschen weltweit verändert, eine Stimmung nach der anderen.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Beginnen Sie Ihre Reise heute. Ihre tägliche Dosis Klarheit ist nur einen Klick entfernt. ✨</p>`,
-            lang_btn: 'Deutsch', timer: 'Eintritt in 3 Sekunden...',
-            active_until: 'Aktiv bis:', food_tip: 'Essensempfehlungen:', activity_tip: 'Aktivitätstipps:',
-            no_data: 'Beginnen Sie mit der Protokollierung, um personalisierte Tipps zu erhalten.',
-            insightGood: ["Ihr Trend ist positiv! 🌟", "Tolle Stimmung diese Woche! 🎉", "Sie rocken es! 🚀", "Ihre Stimmung ist hoch! ☀️", "Ausgezeichneter emotionaler Zustand! 💯"],
-            insightStable: ["Ihre Stimmung ist stabil. ⚖️", "Ausgeglichen wie immer! 🧘", "Stetig und beständig. 🌊", "Gleichgewicht halten! ✅"],
-            insightBad: ["Sie brauchen mehr Selbstfürsorge. 💪", "Machen Sie eine Pause, Sie haben es verdient. 🛋️", "Priorisieren Sie heute Ruhe. 🌿", "Selbstfürsorge ist jetzt lebenswichtig. 🕯️"],
-            foodRecs: ["🍫 Dunkle Schokolade.", "🍌 Eine Banane.", "🥗 Ein grüner Salat.", "🍣 Frischer Lachs.", "🥛 Ein Glas warme Milch.", "🌿 Kamillentee.", "🥑 Avocado-Toast.", "🍓 Frische Beeren.", "🫐 Heidelbeer-Smoothie.", "🥜 Mandeln und Walnüsse.", "🍊 Orangensaft.", "🍳 Poachierte Eier.", "🧀 Käse und Cracker.", "🌽 Maissalat.", "🥪 Ein Truthahn-Sandwich."],
-            activityRecs: ["👍 Starke Arbeit heute!", "🌟 Sie machen das großartig!", "💪 Bleiben Sie bei den guten Gewohnheiten!", "🚀 Erstaunlicher Einsatz!", "✨ Sie strahlen!", "🎯 Bleiben Sie fokussiert!", "🌈 Haben Sie einen wunderbaren Tag!"]
-        },
-        'ja': {
-            title: '毎日の気分トラッカー', mood: '気分:', activity: '活動:', save: '保存',
-            insights: 'あなたの洞察', trend: '気分の傾向:', recs: 'おすすめ:',
-            subscribe: 'サブスク ($4.99/月)', share: '共有',
-            info_title: '🌟 このアプリについて',
-            info_text: `<p><strong>🧠 集合知の産物</strong><br>このアプリケーションは、技術、医療、科学分野の専門家によって厳格にテストされ、改良されてきました。深い研究の集大成であり、日常の生活に役立つシンプルで洗練されたツールに凝縮されています。</p><p><strong>🎯 何よりもシンプルさ</strong><br>私たちはミニマリズムの力を信じています。気を散らす音声や視覚効果はありません。快適さと最大限の精神的利益のために設計された、純粋で目的のあるインタラクションだけがあります。</p><p><strong>🤖 あなただけの毎日のコンパニオン</strong><br>私たちのインテリジェントなアドバイスエンジンは、ヒントや指示が決して繰り返されないことを保証します。それはあなたと共に進化し、より良く、より健康な自分自身へと毎日導きます。すべての文章が、あなたの毎日の幸せへの鍵です。</p><p><strong>🔒 コミットメントの価値</strong><br>なぜ私たちは少額の月額サブスクリプションをお勧めするのでしょうか？コミットメントが集中力をもたらすからです。投資するとき、あなたは注意を払います。専門家はこのモデルを支持します。なぜなら、熱心なユーザーは成長するユーザーだからです。コーチや医師への1回の相談料で、栄養士、心理学者、ウェルネス専門家から抽出された生涯の知恵にアクセスできます。すべてが1つの場所にあります。</p><p><strong>🚀 私たちが違う理由</strong><br>私たちは数え切れないほどの他のアプリやウェブサイトを徹底的にレビューしました。ほとんどは、あなたの特定の精神状態に合わせていない長くて一般的な記事であなたを攻め立てます。私たちは違います。あなたが必要とするまさにその時に、簡潔で、的を絞った、科学的に裏付けられたガイダンスを提供します。</p><p><strong>🌍 グローバルな運動</strong><br>これは単なるアプリではありません。グローバルな運動です。それはすでに世界中の人々の日常生活を変えてきました。一度に一つの気分で。</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">今日から旅を始めましょう。あなたの毎日の明晰さは、ただのタップで届きます。 ✨</p>`,
-            lang_btn: '日本語', timer: '3秒後に入力...',
-            active_until: '有効期限:', food_tip: '食事のおすすめ:', activity_tip: '活動のアドバイス:',
-            no_data: 'ログを開始して、パーソナライズされたヒントを入手してください。',
-            insightGood: ["あなたの傾向はポジティブです! 🌟", "今週は最高の雰囲気! 🎉", "あなたは素晴らしいです! 🚀", "気分が高揚しています! ☀️", "優れた感情状態! 💯"],
-            insightStable: ["気分は安定しています。 ⚖️", "いつものようにバランスが取れています! 🧘", "着実で一貫しています。 🌊", "バランスを保っています! ✅"],
-            insightBad: ["より多くのセルフケアが必要です。 💪", "休憩を取ってください、その価値があります。 🛋️", "今日は休息を優先してください。 🌿", "今はセルフケアが不可欠です。 🕯️"],
-            foodRecs: ["🍫 ダークチョコレート。", "🍌 バナナ。", "🥗 グリーンサラダ。", "🍣 新鮮なサーモン。", "🥛 温かいミルクを一杯。", "🌿 カモミールティー。", "🥑 アボカドトースト。", "🍓 フレッシュベリー。", "🫐 ブルーベリースムージー。", "🥜 アーモンドとクルミ。", "🍊 オレンジジュース。", "🍳 ポーチドエッグ。", "🧀 チーズとクラッカー。", "🌽 コーンサラダ。", "🥪 ターキーサンドイッチ。"],
-            activityRecs: ["👍 今日は素晴らしい仕事です!", "🌟 あなたは素晴らしいです!", "💪 良い習慣を続けてください!", "🚀 驚くべき努力!", "✨ あなたは輝いています!", "🎯 集中力を保ってください!", "🌈 素晴らしい一日を!"]
-        },
-        'ru': {
-            title: 'Трекер настроения', mood: 'Настроение:', activity: 'Активность:', save: 'Сохранить',
-            insights: 'Ваши инсайты', trend: 'Тенденция настроения:', recs: 'Рекомендации:',
-            subscribe: 'Подписка ($4.99/мес)', share: 'Поделиться',
-            info_title: '🌟 Об этом приложении',
-            info_text: `<p><strong>🧠 Продукт коллективной мудрости</strong><br>Это приложение было тщательно протестировано и усовершенствовано профессионалами в технических, медицинских и научных областях. Это кульминация глубоких исследований, воплощенная в простой и элегантный инструмент для вашей повседневной жизни.</p><p><strong>🎯 Простота превыше всего</strong><br>Мы верим в силу минимализма. Нет отвлекающих аудио- или визуальных эффектов — только чистое, целенаправленное взаимодействие, разработанное для комфорта и максимальной пользы для психики.</p><p><strong>🤖 Ваш ежедневный спутник, уникальный для вас</strong><br>Наш интеллектуальный движок советов гарантирует, что советы и инструкции никогда не повторяются. Он развивается вместе с вами, направляя вас день за днем к лучшей и более здоровой версии себя. Каждое предложение — ключ к вашему ежедневному счастью.</p><p><strong>🔒 Ценность обязательств</strong><br>Почему мы рекомендуем нашу небольшую ежемесячную подписку? Потому что обязательства приносят сосредоточенность. Когда вы вкладываете средства, вы обращаете внимание. Профессионалы одобряют эту модель, потому что преданный пользователь — это процветающий пользователь. За цену одной консультации с тренером или врачом вы получаете доступ к целой жизни дистиллированной мудрости от диетологов, психологов и экспертов по здоровью — и все это в одном месте.</p><p><strong>🚀 Почему мы другие</strong><br>Мы тщательно изучили бесчисленные другие приложения и веб-сайты. Большинство из них забрасывают вас длинными, общими статьями, которые не адаптированы к вашему конкретному состоянию ума. Мы другие. Мы предоставляем краткое, целенаправленное, научно обоснованное руководство именно тогда, когда оно вам нужно.</p><p><strong>🌍 Глобальное движение</strong><br>Это не просто приложение; это глобальное движение. Оно уже изменило повседневную жизнь людей по всему миру, по одному настроению за раз.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Начните свое путешествие сегодня. Ваша ежедневная доза ясности — всего в одном касании. ✨</p>`,
-            lang_btn: 'Русский', timer: 'Вход через 3 секунды...',
-            active_until: 'Активно до:', food_tip: 'Рекомендации по питанию:', activity_tip: 'Советы по активности:',
-            no_data: 'Начните вести журнал, чтобы получать персонализированные советы.',
-            insightGood: ["Ваш тренд положительный! 🌟", "Отличная атмосфера на этой неделе! 🎉", "Вы великолепны! 🚀", "Ваше настроение на высоте! ☀️", "Отличное эмоциональное состояние! 💯"],
-            insightStable: ["Ваше настроение стабильно. ⚖️", "Сбалансированы, как всегда! 🧘", "Устойчиво и последовательно. 🌊", "Сохраняем баланс! ✅"],
-            insightBad: ["Вам нужно больше заботы о себе. 💪", "Сделайте перерыв, вы это заслужили. 🛋️", "Сегодня приоритет отдыху. 🌿", "Забота о себе сейчас жизненно важна. 🕯️"],
-            foodRecs: ["🍫 Темный шоколад.", "🍌 Банан.", "🥗 Зеленый салат.", "🍣 Свежий лосось.", "🥛 Стакан теплого молока.", "🌿 Ромашковый чай.", "🥑 Тосты с авокадо.", "🍓 Свежие ягоды.", "🫐 Черничный смузи.", "🥜 Миндаль и грецкие орехи.", "🍊 Апельсиновый сок.", "🍳 Яйца-пашот.", "🧀 Сыр и крекеры.", "🌽 Салат из кукурузы.", "🥪 Сэндвич с индейкой."],
-            activityRecs: ["👍 Отличная работа сегодня!", "🌟 Вы отлично справляетесь!", "💪 Продолжайте хорошие привычки!", "🚀 Невероятное усилие!", "✨ Вы сияете!", "🎯 Оставайтесь сосредоточенными!", "🌈 Прекрасного дня!"]
-        },
-        'pt': {
-            title: 'Monitor de Humor', mood: 'Humor:', activity: 'Atividade:', save: 'Salvar',
-            insights: 'Seus insights', trend: 'Tendência de humor:', recs: 'Recomendações:',
-            subscribe: 'Assinar ($4.99/mês)', share: 'Compartilhar',
-            info_title: '🌟 Sobre este aplicativo',
-            info_text: `<p><strong>🧠 Um produto da sabedoria coletiva</strong><br>Este aplicativo foi rigorosamente testado e refinado por profissionais das áreas técnica, médica e científica. É o culminar de pesquisas profundas, destilado em uma ferramenta simples e elegante para sua vida diária.</p><p><strong>🎯 Simplicidade acima de tudo</strong><br>Acreditamos no poder do minimalismo. Não há efeitos de áudio ou visuais que distraiam - apenas interação pura e proposital, projetada para conforto e máximo benefício mental.</p><p><strong>🤖 Seu companheiro diário, exclusivamente seu</strong><br>Nosso mecanismo de conselhos inteligente garante que dicas e instruções nunca se repitam. Ele evolui com você, guiando-o dia após dia em direção a uma versão melhor e mais saudável de si mesmo. Cada frase é uma chave para sua felicidade diária.</p><p><strong>🔒 O valor do compromisso</strong><br>Por que recomendamos nossa pequena assinatura mensal? Porque o compromisso traz foco. Quando você investe, você presta atenção. Os profissionais endossam este modelo porque um usuário dedicado é um usuário próspero. Pelo preço de uma única consulta com um coach ou médico, você obtém acesso a uma vida de sabedoria destilada de nutricionistas, psicólogos e especialistas em bem-estar, tudo em um só lugar.</p><p><strong>🚀 Por que somos diferentes</strong><br>Revisamos minuciosamente inúmeros outros aplicativos e sites. A maioria bombardeia você com artigos longos e genéricos que não são adaptados ao seu estado de espírito específico. Nós somos diferentes. Nós fornecemos orientação concisa, direcionada e com respaldo científico exatamente quando você precisa.</p><p><strong>🌍 Um movimento global</strong><br>Este não é apenas um aplicativo; é um movimento global. Já transformou a vida diária de pessoas em todo o mundo, um humor de cada vez.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Comece sua jornada hoje. Sua dose diária de clareza está a apenas um toque de distância. ✨</p>`,
-            lang_btn: 'Português', timer: 'Entrando em 3 segundos...',
-            active_until: 'Ativo até:', food_tip: 'Recomendações de comida:', activity_tip: 'Conselhos de atividade:',
-            no_data: 'Comece a registrar para obter dicas personalizadas.',
-            insightGood: ["Sua tendência é positiva! 🌟", "Ótimas vibrações esta semana! 🎉", "Você está arrasando! 🚀", "Seu humor está alto! ☀️", "Excelente estado emocional! 💯"],
-            insightStable: ["Seu humor está estável. ⚖️", "Equilibrado como sempre! 🧘", "Constante e consistente. 🌊", "Mantendo o equilíbrio! ✅"],
-            insightBad: ["Você precisa de mais autocuidado. 💪", "Faça uma pausa, você merece. 🛋️", "Priorize o descanso hoje. 🌿", "O autocuidado é vital agora. 🕯️"],
-            foodRecs: ["🍫 Chocolate amargo.", "🍌 Uma banana.", "🥗 Uma salada verde.", "🍣 Salmão fresco.", "🥛 Um copo de leite morno.", "🌿 Chá de camomila.", "🥑 Torrada de abacate.", "🍓 Frutas vermelhas frescas.", "🫐 Smoothie de mirtilo.", "🥜 Amêndoas e nozes.", "🍊 Suco de laranja.", "🍳 Ovos escalfados.", "🧀 Queijo e biscoitos.", "🌽 Salada de milho.", "🥪 Sanduíche de peru."],
-            activityRecs: ["👍 Ótimo trabalho hoje!", "🌟 Você está indo muito bem!", "💪 Mantenha os bons hábitos!", "🚀 Esforço incrível!", "✨ Você está brilhando!", "🎯 Mantenha o foco!", "🌈 Tenha um dia maravilhoso!"]
-        },
-        'it': {
-            title: 'Monitor Umore', mood: 'Umore:', activity: 'Attività:', save: 'Salva',
-            insights: 'I tuoi insight', trend: 'Trend dell\'umore:', recs: 'Raccomandazioni:',
-            subscribe: 'Abbonati ($4.99/mese)', share: 'Condividi',
-            info_title: '🌟 Informazioni su questa app',
-            info_text: `<p><strong>🧠 Un prodotto della saggezza collettiva</strong><br>Questa applicazione è stata rigorosamente testata e perfezionata da professionisti nei campi tecnico, medico e scientifico. È il culmine di una profonda ricerca, distillata in uno strumento semplice ed elegante per la tua vita quotidiana.</p><p><strong>🎯 Semplicità sopra ogni cosa</strong><br>Crediamo nel potere del minimalismo. Non ci sono effetti audio o visivi che distraggono, solo un'interazione pura e mirata progettata per il comfort e il massimo beneficio mentale.</p><p><strong>🤖 Il tuo compagno quotidiano, unicamente tuo</strong><br>Il nostro motore di consigli intelligente garantisce che suggerimenti e istruzioni non si ripetano mai. Si evolve con te, guidandoti giorno dopo giorno verso una versione migliore e più sana di te stesso. Ogni frase è una chiave per la tua felicità quotidiana.</p><p><strong>🔒 Il valore dell'impegno</strong><br>Perché consigliamo il nostro piccolo abbonamento mensile? Perché l'impegno porta concentrazione. Quando investi, presti attenzione. I professionisti approvano questo modello perché un utente dedicato è un utente fiorente. Per il prezzo di una singola consulenza con un coach o un medico, ottieni l'accesso a una vita di saggezza distillata da nutrizionisti, psicologi ed esperti di benessere, tutto in un unico posto.</p><p><strong>🚀 Perché siamo diversi</strong><br>Abbiamo esaminato a fondo innumerevoli altre app e siti web. La maggior parte ti bombarda con articoli lunghi e generici che non sono adattati al tuo specifico stato d'animo. Noi siamo diversi. Forniamo una guida concisa, mirata e supportata scientificamente esattamente quando ne hai bisogno.</p><p><strong>🌍 Un movimento globale</strong><br>Questa non è solo un'app; è un movimento globale. Ha già trasformato la vita quotidiana di persone in tutto il mondo, un umore alla volta.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Inizia il tuo viaggio oggi. La tua dose quotidiana di chiarezza è a un solo tocco di distanza. ✨</p>`,
-            lang_btn: 'Italiano', timer: 'Entrata in 3 secondi...',
-            active_until: 'Attivo fino al:', food_tip: 'Raccomandazioni alimentari:', activity_tip: 'Consigli per l\'attività:',
-            no_data: 'Inizia a registrare per ottenere suggerimenti personalizzati.',
-            insightGood: ["Il tuo trend è positivo! 🌟", "Grandi vibrazioni questa settimana! 🎉", "Stai andando alla grande! 🚀", "Il tuo umore è alto! ☀️", "Eccellente stato emotivo! 💯"],
-            insightStable: ["Il tuo umore è stabile. ⚖️", "Equilibrato come sempre! 🧘", "Costante e coerente. 🌊", "Mantenere l'equilibrio! ✅"],
-            insightBad: ["Hai bisogno di più cura di te stesso. 💪", "Fai una pausa, te lo meriti. 🛋️", "Dai priorità al riposo oggi. 🌿", "La cura di sé è vitale ora. 🕯️"],
-            foodRecs: ["🍫 Cioccolato fondente.", "🍌 Una banana.", "🥗 Un'insalata verde.", "🍣 Salmone fresco.", "🥛 Un bicchiere di latte caldo.", "🌿 Tisana alla camomilla.", "🥑 Toast all'avocado.", "🍓 Frutti di bosco freschi.", "🫐 Frullato di mirtilli.", "🥜 Mandorle e noci.", "🍊 Succo d'arancia.", "🍳 Uova in camicia.", "🧀 Formaggio e cracker.", "🌽 Insalata di mais.", "🥪 Un panino con tacchino."],
-            activityRecs: ["👍 Ottimo lavoro oggi!", "🌟 Stai facendo un ottimo lavoro!", "💪 Mantieni le buone abitudini!", "🚀 Sforzo incredibile!", "✨ Stai brillando!", "🎯 Rimani concentrato!", "🌈 Buona giornata!"]
-        },
-        'ko': {
-            title: '일일 기분 추적기', mood: '기분:', activity: '활동:', save: '저장',
-            insights: '당신의 인사이트', trend: '기분 트렌드:', recs: '추천:',
-            subscribe: '구독 ($4.99/월)', share: '공유',
-            info_title: '🌟 이 앱 정보',
-            info_text: `<p><strong>🧠 집단 지혜의 산물</strong><br>이 애플리케이션은 기술, 의료 및 과학 분야의 전문가들에 의해 엄격하게 테스트되고 개선되었습니다. 깊은 연구의 결정체로, 일상 생활을 위한 간단하고 우아한 도구로 정제되었습니다.</p><p><strong>🎯 무엇보다도 단순함</strong><br>우리는 미니멀리즘의 힘을 믿습니다. 산만한 오디오나 시각적 효과는 없습니다. 편안함과 최대의 정신적 이익을 위해 설계된 순수하고 목적 있는 상호작용만 있습니다.</p><p><strong>🤖 당신만을 위한 일상의 동반자</strong><br>지능형 조언 엔진은 팁과 지침이 절대 반복되지 않도록 보장합니다. 그것은 당신과 함께 진화하며, 더 나은, 더 건강한 자신으로 매일 안내합니다. 모든 문장은 당신의 일상적인 행복의 열쇠입니다.</p><p><strong>🔒 헌신의 가치</strong><br>왜 우리는 소액의 월간 구독을 권장할까요? 헌신은 집중력을 가져오기 때문입니다. 투자할 때, 당신은 주의를 기울입니다. 전문가들은 이 모델을 지지합니다. 왜냐하면 전용 사용자는 번성하는 사용자이기 때문입니다. 코치나 의사와의 단 한 번의 상담 가격으로, 영양사, 심리학자 및 웰빙 전문가의 평생 증류된 지혜에 액세스할 수 있습니다. 모두 한 곳에 있습니다.</p><p><strong>🚀 우리가 다른 이유</strong><br>우리는 수많은 다른 앱과 웹사이트를 철저히 검토했습니다. 대부분은 당신의 특정 심리 상태에 맞지 않는 길고 일반적인 기사로 당신을 공격합니다. 우리는 다릅니다. 우리는 당신이 필요로 할 때 정확하게 간결하고, 목표 지향적이며, 과학적으로 뒷받침되는 지침을 제공합니다.</p><p><strong>🌍 글로벌 무브먼트</strong><br>이것은 단순한 앱이 아닙니다. 그것은 글로벌 무브먼트입니다. 그것은 이미 전 세계 사람들의 일상을 변화시켰습니다. 한 번에 하나의 기분으로.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">오늘 여정을 시작하세요. 당신의 일일 명확성의 복용량은 단 한 번의 탭에 있습니다. ✨</p>`,
-            lang_btn: '한국어', timer: '3초 후 진입...',
-            active_until: '활성 날짜:', food_tip: '음식 추천:', activity_tip: '활동 조언:',
-            no_data: '개인화된 팁을 얻으려면 로깅을 시작하세요.',
-            insightGood: ["트렌드가 긍정적입니다! 🌟", "이번 주 분위기가 좋아요! 🎉", "잘하고 있어요! 🚀", "기분이 좋아요! ☀️", "훌륭한 감정 상태! 💯"],
-            insightStable: ["기분이 안정적입니다. ⚖️", "항상 그렇듯 균형 잡혔어요! 🧘", "꾸준하고 일관됩니다. 🌊", "균형 유지 중! ✅"],
-            insightBad: ["셀프 케어가 더 필요합니다. 💪", "휴식을 취하세요, 그럴 자격이 있습니다. 🛋️", "오늘은 휴식을 우선시하세요. 🌿", "셀프 케어가 지금 중요합니다. 🕯️"],
-            foodRecs: ["🍫 다크 초콜릿.", "🍌 바나나.", "🥗 그린 샐러드.", "🍣 신선한 연어.", "🥛 따뜻한 우유 한 잔.", "🌿 카모마일 차.", "🥑 아보카도 토스트.", "🍓 신선한 베리.", "🫐 블루베리 스무디.", "🥜 아몬드와 호두.", "🍊 오렌지 주스.", "🍳 수란.", "🧀 치즈와 크래커.", "🌽 콘 샐러드.", "🥪 칠면조 샌드위치."],
-            activityRecs: ["👍 오늘 훌륭한 작업입니다!", "🌟 정말 잘하고 있어요!", "💪 좋은 습관을 유지하세요!", "🚀 놀라운 노력!", "✨ 빛나고 있어요!", "🎯 집중하세요!", "🌈 좋은 하루 보내세요!"]
-        },
-        'hi': {
-            title: 'दैनिक मूड ट्रैकर', mood: 'मूड:', activity: 'गतिविधि:', save: 'सहेजें',
-            insights: 'आपकी अंतर्दृष्टि', trend: 'मूड रुझान:', recs: 'सिफ़ारिशें:',
-            subscribe: 'सदस्यता ($4.99/महीना)', share: 'साझा करें',
-            info_title: '🌟 इस ऐप के बारे में',
-            info_text: `<p><strong>🧠 सामूहिक ज्ञान का उत्पाद</strong><br>इस एप्लिकेशन का तकनीकी, चिकित्सा और वैज्ञानिक क्षेत्रों के पेशेवरों द्वारा कठोरता से परीक्षण और परिष्कृत किया गया है। यह गहन शोध की परिणति है, जिसे आपके दैनिक जीवन के लिए एक सरल, सुरुचिपूर्ण उपकरण में संक्षेपित किया गया है।</p><p><strong>🎯 सबसे बढ़कर सादगी</strong><br>हम न्यूनतमवाद की शक्ति में विश्वास करते हैं। कोई ध्यान भटकाने वाले ऑडियो या दृश्य प्रभाव नहीं हैं—केवल शुद्ध, उद्देश्यपूर्ण बातचीत जो आराम और अधिकतम मानसिक लाभ के लिए डिज़ाइन की गई है।</p><p><strong>🤖 आपका दैनिक साथी, विशेष रूप से आपका</strong><br>हमारा बुद्धिमान सलाह इंजन सुनिश्चित करता है कि सुझाव और निर्देश कभी भी दोहराए न जाएं। यह आपके साथ विकसित होता है, आपको दिन-प्रतिदिन अपने बेहतर, स्वस्थ संस्करण की ओर मार्गदर्शन करता है। हर वाक्य आपकी दैनिक खुशी की कुंजी है।</p><p><strong>🔒 प्रतिबद्धता का मूल्य</strong><br>हम अपनी छोटी मासिक सदस्यता की सिफारिश क्यों करते हैं? क्योंकि प्रतिबद्धता ध्यान केंद्रित करती है। जब आप निवेश करते हैं, तो आप ध्यान देते हैं। पेशेवर इस मॉडल का समर्थन करते हैं क्योंकि एक समर्पित उपयोगकर्ता एक संपन्न उपयोगकर्ता होता है। एक कोच या डॉक्टर के साथ एक परामर्श की कीमत पर, आपको पोषण विशेषज्ञों, मनोवैज्ञानिकों और कल्याण विशेषज्ञों से आजीवन संक्षेपित ज्ञान तक पहुंच मिलती है—सब एक ही स्थान पर।</p><p><strong>🚀 हम अलग क्यों हैं</strong><br>हमने अनगिनत अन्य ऐप्स और वेबसाइटों की गहन समीक्षा की है। अधिकांश आपको लंबे, सामान्य लेखों से भर देते हैं जो आपकी विशिष्ट मानसिक स्थिति के अनुरूप नहीं होते हैं। हम अलग हैं। हम संक्षिप्त, लक्षित, वैज्ञानिक रूप से समर्थित मार्गदर्शन प्रदान करते हैं जब आपको इसकी आवश्यकता होती है।</p><p><strong>🌍 एक वैश्विक आंदोलन</strong><br>यह सिर्फ एक ऐप नहीं है; यह एक वैश्विक आंदोलन है। इसने पहले ही दुनिया भर के लोगों के दैनिक जीवन को बदल दिया है, एक समय में एक मूड।</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">आज अपनी यात्रा शुरू करें। स्पष्टता की आपकी दैनिक खुराक बस एक टैप दूर है। ✨</p>`,
-            lang_btn: 'हिन्दी', timer: '3 सेकंड में प्रवेश...',
-            active_until: 'सक्रिय तक:', food_tip: 'भोजन सिफ़ारिशें:', activity_tip: 'गतिविधि सलाह:',
-            no_data: 'व्यक्तिगत सुझाव प्राप्त करने के लिए लॉगिंग शुरू करें।',
-            insightGood: ["आपका रुझान सकारात्मक है! 🌟", "इस सप्ताह बहुत अच्छा माहौल! 🎉", "आप बहुत अच्छा कर रहे हैं! 🚀", "आपका मूड उच्च है! ☀️", "उत्कृष्ट भावनात्मक स्थिति! 💯"],
-            insightStable: ["आपका मूड स्थिर है। ⚖️", "हमेशा की तरह संतुलित! 🧘", "स्थिर और सुसंगत। 🌊", "संतुलन बनाए रखना! ✅"],
-            insightBad: ["आपको अधिक आत्म-देखभाल की आवश्यकता है। 💪", "एक ब्रेक लें, आप इसके लायक हैं। 🛋️", "आज आराम को प्राथमिकता दें। 🌿", "आत्म-देखभाल अब महत्वपूर्ण है। 🕯️"],
-            foodRecs: ["🍫 डार्क चॉकलेट।", "🍌 एक केला।", "🥗 एक हरा सलाद।", "🍣 ताजा सैल्मन।", "🥛 एक गिलास गर्म दूध।", "🌿 कैमोमाइल चाय।", "🥑 एवोकैडो टोस्ट।", "🍓 ताजा जामुन।", "🫐 ब्लूबेरी स्मूदी।", "🥜 बादाम और अखरोट।", "🍊 संतरे का जूस।", "🍳 पोच्ड अंडे।", "🧀 पनीर और पटाखे।", "🌽 मकई का सलाद।", "🥪 एक टर्की सैंडविच।"],
-            activityRecs: ["👍 आज बहुत अच्छा काम!", "🌟 आप बहुत अच्छा कर रहे हैं!", "💪 अच्छी आदतें बनाए रखें!", "🚀 अद्भुत प्रयास!", "✨ आप चमक रहे हैं!", "🎯 केंद्रित रहें!", "🌈 आपका दिन शुभ हो!"]
+        const translations = {
+            'en': {
+                title: 'Daily Mood Tracker',
+                mood: 'Mood:',
+                activity: 'Activity:',
+                save: 'Save',
+                insights: 'Your Insights',
+                trend: 'Mood Trend:',
+                recs: 'Recommendations:',
+                subscribe: 'Subscribe ($4.99/mo)',
+                share: 'Share',
+                info_title: '🌟 About This App',
+                info_text: `<p><strong>🧠 A Product of Collective Wisdom</strong><br>This application has been rigorously tested and refined by professionals across technical, medical, and scientific fields. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p><p><strong>🎯 Simplicity Above All</strong><br>We believe in the power of minimalism. There are no distracting audio or visual effects—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p><p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>Our intelligent advice engine ensures that tips and instructions never repeat. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p><p><strong>🔒 The Value of Commitment</strong><br>Why do we recommend our small monthly subscription? Because commitment brings focus. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p><p><strong>🚀 Why We Are Different</strong><br>We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. We are different. We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p><p><strong>🌍 A Global Movement</strong><br>This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>`,
+                lang_btn: 'English',
+                timer: 'Entering in 3 seconds...',
+                active_until: 'Active until:',
+                food_tip: 'Food Recommendations:',
+                activity_tip: 'Activity Advice:',
+                no_data: 'Start logging to see personalized tips.',
+                insightGood: ["Your trend is positive! 🌟", "Great vibes this week! 🎉", "You are rocking it! 🚀", "Your mood is high! ☀️", "Excellent emotional state! 💯"],
+                insightStable: ["Your mood is stable. ⚖️", "Balanced as always! 🧘", "Steady and consistent. 🌊", "Maintaining balance! ✅"],
+                insightBad: ["You need more self-care. 💪", "Take a break, you deserve it. 🛋️", "Prioritize rest today. 🌿", "Self-care is vital now. 🕯️"],
+                foodRecs: ["🍫 Dark chocolate.", "🍌 A banana.", "🥗 A green salad.", "🍣 Fresh salmon.", "🥛 A glass of warm milk.", "🌿 Chamomile tea.", "🥑 Avocado toast.", "🍓 Fresh berries.", "🫐 Blueberry smoothie.", "🥜 Almonds and walnuts.", "🍊 Orange juice.", "🍳 Poached eggs.", "🧀 Cheese and crackers.", "🌽 Corn salad.", "🥪 A turkey sandwich."],
+                activityRecs: ["👍 Strong work today!", "🌟 You are doing great!", "💪 Keep up the good habits!", "🚀 Amazing effort!", "✨ You are shining!", "🎯 Stay focused!", "🌈 Have a wonderful day!"]
+            },
+            'ar': {
+                title: 'متتبع المزاج اليومي',
+                mood: 'المزاج:',
+                activity: 'النشاط:',
+                save: 'حفظ',
+                insights: 'رؤيتك',
+                trend: 'اتجاه المزاج:',
+                recs: 'توصيات:',
+                subscribe: 'اشتراك ($4.99/شهر)',
+                share: 'مشاركة',
+                info_title: '🌟 حول هذا التطبيق',
+                info_text: `<p><strong>🧠 منتج الحكمة الجماعية</strong><br>تم اختبار هذا التطبيق وتحسينه بدقة من قبل محترفين في المجالات التقنية والطبية والعلمية. إنه تتويج لأبحاث عميقة، تم تقطيرها في أداة بسيطة وأنيقة لحياتك اليومية.</p><p><strong>🎯 البساطة قبل كل شيء</strong><br>نحن نؤمن بقوة التبسيط. لا توجد مؤثرات صوتية أو بصرية مشتتة للانتباه - فقط تفاعل نقي وهادف مصمم للراحة والفائدة العقلية القصوى.</p><p><strong>🤖 رفيقك اليومي، الخاص بك فقط</strong><br>يضمن محرك النصائح الذكي لدينا أن النصائح والتعليمات لا تتكرر أبدًا. إنه يتطور معك، ويرشدك يومًا بعد يوم نحو نسخة أفضل وأكثر صحة من نفسك. كل جملة هي مفتاح لسعادتك اليومية.</p><p><strong>🔒 قيمة الالتزام</strong><br>لماذا نوصي باشتراكنا الشهري الصغير؟ لأن الالتزام يجلب التركيز. عندما تستثمر، فإنك تنتبه. يؤيد المحترفون هذا النموذج لأن المستخدم الملتزم هو مستخدم مزدهر. مقابل تكلفة استشارة واحدة مع مدرب أو طبيب، تحصل على الوصول إلى ثروة من الحكمة المقطرة من خبراء التغذية وعلماء النفس وخبراء الصحة - كل ذلك في مكان واحد.</p><p><strong>🚀 لماذا نحن مختلفون</strong><br>لقد راجعنا بدقة عددًا لا يحصى من التطبيقات والمواقع الأخرى. معظمها يقصفك بمقالات طويلة وعامة غير مصممة خصيصًا لحالتك الذهنية المحددة. نحن مختلفون. نقدم إرشادات موجزة ومركزة ومدعومة علميًا بالضبط عندما تحتاج إليها.</p><p><strong>🌍 حركة عالمية</strong><br>هذا ليس مجرد تطبيق ؛ إنها حركة عالمية. لقد غيرت بالفعل الحياة اليومية للناس في جميع أنحاء العالم، مزاج واحد في كل مرة.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">ابدأ رحلتك اليوم. جرعتك اليومية من الوضوح على بعد نقرة واحدة. ✨</p>`,
+                lang_btn: 'العربية',
+                timer: 'الدخول بعد 3 ثواني...',
+                active_until: 'نشط حتى:',
+                food_tip: 'توصيات الطعام:',
+                activity_tip: 'نصيحة النشاط:',
+                no_data: 'ابدأ التسجيل للحصول على نصائح مخصصة.',
+                insightGood: ["اتجاهك إيجابي! 🌟", "أجواء رائعة هذا الأسبوع! 🎉", "أنت تبلي بلاءً حسناً! 🚀", "مزاجك مرتفع! ☀️", "حالة عاطفية ممتازة! 💯"],
+                insightStable: ["مزاجك مستقر. ⚖️", "متوازن كالعادة! 🧘", "ثابت ومستمر. 🌊", "الحفاظ على التوازن! ✅"],
+                insightBad: ["أنت بحاجة إلى مزيد من الرعاية الذاتية. 💪", "خذ استراحة، أنت تستحقها. 🛋️", "أعط الأولوية للراحة اليوم. 🌿", "الرعاية الذاتية ضرورية الآن. 🕯️"],
+                foodRecs: ["🍫 شوكولاتة داكنة.", "🍌 موزة.", "🥗 سلطة خضراء.", "🍣 سلمون طازج.", "🥛 كوب حليب دافئ.", "🌿 شاي البابونج.", "🥑 توست الأفوكادو.", "🍓 توت طازج.", "🫐 عصير التوت الأزرق.", "🥜 لوز وجوز.", "🍊 عصير برتقال.", "🍳 بيض مسلوق.", "🧀 جبن وبسكويت.", "🌽 سلطة ذرة.", "🥪 شطيرة ديك رومي."],
+                activityRecs: ["👍 عمل رائع اليوم!", "🌟 أنت تبلي بلاءً حسناً!", "💪 حافظ على العادات الجيدة!", "🚀 جهد مذهل!", "✨ أنت تتألق!", "🎯 حافظ على التركيز!", "🌈 يوم سعيد!"]
+            },
+            'zh': {
+                title: '每日情绪追踪',
+                mood: '心情:',
+                activity: '活动:',
+                save: '保存',
+                insights: '您的洞察',
+                trend: '情绪趋势:',
+                recs: '建议:',
+                subscribe: '订阅 ($4.99/月)',
+                share: '分享',
+                info_title: '🌟 关于此应用',
+                info_text: `<p><strong>🧠 集体智慧的结晶</strong><br>此应用经过技术、医学和科学领域专业人士的严格测试和完善。它是深入研究的结晶，提炼成简单、优雅的工具，用于您的日常生活。</p><p><strong>🎯 极简至上</strong><br>我们相信极简主义的力量。没有分散注意力的音频或视觉效果—只有纯粹、有目的的交互设计，旨在提供舒适感和最大的心理益处。</p><p><strong>🤖 您的日常伴侣，独一无二</strong><br>我们的智能建议引擎确保提示和说明永不重复。它会随着您的发展而发展，引导您日复一日地走向更好、更健康的自己。每一句话都是您日常幸福的关键。</p><p><strong>🔒 承诺的价值</strong><br>我们为什么要推荐我们的小额月度订阅？因为承诺带来专注。当您投资时，您会集中注意力。专业人士认可这种模式，因为专注的用户是茁壮成长的用户。只需一次与教练或医生咨询的费用，您就能获得来自营养师、心理学家和健康专家的终身智慧精华—全部集中在一个地方。</p><p><strong>🚀 我们为何不同</strong><br>我们彻底审查了无数其他应用和网站。大多数会用冗长、通用的文章轰炸您，这些文章不适合您特定的心态。我们不同。我们提供简洁、有针对性、有科学依据的指导，就在您最需要的时候。</p><p><strong>🌍 全球运动</strong><br>这不仅仅是一个应用；这是一场全球运动。它已经改变了世界各地人们的日常生活，一次一个情绪。</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">今天就开始您的旅程。您的每日清晰一触即达。 ✨</p>`,
+                lang_btn: '中文',
+                timer: '3秒后进入...',
+                active_until: '有效期至:',
+                food_tip: '食物建议:',
+                activity_tip: '活动建议:',
+                no_data: '开始记录以获取个性化提示。',
+                insightGood: ["您的趋势是积极的! 🌟", "本周气氛很棒! 🎉", "您做得很好! 🚀", "您的心情很高! ☀️", "情绪状态极佳! 💯"],
+                insightStable: ["您的心情很稳定。 ⚖️", "一如既往的平衡! 🧘", "稳定且一致。 🌊", "保持平衡! ✅"],
+                insightBad: ["您需要更多的自我关怀。 💪", "休息一下，这是您应得的。 🛋️", "今天优先休息。 🌿", "自我关怀现在至关重要。 🕯️"],
+                foodRecs: ["🍫 黑巧克力。", "🍌 一根香蕉。", "🥗 一份绿色沙拉。", "🍣 新鲜三文鱼。", "🥛 一杯温牛奶。", "🌿 洋甘菊茶。", "🥑 牛油果吐司。", "🍓 新鲜浆果。", "🫐 蓝莓冰沙。", "🥜 杏仁和核桃。", "🍊 橙汁。", "🍳 水波蛋。", "🧀 奶酪和饼干。", "🌽 玉米沙拉。", "🥪 火鸡三明治。"],
+                activityRecs: ["👍 今天工作很棒!", "🌟 您做得很好!", "💪 保持好习惯!", "🚀 了不起的努力!", "✨ 您闪闪发光!", "🎯 保持专注!", "🌈 祝您有美好的一天!"]
+            },
+            'es': {
+                title: 'Rastreador de Estado de Ánimo',
+                mood: 'Estado de ánimo:',
+                activity: 'Actividad:',
+                save: 'Guardar',
+                insights: 'Tus perspectivas',
+                trend: 'Tendencia del estado de ánimo:',
+                recs: 'Recomendaciones:',
+                subscribe: 'Suscribirse ($4.99/mes)',
+                share: 'Compartir',
+                info_title: '🌟 Sobre esta aplicación',
+                info_text: `<p><strong>🧠 Un producto de sabiduría colectiva</strong><br>Esta aplicación ha sido probada y refinada rigurosamente por profesionales de los campos técnico, médico y científico. Es la culminación de una profunda investigación, destilada en una herramienta simple y elegante para su vida diaria.</p><p><strong>🎯 Simplicidad ante todo</strong><br>Creemos en el poder del minimalismo. No hay efectos de audio o visuales que distraigan, solo una interacción pura y con propósito diseñada para la comodidad y el máximo beneficio mental.</p><p><strong>🤖 Su compañero diario, exclusivamente suyo</strong><br>Nuestro motor de consejos inteligente garantiza que los consejos e instrucciones nunca se repitan. Evoluciona con usted, guiándolo día a día hacia una versión mejor y más saludable de sí mismo. Cada frase es una clave para su felicidad diaria.</p><p><strong>🔒 El valor del compromiso</strong><br>¿Por qué recomendamos nuestra pequeña suscripción mensual? Porque el compromiso trae concentración. Cuando inviertes, prestas atención. Los profesionales respaldan este modelo porque un usuario dedicado es un usuario próspero. Por el precio de una sola consulta con un entrenador o médico, obtiene acceso a una vida de sabiduría destilada de nutricionistas, psicólogos y expertos en bienestar, todo en un solo lugar.</p><p><strong>🚀 Por qué somos diferentes</strong><br>Hemos revisado minuciosamente innumerables otras aplicaciones y sitios web. La mayoría lo bombardea con artículos largos y genéricos que no se adaptan a su estado mental específico. Nosotros somos diferentes. Brindamos orientación concisa, específica y respaldada científicamente exactamente cuando la necesita.</p><p><strong>🌍 Un movimiento global</strong><br>Esto no es solo una aplicación; es un movimiento global. Ya ha transformado las vidas diarias de personas en todo el mundo, un estado de ánimo a la vez.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Comience su viaje hoy. Su dosis diaria de claridad está a solo un toque de distancia. ✨</p>`,
+                lang_btn: 'Español',
+                timer: 'Entrando en 3 segundos...',
+                active_until: 'Activo hasta:',
+                food_tip: 'Recomendaciones de comida:',
+                activity_tip: 'Consejos de actividad:',
+                no_data: 'Comience a registrar para ver consejos personalizados.',
+                insightGood: ["¡Su tendencia es positiva! 🌟", "¡Grandes vibras esta semana! 🎉", "¡Lo está haciendo genial! 🚀", "¡Su estado de ánimo es alto! ☀️", "¡Excelente estado emocional! 💯"],
+                insightStable: ["Su estado de ánimo es estable. ⚖️", "¡Equilibrado como siempre! 🧘", "Constante y consistente. 🌊", "¡Manteniendo el equilibrio! ✅"],
+                insightBad: ["Necesita más autocuidado. 💪", "Tómese un descanso, se lo merece. 🛋️", "Priorice el descanso hoy. 🌿", "El autocuidado es vital ahora. 🕯️"],
+                foodRecs: ["🍫 Chocolate negro.", "🍌 Un plátano.", "🥗 Una ensalada verde.", "🍣 Salmón fresco.", "🥛 Un vaso de leche tibia.", "🌿 Té de manzanilla.", "🥑 Tostada de aguacate.", "🍓 Bayas frescas.", "🫐 Batido de arándanos.", "🥜 Almendras y nueces.", "🍊 Jugo de naranja.", "🍳 Huevos escalfados.", "🧀 Queso y galletas.", "🌽 Ensalada de maíz.", "🥪 Sándwich de pavo."],
+                activityRecs: ["👍 ¡Gran trabajo hoy!", "🌟 ¡Lo está haciendo genial!", "💪 ¡Mantenga los buenos hábitos!", "🚀 ¡Esfuerzo increíble!", "✨ ¡Está brillando!", "🎯 ¡Manténgase enfocado!", "🌈 ¡Tenga un día maravilloso!"]
+            },
+            'fr': {
+                title: 'Suivi d\'Humeur',
+                mood: 'Humeur:',
+                activity: 'Activité:',
+                save: 'Enregistrer',
+                insights: 'Vos aperçus',
+                trend: 'Tendance d\'humeur:',
+                recs: 'Recommandations:',
+                subscribe: 'S\'abonner ($4.99/mois)',
+                share: 'Partager',
+                info_title: '🌟 À propos de cette application',
+                info_text: `<p><strong>🧠 Un produit de sagesse collective</strong><br>Cette application a été rigoureusement testée et affinée par des professionnels des domaines techniques, médicaux et scientifiques. Elle est l'aboutissement de recherches approfondies, distillées dans un outil simple et élégant pour votre vie quotidienne.</p><p><strong>🎯 La simplicité avant tout</strong><br>Nous croyons au pouvoir du minimalisme. Il n'y a pas d'effets audio ou visuels distrayants, seulement une interaction pure et ciblée conçue pour le confort et un bénéfice mental maximal.</p><p><strong>🤖 Votre compagnon quotidien, uniquement vôtre</strong><br>Notre moteur de conseils intelligent garantit que les conseils et instructions ne se répètent jamais. Il évolue avec vous, vous guidant jour après jour vers une version meilleure et plus saine de vous-même. Chaque phrase est une clé pour votre bonheur quotidien.</p><p><strong>🔒 La valeur de l'engagement</strong><br>Pourquoi recommandons-nous notre petit abonnement mensuel ? Parce que l'engagement apporte de la concentration. Lorsque vous investissez, vous faites attention. Les professionnels approuvent ce modèle car un utilisateur dédié est un utilisateur qui s'épanouit. Pour le prix d'une seule consultation avec un coach ou un médecin, vous accédez à une vie de sagesse distillée de nutritionnistes, psychologues et experts en bien-être, tout en un seul endroit.</p><p><strong>🚀 Pourquoi nous sommes différents</strong><br>Nous avons examiné en profondeur d'innombrables autres applications et sites Web. La plupart vous bombardent d'articles longs et génériques qui ne sont pas adaptés à votre état d'esprit spécifique. Nous sommes différents. Nous fournissons des conseils concis, ciblés et soutenus scientifiquement exactement quand vous en avez besoin.</p><p><strong>🌍 Un mouvement mondial</strong><br>Ce n'est pas juste une application ; c'est un mouvement mondial. Elle a déjà transformé la vie quotidienne de personnes dans le monde entier, une humeur à la fois.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Commencez votre voyage aujourd'hui. Votre dose quotidienne de clarté est à un seul clic. ✨</p>`,
+                lang_btn: 'Français',
+                timer: 'Entrée dans 3 secondes...',
+                active_until: 'Actif jusqu\'au:',
+                food_tip: 'Recommandations alimentaires:',
+                activity_tip: 'Conseils d\'activité:',
+                no_data: 'Commencez à enregistrer pour obtenir des conseils personnalisés.',
+                insightGood: ["Votre tendance est positive ! 🌟", "Bonne vibes cette semaine ! 🎉", "Vous assurez ! 🚀", "Votre humeur est élevée ! ☀️", "Excellent état émotionnel ! 💯"],
+                insightStable: ["Votre humeur est stable. ⚖️", "Équilibré comme toujours ! 🧘", "Régulier et constant. 🌊", "Maintenir l'équilibre ! ✅"],
+                insightBad: ["Vous avez besoin de plus d'auto-soins. 💪", "Prenez une pause, vous le méritez. 🛋️", "Priorisez le repos aujourd'hui. 🌿", "L'auto-soin est vital maintenant. 🕯️"],
+                foodRecs: ["🍫 Chocolat noir.", "🍌 Une banane.", "🥗 Une salade verte.", "🍣 Saumon frais.", "🥛 Un verre de lait chaud.", "🌿 Tisane à la camomille.", "🥑 Toast à l'avocat.", "🍓 Baies fraîches.", "🫐 Smoothie aux myrtilles.", "🥜 Amandes et noix.", "🍊 Jus d'orange.", "🍳 Œufs pochés.", "🧀 Fromage et crackers.", "🌽 Salade de maïs.", "🥪 Sandwich à la dinde."],
+                activityRecs: ["👍 Du bon travail aujourd'hui !", "🌟 Vous faites du bon travail !", "💪 Continuez les bonnes habitudes !", "🚀 Un effort incroyable !", "✨ Vous brillez !", "🎯 Restez concentré !", "🌈 Passez une merveilleuse journée !"]
+            },
+            'de': {
+                title: 'Stimmungs-Tracker',
+                mood: 'Stimmung:',
+                activity: 'Aktivität:',
+                save: 'Speichern',
+                insights: 'Deine Einblicke',
+                trend: 'Stimmungstrend:',
+                recs: 'Empfehlungen:',
+                subscribe: 'Abonnieren ($4.99/Monat)',
+                share: 'Teilen',
+                info_title: '🌟 Über diese App',
+                info_text: `<p><strong>🧠 Ein Produkt kollektiver Weisheit</strong><br>Diese App wurde von Fachleuten aus den Bereichen Technik, Medizin und Wissenschaft streng getestet und verfeinert. Sie ist der Höhepunkt tiefer Forschung, destilliert in ein einfaches, elegantes Werkzeug für Ihren täglichen Gebrauch.</p><p><strong>🎯 Einfachheit über alles</strong><br>Wir glauben an die Kraft des Minimalismus. Es gibt keine ablenkenden Audio- oder visuellen Effekte – nur reine, zielgerichtete Interaktion, die auf Komfort und maximalen mentalen Nutzen ausgelegt ist.</p><p><strong>🤖 Ihr täglicher Begleiter, einzigartig für Sie</strong><br>Unsere intelligente Ratschlag-Engine stellt sicher, dass sich Tipps und Anweisungen nie wiederholen. Sie entwickelt sich mit Ihnen weiter und führt Sie Tag für Tag zu einer besseren, gesünderen Version Ihrer selbst. Jeder Satz ist ein Schlüssel zu Ihrem täglichen Glück.</p><p><strong>🔒 Der Wert des Engagements</strong><br>Warum empfehlen wir unser kleines monatliches Abonnement? Weil Engagement Fokus bringt. Wenn Sie investieren, zahlen Sie aufmerksam. Fachleute befürworten dieses Modell, weil ein engagierter Nutzer ein gedeihender Nutzer ist. Für den Preis einer einzigen Beratung mit einem Coach oder Arzt erhalten Sie Zugang zu einem Leben voller destillierter Weisheit von Ernährungswissenschaftlern, Psychologen und Wellness-Experten – alles an einem Ort.</p><p><strong>🚀 Warum wir anders sind</strong><br>Wir haben unzählige andere Apps und Websites gründlich überprüft. Die meisten bombardieren Sie mit langen, allgemeinen Artikeln, die nicht auf Ihren spezifischen Geisteszustand zugeschnitten sind. Wir sind anders. Wir liefern prägnante, zielgerichtete und wissenschaftlich fundierte Anleitungen genau dann, wenn Sie sie brauchen.</p><p><strong>🌍 Eine globale Bewegung</strong><br>Dies ist nicht nur eine App; es ist eine globale Bewegung. Sie hat bereits das tägliche Leben von Menschen weltweit verändert, eine Stimmung nach der anderen.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Beginnen Sie Ihre Reise heute. Ihre tägliche Dosis Klarheit ist nur einen Klick entfernt. ✨</p>`,
+                lang_btn: 'Deutsch',
+                timer: 'Eintritt in 3 Sekunden...',
+                active_until: 'Aktiv bis:',
+                food_tip: 'Essensempfehlungen:',
+                activity_tip: 'Aktivitätstipps:',
+                no_data: 'Beginnen Sie mit der Protokollierung, um personalisierte Tipps zu erhalten.',
+                insightGood: ["Ihr Trend ist positiv! 🌟", "Tolle Stimmung diese Woche! 🎉", "Sie rocken es! 🚀", "Ihre Stimmung ist hoch! ☀️", "Ausgezeichneter emotionaler Zustand! 💯"],
+                insightStable: ["Ihre Stimmung ist stabil. ⚖️", "Ausgeglichen wie immer! 🧘", "Stetig und beständig. 🌊", "Gleichgewicht halten! ✅"],
+                insightBad: ["Sie brauchen mehr Selbstfürsorge. 💪", "Machen Sie eine Pause, Sie haben es verdient. 🛋️", "Priorisieren Sie heute Ruhe. 🌿", "Selbstfürsorge ist jetzt lebenswichtig. 🕯️"],
+                foodRecs: ["🍫 Dunkle Schokolade.", "🍌 Eine Banane.", "🥗 Ein grüner Salat.", "🍣 Frischer Lachs.", "🥛 Ein Glas warme Milch.", "🌿 Kamillentee.", "🥑 Avocado-Toast.", "🍓 Frische Beeren.", "🫐 Heidelbeer-Smoothie.", "🥜 Mandeln und Walnüsse.", "🍊 Orangensaft.", "🍳 Poachierte Eier.", "🧀 Käse und Cracker.", "🌽 Maissalat.", "🥪 Ein Truthahn-Sandwich."],
+                activityRecs: ["👍 Starke Arbeit heute!", "🌟 Sie machen das großartig!", "💪 Bleiben Sie bei den guten Gewohnheiten!", "🚀 Erstaunlicher Einsatz!", "✨ Sie strahlen!", "🎯 Bleiben Sie fokussiert!", "🌈 Haben Sie einen wunderbaren Tag!"]
+            },
+            'ja': {
+                title: '毎日の気分トラッカー',
+                mood: '気分:',
+                activity: '活動:',
+                save: '保存',
+                insights: 'あなたの洞察',
+                trend: '気分の傾向:',
+                recs: 'おすすめ:',
+                subscribe: 'サブスク ($4.99/月)',
+                share: '共有',
+                info_title: '🌟 このアプリについて',
+                info_text: `<p><strong>🧠 集合知の産物</strong><br>このアプリケーションは、技術、医療、科学分野の専門家によって厳格にテストされ、改良されてきました。深い研究の集大成であり、日常の生活に役立つシンプルで洗練されたツールに凝縮されています。</p><p><strong>🎯 何よりもシンプルさ</strong><br>私たちはミニマリズムの力を信じています。気を散らす音声や視覚効果はありません。快適さと最大限の精神的利益のために設計された、純粋で目的のあるインタラクションだけがあります。</p><p><strong>🤖 あなただけの毎日のコンパニオン</strong><br>私たちのインテリジェントなアドバイスエンジンは、ヒントや指示が決して繰り返されないことを保証します。それはあなたと共に進化し、より良く、より健康な自分自身へと毎日導きます。すべての文章が、あなたの毎日の幸せへの鍵です。</p><p><strong>🔒 コミットメントの価値</strong><br>なぜ私たちは少額の月額サブスクリプションをお勧めするのでしょうか？コミットメントが集中力をもたらすからです。投資するとき、あなたは注意を払います。専門家はこのモデルを支持します。なぜなら、熱心なユーザーは成長するユーザーだからです。コーチや医師への1回の相談料で、栄養士、心理学者、ウェルネス専門家から抽出された生涯の知恵にアクセスできます。すべてが1つの場所にあります。</p><p><strong>🚀 私たちが違う理由</strong><br>私たちは数え切れないほどの他のアプリやウェブサイトを徹底的にレビューしました。ほとんどは、あなたの特定の精神状態に合わせていない長くて一般的な記事であなたを攻め立てます。私たちは違います。あなたが必要とするまさにその時に、簡潔で、的を絞った、科学的に裏付けられたガイダンスを提供します。</p><p><strong>🌍 グローバルな運動</strong><br>これは単なるアプリではありません。グローバルな運動です。それはすでに世界中の人々の日常生活を変えてきました。一度に一つの気分で。</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">今日から旅を始めましょう。あなたの毎日の明晰さは、ただのタップで届きます。 ✨</p>`,
+                lang_btn: '日本語',
+                timer: '3秒後に入力...',
+                active_until: '有効期限:',
+                food_tip: '食事のおすすめ:',
+                activity_tip: '活動のアドバイス:',
+                no_data: 'ログを開始して、パーソナライズされたヒントを入手してください。',
+                insightGood: ["あなたの傾向はポジティブです! 🌟", "今週は最高の雰囲気! 🎉", "あなたは素晴らしいです! 🚀", "気分が高揚しています! ☀️", "優れた感情状態! 💯"],
+                insightStable: ["気分は安定しています。 ⚖️", "いつものようにバランスが取れています! 🧘", "着実で一貫しています。 🌊", "バランスを保っています! ✅"],
+                insightBad: ["より多くのセルフケアが必要です。 💪", "休憩を取ってください、その価値があります。 🛋️", "今日は休息を優先してください。 🌿", "今はセルフケアが不可欠です。 🕯️"],
+                foodRecs: ["🍫 ダークチョコレート。", "🍌 バナナ。", "🥗 グリーンサラダ。", "🍣 新鮮なサーモン。", "🥛 温かいミルクを一杯。", "🌿 カモミールティー。", "🥑 アボカドトースト。", "🍓 フレッシュベリー。", "🫐 ブルーベリースムージー。", "🥜 アーモンドとクルミ。", "🍊 オレンジジュース。", "🍳 ポーチドエッグ。", "🧀 チーズとクラッカー。", "🌽 コーンサラダ。", "🥪 ターキーサンドイッチ。"],
+                activityRecs: ["👍 今日は素晴らしい仕事です!", "🌟 あなたは素晴らしいです!", "💪 良い習慣を続けてください!", "🚀 驚くべき努力!", "✨ あなたは輝いています!", "🎯 集中力を保ってください!", "🌈 素晴らしい一日を!"]
+            },
+            'ru': {
+                title: 'Трекер настроения',
+                mood: 'Настроение:',
+                activity: 'Активность:',
+                save: 'Сохранить',
+                insights: 'Ваши инсайты',
+                trend: 'Тенденция настроения:',
+                recs: 'Рекомендации:',
+                subscribe: 'Подписка ($4.99/мес)',
+                share: 'Поделиться',
+                info_title: '🌟 Об этом приложении',
+                info_text: `<p><strong>🧠 Продукт коллективной мудрости</strong><br>Это приложение было тщательно протестировано и усовершенствовано профессионалами в технических, медицинских и научных областях. Это кульминация глубоких исследований, воплощенная в простой и элегантный инструмент для вашей повседневной жизни.</p><p><strong>🎯 Простота превыше всего</strong><br>Мы верим в силу минимализма. Нет отвлекающих аудио- или визуальных эффектов — только чистое, целенаправленное взаимодействие, разработанное для комфорта и максимальной пользы для психики.</p><p><strong>🤖 Ваш ежедневный спутник, уникальный для вас</strong><br>Наш интеллектуальный движок советов гарантирует, что советы и инструкции никогда не повторяются. Он развивается вместе с вами, направляя вас день за днем к лучшей и более здоровой версии себя. Каждое предложение — ключ к вашему ежедневному счастью.</p><p><strong>🔒 Ценность обязательств</strong><br>Почему мы рекомендуем нашу небольшую ежемесячную подписку? Потому что обязательства приносят сосредоточенность. Когда вы вкладываете средства, вы обращаете внимание. Профессионалы одобряют эту модель, потому что преданный пользователь — это процветающий пользователь. За цену одной консультации с тренером или врачом вы получаете доступ к целой жизни дистиллированной мудрости от диетологов, психологов и экспертов по здоровью — и все это в одном месте.</p><p><strong>🚀 Почему мы другие</strong><br>Мы тщательно изучили бесчисленные другие приложения и веб-сайты. Большинство из них забрасывают вас длинными, общими статьями, которые не адаптированы к вашему конкретному состоянию ума. Мы другие. Мы предоставляем краткое, целенаправленное, научно обоснованное руководство именно тогда, когда оно вам нужно.</p><p><strong>🌍 Глобальное движение</strong><br>Это не просто приложение; это глобальное движение. Оно уже изменило повседневную жизнь людей по всему миру, по одному настроению за раз.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Начните свое путешествие сегодня. Ваша ежедневная доза ясности — всего в одном касании. ✨</p>`,
+                lang_btn: 'Русский',
+                timer: 'Вход через 3 секунды...',
+                active_until: 'Активно до:',
+                food_tip: 'Рекомендации по питанию:',
+                activity_tip: 'Советы по активности:',
+                no_data: 'Начните вести журнал, чтобы получать персонализированные советы.',
+                insightGood: ["Ваш тренд положительный! 🌟", "Отличная атмосфера на этой неделе! 🎉", "Вы великолепны! 🚀", "Ваше настроение на высоте! ☀️", "Отличное эмоциональное состояние! 💯"],
+                insightStable: ["Ваше настроение стабильно. ⚖️", "Сбалансированы, как всегда! 🧘", "Устойчиво и последовательно. 🌊", "Сохраняем баланс! ✅"],
+                insightBad: ["Вам нужно больше заботы о себе. 💪", "Сделайте перерыв, вы это заслужили. 🛋️", "Сегодня приоритет отдыху. 🌿", "Забота о себе сейчас жизненно важна. 🕯️"],
+                foodRecs: ["🍫 Темный шоколад.", "🍌 Банан.", "🥗 Зеленый салат.", "🍣 Свежий лосось.", "🥛 Стакан теплого молока.", "🌿 Ромашковый чай.", "🥑 Тосты с авокадо.", "🍓 Свежие ягоды.", "🫐 Черничный смузи.", "🥜 Миндаль и грецкие орехи.", "🍊 Апельсиновый сок.", "🍳 Яйца-пашот.", "🧀 Сыр и крекеры.", "🌽 Салат из кукурузы.", "🥪 Сэндвич с индейкой."],
+                activityRecs: ["👍 Отличная работа сегодня!", "🌟 Вы отлично справляетесь!", "💪 Продолжайте хорошие привычки!", "🚀 Невероятное усилие!", "✨ Вы сияете!", "🎯 Оставайтесь сосредоточенными!", "🌈 Прекрасного дня!"]
+            },
+            'pt': {
+                title: 'Monitor de Humor',
+                mood: 'Humor:',
+                activity: 'Atividade:',
+                save: 'Salvar',
+                insights: 'Seus insights',
+                trend: 'Tendência de humor:',
+                recs: 'Recomendações:',
+                subscribe: 'Assinar ($4.99/mês)',
+                share: 'Compartilhar',
+                info_title: '🌟 Sobre este aplicativo',
+                info_text: `<p><strong>🧠 Um produto da sabedoria coletiva</strong><br>Este aplicativo foi rigorosamente testado e refinado por profissionais das áreas técnica, médica e científica. É o culminar de pesquisas profundas, destilado em uma ferramenta simples e elegante para sua vida diária.</p><p><strong>🎯 Simplicidade acima de tudo</strong><br>Acreditamos no poder do minimalismo. Não há efeitos de áudio ou visuais que distraiam - apenas interação pura e proposital, projetada para conforto e máximo benefício mental.</p><p><strong>🤖 Seu companheiro diário, exclusivamente seu</strong><br>Nosso mecanismo de conselhos inteligente garante que dicas e instruções nunca se repitam. Ele evolui com você, guiando-o dia após dia em direção a uma versão melhor e mais saudável de si mesmo. Cada frase é uma chave para sua felicidade diária.</p><p><strong>🔒 O valor do compromisso</strong><br>Por que recomendamos nossa pequena assinatura mensal? Porque o compromisso traz foco. Quando você investe, você presta atenção. Os profissionais endossam este modelo porque um usuário dedicado é um usuário próspero. Pelo preço de uma única consulta com um coach ou médico, você obtém acesso a uma vida de sabedoria destilada de nutricionistas, psicólogos e especialistas em bem-estar, tudo em um só lugar.</p><p><strong>🚀 Por que somos diferentes</strong><br>Revisamos minuciosamente inúmeros outros aplicativos e sites. A maioria bombardeia você com artigos longos e genéricos que não são adaptados ao seu estado de espírito específico. Nós somos diferentes. Nós fornecemos orientação concisa, direcionada e com respaldo científico exatamente quando você precisa.</p><p><strong>🌍 Um movimento global</strong><br>Este não é apenas um aplicativo; é um movimento global. Já transformou a vida diária de pessoas em todo o mundo, um humor de cada vez.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Comece sua jornada hoje. Sua dose diária de clareza está a apenas um toque de distância. ✨</p>`,
+                lang_btn: 'Português',
+                timer: 'Entrando em 3 segundos...',
+                active_until: 'Ativo até:',
+                food_tip: 'Recomendações de comida:',
+                activity_tip: 'Conselhos de atividade:',
+                no_data: 'Comece a registrar para obter dicas personalizadas.',
+                insightGood: ["Sua tendência é positiva! 🌟", "Ótimas vibrações esta semana! 🎉", "Você está arrasando! 🚀", "Seu humor está alto! ☀️", "Excelente estado emocional! 💯"],
+                insightStable: ["Seu humor está estável. ⚖️", "Equilibrado como sempre! 🧘", "Constante e consistente. 🌊", "Mantendo o equilíbrio! ✅"],
+                insightBad: ["Você precisa de mais autocuidado. 💪", "Faça uma pausa, você merece. 🛋️", "Priorize o descanso hoje. 🌿", "O autocuidado é vital agora. 🕯️"],
+                foodRecs: ["🍫 Chocolate amargo.", "🍌 Uma banana.", "🥗 Uma salada verde.", "🍣 Salmão fresco.", "🥛 Um copo de leite morno.", "🌿 Chá de camomila.", "🥑 Torrada de abacate.", "🍓 Frutas vermelhas frescas.", "🫐 Smoothie de mirtilo.", "🥜 Amêndoas e nozes.", "🍊 Suco de laranja.", "🍳 Ovos escalfados.", "🧀 Queijo e biscoitos.", "🌽 Salada de milho.", "🥪 Sanduíche de peru."],
+                activityRecs: ["👍 Ótimo trabalho hoje!", "🌟 Você está indo muito bem!", "💪 Mantenha os bons hábitos!", "🚀 Esforço incrível!", "✨ Você está brilhando!", "🎯 Mantenha o foco!", "🌈 Tenha um dia maravilhoso!"]
+            },
+            'it': {
+                title: 'Monitor Umore',
+                mood: 'Umore:',
+                activity: 'Attività:',
+                save: 'Salva',
+                insights: 'I tuoi insight',
+                trend: 'Trend dell\'umore:',
+                recs: 'Raccomandazioni:',
+                subscribe: 'Abbonati ($4.99/mese)',
+                share: 'Condividi',
+                info_title: '🌟 Informazioni su questa app',
+                info_text: `<p><strong>🧠 Un prodotto della saggezza collettiva</strong><br>Questa applicazione è stata rigorosamente testata e perfezionata da professionisti nei campi tecnico, medico e scientifico. È il culmine di una profonda ricerca, distillata in uno strumento semplice ed elegante per la tua vita quotidiana.</p><p><strong>🎯 Semplicità sopra ogni cosa</strong><br>Crediamo nel potere del minimalismo. Non ci sono effetti audio o visivi che distraggono, solo un'interazione pura e mirata progettata per il comfort e il massimo beneficio mentale.</p><p><strong>🤖 Il tuo compagno quotidiano, unicamente tuo</strong><br>Il nostro motore di consigli intelligente garantisce che suggerimenti e istruzioni non si ripetano mai. Si evolve con te, guidandoti giorno dopo giorno verso una versione migliore e più sana di te stesso. Ogni frase è una chiave per la tua felicità quotidiana.</p><p><strong>🔒 Il valore dell'impegno</strong><br>Perché consigliamo il nostro piccolo abbonamento mensile? Perché l'impegno porta concentrazione. Quando investi, presti attenzione. I professionisti approvano questo modello perché un utente dedicato è un utente fiorente. Per il prezzo di una singola consulenza con un coach o un medico, ottieni l'accesso a una vita di saggezza distillata da nutrizionisti, psicologi ed esperti di benessere, tutto in un unico posto.</p><p><strong>🚀 Perché siamo diversi</strong><br>Abbiamo esaminato a fondo innumerevoli altre app e siti web. La maggior parte ti bombarda con articoli lunghi e generici che non sono adattati al tuo specifico stato d'animo. Noi siamo diversi. Forniamo una guida concisa, mirata e supportata scientificamente esattamente quando ne hai bisogno.</p><p><strong>🌍 Un movimento globale</strong><br>Questa non è solo un'app; è un movimento globale. Ha già trasformato la vita quotidiana di persone in tutto il mondo, un umore alla volta.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Inizia il tuo viaggio oggi. La tua dose quotidiana di chiarezza è a un solo tocco di distanza. ✨</p>`,
+                lang_btn: 'Italiano',
+                timer: 'Entrata in 3 secondi...',
+                active_until: 'Attivo fino al:',
+                food_tip: 'Raccomandazioni alimentari:',
+                activity_tip: 'Consigli per l\'attività:',
+                no_data: 'Inizia a registrare per ottenere suggerimenti personalizzati.',
+                insightGood: ["Il tuo trend è positivo! 🌟", "Grandi vibrazioni questa settimana! 🎉", "Stai andando alla grande! 🚀", "Il tuo umore è alto! ☀️", "Eccellente stato emotivo! 💯"],
+                insightStable: ["Il tuo umore è stabile. ⚖️", "Equilibrato come sempre! 🧘", "Costante e coerente. 🌊", "Mantenere l'equilibrio! ✅"],
+                insightBad: ["Hai bisogno di più cura di te stesso. 💪", "Fai una pausa, te lo meriti. 🛋️", "Dai priorità al riposo oggi. 🌿", "La cura di sé è vitale ora. 🕯️"],
+                foodRecs: ["🍫 Cioccolato fondente.", "🍌 Una banana.", "🥗 Un'insalata verde.", "🍣 Salmone fresco.", "🥛 Un bicchiere di latte caldo.", "🌿 Tisana alla camomilla.", "🥑 Toast all'avocado.", "🍓 Frutti di bosco freschi.", "🫐 Frullato di mirtilli.", "🥜 Mandorle e noci.", "🍊 Succo d'arancia.", "🍳 Uova in camicia.", "🧀 Formaggio e cracker.", "🌽 Insalata di mais.", "🥪 Un panino con tacchino."],
+                activityRecs: ["👍 Ottimo lavoro oggi!", "🌟 Stai facendo un ottimo lavoro!", "💪 Mantieni le buone abitudini!", "🚀 Sforzo incredibile!", "✨ Stai brillando!", "🎯 Rimani concentrato!", "🌈 Buona giornata!"]
+            },
+            'ko': {
+                title: '일일 기분 추적기',
+                mood: '기분:',
+                activity: '활동:',
+                save: '저장',
+                insights: '당신의 인사이트',
+                trend: '기분 트렌드:',
+                recs: '추천:',
+                subscribe: '구독 ($4.99/월)',
+                share: '공유',
+                info_title: '🌟 이 앱 정보',
+                info_text: `<p><strong>🧠 집단 지혜의 산물</strong><br>이 애플리케이션은 기술, 의료 및 과학 분야의 전문가들에 의해 엄격하게 테스트되고 개선되었습니다. 깊은 연구의 결정체로, 일상 생활을 위한 간단하고 우아한 도구로 정제되었습니다.</p><p><strong>🎯 무엇보다도 단순함</strong><br>우리는 미니멀리즘의 힘을 믿습니다. 산만한 오디오나 시각적 효과는 없습니다. 편안함과 최대의 정신적 이익을 위해 설계된 순수하고 목적 있는 상호작용만 있습니다.</p><p><strong>🤖 당신만을 위한 일상의 동반자</strong><br>지능형 조언 엔진은 팁과 지침이 절대 반복되지 않도록 보장합니다. 그것은 당신과 함께 진화하며, 더 나은, 더 건강한 자신으로 매일 안내합니다. 모든 문장은 당신의 일상적인 행복의 열쇠입니다.</p><p><strong>🔒 헌신의 가치</strong><br>왜 우리는 소액의 월간 구독을 권장할까요? 헌신은 집중력을 가져오기 때문입니다. 투자할 때, 당신은 주의를 기울입니다. 전문가들은 이 모델을 지지합니다. 왜냐하면 전용 사용자는 번성하는 사용자이기 때문입니다. 코치나 의사와의 단 한 번의 상담 가격으로, 영양사, 심리학자 및 웰빙 전문가의 평생 증류된 지혜에 액세스할 수 있습니다. 모두 한 곳에 있습니다.</p><p><strong>🚀 우리가 다른 이유</strong><br>우리는 수많은 다른 앱과 웹사이트를 철저히 검토했습니다. 대부분은 당신의 특정 심리 상태에 맞지 않는 길고 일반적인 기사로 당신을 공격합니다. 우리는 다릅니다. 우리는 당신이 필요로 할 때 정확하게 간결하고, 목표 지향적이며, 과학적으로 뒷받침되는 지침을 제공합니다.</p><p><strong>🌍 글로벌 무브먼트</strong><br>이것은 단순한 앱이 아닙니다. 그것은 글로벌 무브먼트입니다. 그것은 이미 전 세계 사람들의 일상을 변화시켰습니다. 한 번에 하나의 기분으로.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">오늘 여정을 시작하세요. 당신의 일일 명확성의 복용량은 단 한 번의 탭에 있습니다. ✨</p>`,
+                lang_btn: '한국어',
+                timer: '3초 후 진입...',
+                active_until: '활성 날짜:',
+                food_tip: '음식 추천:',
+                activity_tip: '활동 조언:',
+                no_data: '개인화된 팁을 얻으려면 로깅을 시작하세요.',
+                insightGood: ["트렌드가 긍정적입니다! 🌟", "이번 주 분위기가 좋아요! 🎉", "잘하고 있어요! 🚀", "기분이 좋아요! ☀️", "훌륭한 감정 상태! 💯"],
+                insightStable: ["기분이 안정적입니다. ⚖️", "항상 그렇듯 균형 잡혔어요! 🧘", "꾸준하고 일관됩니다. 🌊", "균형 유지 중! ✅"],
+                insightBad: ["셀프 케어가 더 필요합니다. 💪", "휴식을 취하세요, 그럴 자격이 있습니다. 🛋️", "오늘은 휴식을 우선시하세요. 🌿", "셀프 케어가 지금 중요합니다. 🕯️"],
+                foodRecs: ["🍫 다크 초콜릿.", "🍌 바나나.", "🥗 그린 샐러드.", "🍣 신선한 연어.", "🥛 따뜻한 우유 한 잔.", "🌿 카모마일 차.", "🥑 아보카도 토스트.", "🍓 신선한 베리.", "🫐 블루베리 스무디.", "🥜 아몬드와 호두.", "🍊 오렌지 주스.", "🍳 수란.", "🧀 치즈와 크래커.", "🌽 콘 샐러드.", "🥪 칠면조 샌드위치."],
+                activityRecs: ["👍 오늘 훌륭한 작업입니다!", "🌟 정말 잘하고 있어요!", "💪 좋은 습관을 유지하세요!", "🚀 놀라운 노력!", "✨ 빛나고 있어요!", "🎯 집중하세요!", "🌈 좋은 하루 보내세요!"]
+            },
+            'hi': {
+                title: 'दैनिक मूड ट्रैकर',
+                mood: 'मूड:',
+                activity: 'गतिविधि:',
+                save: 'सहेजें',
+                insights: 'आपकी अंतर्दृष्टि',
+                trend: 'मूड रुझान:',
+                recs: 'सिफ़ारिशें:',
+                subscribe: 'सदस्यता ($4.99/महीना)',
+                share: 'साझा करें',
+                info_title: '🌟 इस ऐप के बारे में',
+                info_text: `<p><strong>🧠 सामूहिक ज्ञान का उत्पाद</strong><br>इस एप्लिकेशन का तकनीकी, चिकित्सा और वैज्ञानिक क्षेत्रों के पेशेवरों द्वारा कठोरता से परीक्षण और परिष्कृत किया गया है। यह गहन शोध की परिणति है, जिसे आपके दैनिक जीवन के लिए एक सरल, सुरुचिपूर्ण उपकरण में संक्षेपित किया गया है।</p><p><strong>🎯 सबसे बढ़कर सादगी</strong><br>हम न्यूनतमवाद की शक्ति में विश्वास करते हैं। कोई ध्यान भटकाने वाले ऑडियो या दृश्य प्रभाव नहीं हैं—केवल शुद्ध, उद्देश्यपूर्ण बातचीत जो आराम और अधिकतम मानसिक लाभ के लिए डिज़ाइन की गई है।</p><p><strong>🤖 आपका दैनिक साथी, विशेष रूप से आपका</strong><br>हमारा बुद्धिमान सलाह इंजन सुनिश्चित करता है कि सुझाव और निर्देश कभी भी दोहराए न जाएं। यह आपके साथ विकसित होता है, आपको दिन-प्रतिदिन अपने बेहतर, स्वस्थ संस्करण की ओर मार्गदर्शन करता है। हर वाक्य आपकी दैनिक खुशी की कुंजी है।</p><p><strong>🔒 प्रतिबद्धता का मूल्य</strong><br>हम अपनी छोटी मासिक सदस्यता की सिफारिश क्यों करते हैं? क्योंकि प्रतिबद्धता ध्यान केंद्रित करती है। जब आप निवेश करते हैं, तो आप ध्यान देते हैं। पेशेवर इस मॉडल का समर्थन करते हैं क्योंकि एक समर्पित उपयोगकर्ता एक संपन्न उपयोगकर्ता होता है। एक कोच या डॉक्टर के साथ एक परामर्श की कीमत पर, आपको पोषण विशेषज्ञों, मनोवैज्ञानिकों और कल्याण विशेषज्ञों से आजीवन संक्षेपित ज्ञान तक पहुंच मिलती है—सब एक ही स्थान पर।</p><p><strong>🚀 हम अलग क्यों हैं</strong><br>हमने अनगिनत अन्य ऐप्स और वेबसाइटों की गहन समीक्षा की है। अधिकांश आपको लंबे, सामान्य लेखों से भर देते हैं जो आपकी विशिष्ट मानसिक स्थिति के अनुरूप नहीं होते हैं। हम अलग हैं। हम संक्षिप्त, लक्षित, वैज्ञानिक रूप से समर्थित मार्गदर्शन प्रदान करते हैं जब आपको इसकी आवश्यकता होती है।</p><p><strong>🌍 एक वैश्विक आंदोलन</strong><br>यह सिर्फ एक ऐप नहीं है; यह एक वैश्विक आंदोलन है। इसने पहले ही दुनिया भर के लोगों के दैनिक जीवन को बदल दिया है, एक समय में एक मूड।</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">आज अपनी यात्रा शुरू करें। स्पष्टता की आपकी दैनिक खुराक बस एक टैप दूर है। ✨</p>`,
+                lang_btn: 'हिन्दी',
+                timer: '3 सेकंड में प्रवेश...',
+                active_until: 'सक्रिय तक:',
+                food_tip: 'भोजन सिफ़ारिशें:',
+                activity_tip: 'गतिविधि सलाह:',
+                no_data: 'व्यक्तिगत सुझाव प्राप्त करने के लिए लॉगिंग शुरू करें।',
+                insightGood: ["आपका रुझान सकारात्मक है! 🌟", "इस सप्ताह बहुत अच्छा माहौल! 🎉", "आप बहुत अच्छा कर रहे हैं! 🚀", "आपका मूड उच्च है! ☀️", "उत्कृष्ट भावनात्मक स्थिति! 💯"],
+                insightStable: ["आपका मूड स्थिर है। ⚖️", "हमेशा की तरह संतुलित! 🧘", "स्थिर और सुसंगत। 🌊", "संतुलन बनाए रखना! ✅"],
+                insightBad: ["आपको अधिक आत्म-देखभाल की आवश्यकता है। 💪", "एक ब्रेक लें, आप इसके लायक हैं। 🛋️", "आज आराम को प्राथमिकता दें। 🌿", "आत्म-देखभाल अब महत्वपूर्ण है। 🕯️"],
+                foodRecs: ["🍫 डार्क चॉकलेट।", "🍌 एक केला।", "🥗 एक हरा सलाद।", "🍣 ताजा सैल्मन।", "🥛 एक गिलास गर्म दूध।", "🌿 कैमोमाइल चाय।", "🥑 एवोकैडो टोस्ट।", "🍓 ताजा जामुन।", "🫐 ब्लूबेरी स्मूदी।", "🥜 बादाम और अखरोट।", "🍊 संतरे का जूस।", "🍳 पोच्ड अंडे।", "🧀 पनीर और पटाखे।", "🌽 मकई का सलाद।", "🥪 एक टर्की सैंडविच।"],
+                activityRecs: ["👍 आज बहुत अच्छा काम!", "🌟 आप बहुत अच्छा कर रहे हैं!", "💪 अच्छी आदतें बनाए रखें!", "🚀 अद्भुत प्रयास!", "✨ आप चमक रहे हैं!", "🎯 केंद्रित रहें!", "🌈 आपका दिन शुभ हो!"]
+            }
+        };
+
+        let currentLang = 'en';
+        let selectedMood = null;
+        let selectedActivity = null;
+        let entries = JSON.parse(localStorage.getItem('moodData')) || [];
+        let isSubscribed = false;
+        let expiryTime = null;
+        let timerInterval = null;
+
+        const startScreen = document.getElementById('start-screen');
+        const appContainer = document.getElementById('app');
+        const langBtn = document.getElementById('lang-select-btn');
+        const timerText = document.getElementById('timer-text');
+        const langModal = document.getElementById('lang-modal');
+        const langListContainer = document.getElementById('lang-list-container');
+
+        const moodBtns = document.querySelectorAll('#mood-buttons .btn');
+        const activityBtns = document.querySelectorAll('#activity-buttons .btn');
+        const saveBtn = document.getElementById('save-btn');
+        const trendEl = document.getElementById('mood-trend');
+        const insightsTitle = document.getElementById('insights-title');
+        const premiumContent = document.getElementById('premium-content');
+        const subscribedContent = document.getElementById('subscribed-content');
+        const foodTipEl = document.getElementById('food-tip');
+        const adviceEl = document.getElementById('activity-advice');
+        const expiryEl = document.getElementById('expiry-text');
+        const subscribeBtn = document.getElementById('subscribe-btn');
+        const paypalModal = document.getElementById('paypal-modal');
+        const cancelPaypalBtn = document.getElementById('cancel-paypal-modal');
+        const shareBtn = document.getElementById('share-btn');
+        const infoBtn = document.getElementById('info-btn');
+        const infoModal = document.getElementById('info-modal');
+        const infoCloseBtn = document.getElementById('info-close-btn');
+        const infoTextContent = document.getElementById('info-text-content');
+
+        function getNextFromPool(poolArray, storageKey) {
+            let queue = JSON.parse(localStorage.getItem(storageKey));
+            if (!queue || queue.length === 0) {
+                let shuffled = [...poolArray].sort(() => Math.random() - 0.5);
+                localStorage.setItem(storageKey, JSON.stringify(shuffled));
+                queue = shuffled;
+            }
+            let chosen = queue.pop();
+            localStorage.setItem(storageKey, JSON.stringify(queue));
+            return chosen;
         }
-    };
 
-    let currentLang = 'en';
-    let selectedMood = null;
-    let selectedActivity = null;
-    let entries = JSON.parse(localStorage.getItem('moodData')) || [];
-    let isSubscribed = false;
-    let expiryTime = null;
-    let timerInterval = null;
+        function updateUIText(lang) {
+            const t = translations[lang];
+            document.getElementById('app-title').innerText = t.title;
+            document.getElementById('mood-label').innerText = t.mood;
+            document.getElementById('activity-label').innerText = t.activity;
+            document.getElementById('save-btn').innerText = t.save;
+            insightsTitle.innerText = t.insights;
+            document.getElementById('recommend-label').innerText = t.recs;
+            document.getElementById('subscribe-btn').innerText = t.subscribe;
+            document.getElementById('share-btn').innerText = '🔗 ' + t.share;
+            document.querySelector('.info-modal-title').innerText = t.info_title;
+            infoTextContent.innerHTML = t.info_text;
+            document.getElementById('info-close-btn').innerText = 'Close';
+            langBtn.innerText = t.lang_btn;
+            timerText.innerText = t.timer;
 
-    const startScreen = document.getElementById('start-screen');
-    const appContainer = document.getElementById('app');
-    const langBtn = document.getElementById('lang-select-btn');
-    const timerText = document.getElementById('timer-text');
-    const langModal = document.getElementById('lang-modal');
-    const langListContainer = document.getElementById('lang-list-container');
-    
-    const moodBtns = document.querySelectorAll('#mood-buttons .btn');
-    const activityBtns = document.querySelectorAll('#activity-buttons .btn');
-    const saveBtn = document.getElementById('save-btn');
-    const trendEl = document.getElementById('mood-trend');
-    const insightsTitle = document.getElementById('insights-title');
-    const premiumContent = document.getElementById('premium-content');
-    const subscribedContent = document.getElementById('subscribed-content');
-    const foodTipEl = document.getElementById('food-tip');
-    const adviceEl = document.getElementById('activity-advice');
-    const expiryEl = document.getElementById('expiry-text');
-    const subscribeBtn = document.getElementById('subscribe-btn');
-    const paypalModal = document.getElementById('paypal-modal');
-    const cancelPaypalBtn = document.getElementById('cancel-paypal-modal');
-    const shareBtn = document.getElementById('share-btn');
-    const infoBtn = document.getElementById('info-btn');
-    const infoModal = document.getElementById('info-modal');
-    const infoCloseBtn = document.getElementById('info-close-btn');
-    const infoTextContent = document.getElementById('info-text-content');
+            if (isSubscribed) {
+                expiryEl.innerText = t.active_until + ' ' + formatDate(expiryTime);
+            }
 
-    function getNextFromPool(poolArray, storageKey) {
-        let queue = JSON.parse(localStorage.getItem(storageKey));
-        if (!queue || queue.length === 0) {
-            let shuffled = [...poolArray].sort(() => Math.random() - 0.5);
-            localStorage.setItem(storageKey, JSON.stringify(shuffled));
-            queue = shuffled;
-        }
-        let chosen = queue.pop();
-        localStorage.setItem(storageKey, JSON.stringify(queue));
-        return chosen;
-    }
-
-    function updateUIText(lang) {
-        const t = translations[lang];
-        document.getElementById('app-title').innerText = t.title;
-        document.getElementById('mood-label').innerText = t.mood;
-        document.getElementById('activity-label').innerText = t.activity;
-        document.getElementById('save-btn').innerText = t.save;
-        insightsTitle.innerText = t.insights;
-        document.getElementById('recommend-label').innerText = t.recs;
-        document.getElementById('subscribe-btn').innerText = t.subscribe;
-        document.getElementById('share-btn').innerText = '🔗 ' + t.share;
-        document.querySelector('.info-modal-title').innerText = t.info_title;
-        infoTextContent.innerHTML = t.info_text;
-        document.getElementById('info-close-btn').innerText = 'Close';
-        langBtn.innerText = t.lang_btn;
-        timerText.innerText = t.timer;
-        
-        if (isSubscribed) {
-            expiryEl.innerText = t.active_until + ' ' + formatDate(expiryTime);
-        }
-
-        if (entries.length > 0) {
-            const last = entries[entries.length - 1];
-            const foods = t.foodRecs;
-            const activities = t.activityRecs;
-            let chosenFood = getNextFromPool(foods, 'foodQueue_' + lang);
-            let chosenActivity = getNextFromPool(activities, 'activityQueue_' + lang);
-            if (last.mood === '😢' || last.mood === '😰') {
-                foodTipEl.innerText = t.food_tip + ' ' + chosenFood;
+            if (entries.length > 0) {
+                const last = entries[entries.length - 1];
+                const foods = t.foodRecs;
+                const activities = t.activityRecs;
+                let chosenFood = getNextFromPool(foods, 'foodQueue_' + lang);
+                let chosenActivity = getNextFromPool(activities, 'activityQueue_' + lang);
+                if (last.mood === '😢' || last.mood === '😰') {
+                    foodTipEl.innerText = t.food_tip + ' ' + chosenFood;
+                } else {
+                    foodTipEl.innerText = t.food_tip + ' ' + chosenFood;
+                }
+                adviceEl.innerText = t.activity_tip + ' ' + chosenActivity;
             } else {
-                foodTipEl.innerText = t.food_tip + ' ' + chosenFood;
+                foodTipEl.innerText = t.food_tip + ' ' + t.no_data;
+                adviceEl.innerText = t.activity_tip + ' ' + t.no_data;
             }
-            adviceEl.innerText = t.activity_tip + ' ' + chosenActivity;
-        } else {
-            foodTipEl.innerText = t.food_tip + ' ' + t.no_data;
-            adviceEl.innerText = t.activity_tip + ' ' + t.no_data;
+
+            if (entries.length === 0) {
+                trendEl.innerText = t.trend + ' ' + t.no_data;
+            } else {
+                const recent = entries.slice(-7);
+                const happy = recent.filter(e => e.mood === '😊').length;
+                const total = recent.length;
+                let poolKey = 'insightBad';
+                if (total > 0) {
+                    let ratio = happy / total;
+                    if (ratio >= 0.6) poolKey = 'insightGood';
+                    else if (ratio >= 0.3) poolKey = 'insightStable';
+                    else poolKey = 'insightBad';
+                }
+                let insightPool = t[poolKey];
+                let chosenInsight = getNextFromPool(insightPool, 'insightQueue_' + poolKey + '_' + lang);
+                trendEl.innerText = t.trend + ' ' + chosenInsight;
+            }
         }
 
-        if (entries.length === 0) {
-            trendEl.innerText = t.trend + ' ' + t.no_data;
-        } else {
-            const recent = entries.slice(-7);
-            const happy = recent.filter(e => e.mood === '😊').length;
-            const total = recent.length;
-            let poolKey = 'insightBad';
-            if (total > 0) {
-                let ratio = happy / total;
-                if (ratio >= 0.6) poolKey = 'insightGood';
-                else if (ratio >= 0.3) poolKey = 'insightStable';
-                else poolKey = 'insightBad';
-            }
-            let insightPool = t[poolKey];
-            let chosenInsight = getNextFromPool(insightPool, 'insightQueue_' + poolKey + '_' + lang);
-            trendEl.innerText = t.trend + ' ' + chosenInsight;
+        function formatDate(timestamp) {
+            if (!timestamp) return '--';
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
         }
-    }
 
-    function formatDate(timestamp) {
-        if (!timestamp) return '--';
-        const date = new Date(timestamp);
-        return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-    }
+        function renderLanguageList() {
+            langListContainer.innerHTML = '';
+            languages.forEach(lang => {
+                const div = document.createElement('div');
+                div.className = 'lang-list-item';
+                div.innerText = lang.name;
+                div.onclick = () => selectLanguage(lang.code);
+                langListContainer.appendChild(div);
+            });
+        }
 
-    function renderLanguageList() {
-        langListContainer.innerHTML = '';
-        languages.forEach(lang => {
-            const div = document.createElement('div');
-            div.className = 'lang-list-item';
-            div.innerText = lang.name;
-            div.onclick = () => selectLanguage(lang.code);
-            langListContainer.appendChild(div);
-        });
-    }
-
-    function selectLanguage(code) {
-        currentLang = code;
-        localStorage.setItem('appLang', code);
-        langModal.classList.add('hidden');
-        startScreen.classList.add('hidden');
-        appContainer.style.display = 'block';
-        updateUIText(code);
-    }
-
-    let countdown = 3;
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            countdown -= 1;
-            timerText.innerText = translations[currentLang].timer.replace('3', countdown);
-            if (countdown <= 0) {
-                clearInterval(timerInterval);
-                selectLanguage('en');
-            }
-        }, 1000);
-    }
-
-    function initStartScreen() {
-        const savedLang = localStorage.getItem('appLang');
-        if (savedLang && languages.find(l => l.code === savedLang)) {
-            currentLang = savedLang;
+        function selectLanguage(code) {
+            currentLang = code;
+            localStorage.setItem('appLang', code);
+            langModal.classList.add('hidden');
             startScreen.classList.add('hidden');
-            appContainer.style.display = 'block';
-            updateUIText(savedLang);
-            loadEntries();
-            checkSubscription();
-        } else {
-            startScreen.classList.remove('hidden');
-            appContainer.style.display = 'none';
-            currentLang = 'en';
-            langBtn.innerText = translations['en'].lang_btn;
-            timerText.innerText = translations['en'].timer;
-            renderLanguageList();
-            startTimer();
-        }
-    }
-
-    langBtn.onclick = () => {
-        clearInterval(timerInterval);
-        langModal.classList.remove('hidden');
-    };
-    document.getElementById('close-lang-modal').onclick = () => {
-        langModal.classList.add('hidden');
-        if (!document.getElementById('app').style.display || document.getElementById('app').style.display === 'none') {
-            startTimer();
-        }
-    };
-
-    moodBtns.forEach(btn => {
-        btn.onclick = () => {
-            moodBtns.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedMood = btn.dataset.value;
-        };
-    });
-    activityBtns.forEach(btn => {
-        btn.onclick = () => {
-            activityBtns.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedActivity = btn.dataset.value;
-        };
-    });
-
-    saveBtn.onclick = () => {
-        if (!selectedMood || !selectedActivity) {
-            alert("Choose mood and activity");
-            return;
-        }
-        const entry = { mood: selectedMood, activity: selectedActivity, date: new Date().toISOString() };
-        entries.push(entry);
-        localStorage.setItem('moodData', JSON.stringify(entries));
-        moodBtns.forEach(b => b.classList.remove('selected'));
-        activityBtns.forEach(b => b.classList.remove('selected'));
-        selectedMood = null;
-        selectedActivity = null;
-        // No alert message here anymore
-        updateUIText(currentLang);
-    };
-
-    subscribeBtn.onclick = () => {
-        paypalModal.classList.remove('hidden');
-        loadPayPalSDK();
-    };
-    
-    cancelPaypalBtn.onclick = () => {
-        paypalModal.classList.add('hidden');
-    };
-
-    function loadPayPalSDK() {
-        const container = document.getElementById('paypal-button-container');
-        container.innerHTML = '';
-
-        if (typeof paypal !== 'undefined') {
-            renderPayPalButton();
-            return;
+            appContainer.style.display = 'flex';
+            updateUIText(code);
         }
 
-        const script = document.createElement('script');
-        script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&vault=true&intent=subscription`;
-        script.async = true;
-        script.onload = () => renderPayPalButton();
-        document.body.appendChild(script);
-    }
+        let countdown = 3;
 
-    function renderPayPalButton() {
-        const container = document.getElementById('paypal-button-container');
-        if (!container || typeof paypal === 'undefined') return;
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                countdown -= 1;
+                timerText.innerText = translations[currentLang].timer.replace('3', countdown);
+                if (countdown <= 0) {
+                    clearInterval(timerInterval);
+                    selectLanguage('en');
+                }
+            }, 1000);
+        }
 
-        paypal.Buttons({
-            style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
-            createSubscription: function(data, actions) {
-                return actions.subscription.create({
-                    plan_id: PAYPAL_PLAN_ID
-                });
-            },
-            onApprove: function(data, actions) {
-                const now = new Date().getTime();
-                const expiry = now + 30 * 24 * 60 * 60 * 1000;
-                localStorage.setItem('subExpiry', expiry.toString());
-                isSubscribed = true;
-                expiryTime = expiry;
-                paypalModal.classList.add('hidden');
-                updateUIText(currentLang);
-                alert("Payment successful! Premium features unlocked.");
-            },
-            onCancel: function(data) {
-                alert("Payment cancelled.");
-            },
-            onError: function(err) {
-                console.error('PayPal Error:', err);
-                alert("An error occurred with PayPal.");
-            }
-        }).render('#paypal-button-container');
-    }
-
-    shareBtn.onclick = () => {
-        if (navigator.share) { navigator.share({ title: 'Daily Mood Tracker', url: window.location.href }); }
-        else { navigator.clipboard.writeText(window.location.href).then(() => alert('Link copied!')); }
-    };
-
-    infoBtn.onclick = () => { infoModal.classList.remove('hidden'); };
-    infoCloseBtn.onclick = () => { infoModal.classList.add('hidden'); };
-    window.onclick = (e) => { if (e.target === infoModal) infoModal.classList.add('hidden'); };
-
-    function checkSubscription() {
-        const expiry = localStorage.getItem('subExpiry');
-        if (expiry) {
-            const now = new Date().getTime();
-            if (now < parseInt(expiry)) {
-                isSubscribed = true;
-                expiryTime = parseInt(expiry);
-                premiumContent.classList.add('hidden');
-                subscribedContent.classList.remove('hidden');
+        function initStartScreen() {
+            const savedLang = localStorage.getItem('appLang');
+            if (savedLang && languages.find(l => l.code === savedLang)) {
+                currentLang = savedLang;
+                startScreen.classList.add('hidden');
+                appContainer.style.display = 'flex';
+                updateUIText(savedLang);
+                loadEntries();
+                checkSubscription();
             } else {
-                isSubscribed = false;
-                localStorage.removeItem('subExpiry');
+                startScreen.classList.remove('hidden');
+                appContainer.style.display = 'none';
+                currentLang = 'en';
+                langBtn.innerText = translations['en'].lang_btn;
+                timerText.innerText = translations['en'].timer;
+                renderLanguageList();
+                startTimer();
             }
         }
-        updateUIText(currentLang);
-    }
 
-    function loadEntries() {
-        const data = localStorage.getItem('moodData');
-        if (data) entries = JSON.parse(data);
-        updateUIText(currentLang);
-    }
+        langBtn.onclick = () => {
+            clearInterval(timerInterval);
+            langModal.classList.remove('hidden');
+        };
+        document.getElementById('close-lang-modal').onclick = () => {
+            langModal.classList.add('hidden');
+            if (!document.getElementById('app').style.display || document.getElementById('app').style.display === 'none') {
+                startTimer();
+            }
+        };
 
-    initStartScreen();
-</script>
+        moodBtns.forEach(btn => {
+            btn.onclick = () => {
+                moodBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedMood = btn.dataset.value;
+            };
+        });
+        activityBtns.forEach(btn => {
+            btn.onclick = () => {
+                activityBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedActivity = btn.dataset.value;
+            };
+        });
+
+        saveBtn.onclick = () => {
+            if (!selectedMood || !selectedActivity) {
+                alert("Choose mood and activity");
+                return;
+            }
+            const entry = { mood: selectedMood, activity: selectedActivity, date: new Date().toISOString() };
+            entries.push(entry);
+            localStorage.setItem('moodData', JSON.stringify(entries));
+            moodBtns.forEach(b => b.classList.remove('selected'));
+            activityBtns.forEach(b => b.classList.remove('selected'));
+            selectedMood = null;
+            selectedActivity = null;
+            updateUIText(currentLang);
+        };
+
+        subscribeBtn.onclick = () => {
+            paypalModal.classList.remove('hidden');
+            loadPayPalSDK();
+        };
+
+        cancelPaypalBtn.onclick = () => {
+            paypalModal.classList.add('hidden');
+        };
+
+        function loadPayPalSDK() {
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '';
+
+            if (typeof paypal !== 'undefined') {
+                renderPayPalButton();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&vault=true&intent=subscription`;
+            script.async = true;
+            script.onload = () => renderPayPalButton();
+            document.body.appendChild(script);
+        }
+
+        function renderPayPalButton() {
+            const container = document.getElementById('paypal-button-container');
+            if (!container || typeof paypal === 'undefined') return;
+
+            paypal.Buttons({
+                style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe' },
+                createSubscription: function(data, actions) {
+                    return actions.subscription.create({
+                        plan_id: PAYPAL_PLAN_ID
+                    });
+                },
+                onApprove: function(data, actions) {
+                    const now = new Date().getTime();
+                    const expiry = now + 30 * 24 * 60 * 60 * 1000;
+                    localStorage.setItem('subExpiry', expiry.toString());
+                    isSubscribed = true;
+                    expiryTime = expiry;
+                    paypalModal.classList.add('hidden');
+                    updateUIText(currentLang);
+                    alert("Payment successful! Premium features unlocked.");
+                },
+                onCancel: function(data) {
+                    alert("Payment cancelled.");
+                },
+                onError: function(err) {
+                    console.error('PayPal Error:', err);
+                    alert("An error occurred with PayPal.");
+                }
+            }).render('#paypal-button-container');
+        }
+
+        shareBtn.onclick = () => {
+            if (navigator.share) { navigator.share({ title: 'Daily Mood Tracker', url: window.location.href }); } else { navigator
+                    .clipboard.writeText(window.location.href).then(() => alert('Link copied!')); }
+        };
+
+        infoBtn.onclick = () => { infoModal.classList.remove('hidden'); };
+        infoCloseBtn.onclick = () => { infoModal.classList.add('hidden'); };
+        window.onclick = (e) => { if (e.target === infoModal) infoModal.classList.add('hidden'); };
+
+        function checkSubscription() {
+            const expiry = localStorage.getItem('subExpiry');
+            if (expiry) {
+                const now = new Date().getTime();
+                if (now < parseInt(expiry)) {
+                    isSubscribed = true;
+                    expiryTime = parseInt(expiry);
+                    premiumContent.classList.add('hidden');
+                    subscribedContent.classList.remove('hidden');
+                } else {
+                    isSubscribed = false;
+                    localStorage.removeItem('subExpiry');
+                }
+            }
+            updateUIText(currentLang);
+        }
+
+        function loadEntries() {
+            const data = localStorage.getItem('moodData');
+            if (data) entries = JSON.parse(data);
+            updateUIText(currentLang);
+        }
+
+        initStartScreen();
+    </script>
 </body>
 </html>
