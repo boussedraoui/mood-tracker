@@ -84,7 +84,7 @@
         /* ── main app – FILLS THE SCREEN ── */
         #app {
             width: 100%;
-            max-width: 560px;
+            max-width: 600px;
             height: 100vh;
             height: 100dvh;
             background-color: #ffffff;
@@ -174,15 +174,15 @@
         .save-btn {
             background-color: #34C759;
             border: none;
-            padding: 14px 0;
+            padding: 12px 0;
             border-radius: 40px;
             width: 100%;
             color: white;
             font-weight: bold;
-            font-size: clamp(22px, 3.6vh, 30px);
+            font-size: clamp(20px, 3.2vh, 28px);
             cursor: pointer;
             box-shadow: 0 3px 10px rgba(52, 199, 89, 0.25);
-            margin-top: 8px;
+            margin-top: 6px;
             flex-shrink: 0;
             line-height: 1.2;
         }
@@ -190,10 +190,10 @@
             transform: scale(0.96);
         }
 
-        /* ── insights box – takes remaining space ── */
+        /* ── insights box – takes remaining space and expands ── */
         .insights-box {
             background-color: #fff;
-            padding: 14px 18px 12px 18px;
+            padding: 18px 20px 16px 20px;
             border-radius: 24px;
             width: 100%;
             margin-top: 10px;
@@ -203,19 +203,20 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
+            justify-content: space-evenly;  /* توزيع المحتوى عمودياً لملء الفراغ */
             overflow: hidden;
         }
 
         .section-title {
-            font-size: clamp(20px, 3vh, 28px);
+            font-size: clamp(26px, 4vh, 38px);
             font-weight: bold;
             color: #2c3e50;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             flex-shrink: 0;
         }
 
         .trend-text {
-            font-size: clamp(17px, 2.4vh, 24px);
+            font-size: clamp(22px, 3.2vh, 32px);
             margin: 4px 0 6px 0;
             color: #2c3e50;
             line-height: 1.4;
@@ -224,7 +225,7 @@
 
         .tip-text,
         .advice-text {
-            font-size: clamp(17px, 2.4vh, 24px);
+            font-size: clamp(22px, 3.2vh, 32px);
             margin: 4px 0;
             line-height: 1.4;
             flex-shrink: 0;
@@ -236,7 +237,7 @@
             color: #34C759;
         }
         .sub-status {
-            font-size: clamp(15px, 2vh, 20px);
+            font-size: clamp(18px, 2.4vh, 26px);
             color: #666;
             margin-top: 4px;
             font-style: italic;
@@ -250,11 +251,11 @@
             justify-content: space-between;
             margin-top: 6px;
             flex-wrap: nowrap;
-            gap: 8px;
+            gap: 10px;
             flex-shrink: 0;
         }
         .recommend-label {
-            font-size: clamp(17px, 2.4vh, 24px);
+            font-size: clamp(22px, 3.2vh, 32px);
             font-weight: 600;
             color: #2c3e50;
             white-space: nowrap;
@@ -262,11 +263,11 @@
         .subscribe-btn-small {
             background-color: #FF9500;
             border: none;
-            padding: 8px 18px;
+            padding: 12px 24px;
             border-radius: 40px;
             color: white;
             font-weight: bold;
-            font-size: clamp(16px, 2.2vh, 22px);
+            font-size: clamp(20px, 2.8vh, 28px);
             cursor: pointer;
             white-space: nowrap;
             flex-shrink: 0;
@@ -297,11 +298,11 @@
         }
         .share-btn {
             border: none;
-            padding: 12px 36px;
+            padding: 14px 40px;
             border-radius: 40px;
             color: white;
             font-weight: bold;
-            font-size: clamp(20px, 3vh, 28px);
+            font-size: clamp(22px, 3.2vh, 30px);
             cursor: pointer;
             background-color: #007AFF;
             line-height: 1.2;
@@ -421,12 +422,12 @@
             border-radius: 4px;
         }
 
-        /* ── extra spacious on tall screens ── */
+        /* ── tall screens: even more space for insights ── */
         @media (min-height: 800px) {
             #app {
                 padding: 20px 28px 24px 28px;
                 border-radius: 32px;
-                max-width: 600px;
+                max-width: 680px;
                 box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
             }
             .title {
@@ -446,38 +447,38 @@
                 padding: 16px 0;
             }
             .save-btn {
-                font-size: clamp(26px, 4vh, 34px);
-                padding: 18px 0;
-                margin-top: 12px;
+                font-size: clamp(24px, 3.6vh, 32px);
+                padding: 16px 0;
+                margin-top: 10px;
             }
             .insights-box {
-                padding: 18px 24px 16px 24px;
+                padding: 24px 30px 20px 30px;
                 margin-top: 14px;
                 border-radius: 28px;
             }
             .section-title {
-                font-size: clamp(24px, 3.4vh, 32px);
+                font-size: clamp(30px, 4.4vh, 42px);
                 margin-bottom: 8px;
             }
             .trend-text,
             .tip-text,
             .advice-text {
-                font-size: clamp(20px, 2.8vh, 28px);
+                font-size: clamp(26px, 3.6vh, 36px);
                 margin: 6px 0;
             }
             .sub-status {
-                font-size: clamp(17px, 2.2vh, 22px);
-            }
-            .recommend-label {
                 font-size: clamp(20px, 2.8vh, 28px);
             }
+            .recommend-label {
+                font-size: clamp(26px, 3.6vh, 36px);
+            }
             .subscribe-btn-small {
-                font-size: clamp(18px, 2.4vh, 24px);
-                padding: 10px 24px;
+                font-size: clamp(22px, 3vh, 30px);
+                padding: 14px 28px;
             }
             .share-btn {
-                font-size: clamp(24px, 3.4vh, 32px);
-                padding: 16px 48px;
+                font-size: clamp(26px, 3.6vh, 34px);
+                padding: 18px 50px;
             }
             .bottom-row {
                 margin-top: 12px;
@@ -491,7 +492,7 @@
             }
         }
 
-        /* ── compact screens: keep it big but adjust spacing ── */
+        /* ── compact screens: keep it readable ── */
         @media (max-height: 680px) {
             #app {
                 padding: 8px 12px 10px 12px;
@@ -519,33 +520,33 @@
                 margin-top: 6px;
             }
             .insights-box {
-                padding: 8px 12px 8px 12px;
+                padding: 12px 14px 10px 14px;
                 margin-top: 6px;
                 border-radius: 16px;
             }
             .section-title {
-                font-size: clamp(15px, 2.2vh, 20px);
+                font-size: clamp(18px, 2.8vh, 24px);
                 margin-bottom: 4px;
             }
             .trend-text,
             .tip-text,
             .advice-text {
-                font-size: clamp(13px, 1.8vh, 17px);
+                font-size: clamp(16px, 2.2vh, 20px);
                 margin: 2px 0;
             }
             .sub-status {
-                font-size: clamp(11px, 1.6vh, 15px);
-            }
-            .recommend-label {
                 font-size: clamp(13px, 1.8vh, 17px);
             }
+            .recommend-label {
+                font-size: clamp(16px, 2.2vh, 20px);
+            }
             .subscribe-btn-small {
-                font-size: clamp(12px, 1.6vh, 16px);
-                padding: 6px 12px;
+                font-size: clamp(14px, 2vh, 18px);
+                padding: 8px 16px;
             }
             .share-btn {
-                font-size: clamp(15px, 2.2vh, 20px);
-                padding: 8px 24px;
+                font-size: clamp(17px, 2.4vh, 22px);
+                padding: 10px 28px;
             }
             .bottom-row {
                 margin-top: 4px;
