@@ -49,47 +49,47 @@
             left: 0;
             background: #f0f4f8;
             z-index: 100;
-            padding: 16px;
+            padding: 20px;
         }
         .start-icon {
-            width: 90px;
-            height: 90px;
-            border-radius: 24px;
-            margin-bottom: 14px;
+            width: 120px;
+            height: 120px;
+            border-radius: 30px;
+            margin-bottom: 20px;
         }
         .start-title {
-            font-size: 26px;
+            font-size: clamp(32px, 7vh, 48px);
             font-weight: bold;
             color: #2c3e50;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         .lang-btn {
             background: #fff;
-            padding: 14px 40px;
-            border-radius: 30px;
+            padding: 18px 50px;
+            border-radius: 40px;
             border: 1px solid #ddd;
-            font-size: 18px;
+            font-size: clamp(20px, 4vh, 28px);
             font-weight: bold;
             cursor: pointer;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         .timer-text {
-            font-size: 15px;
+            font-size: clamp(16px, 2.5vh, 22px);
             color: #888;
         }
         .hidden {
             display: none !important;
         }
 
-        /* ── main app – FITS IN ONE VIEWPORT ── */
+        /* ── main app – FILLS THE SCREEN ── */
         #app {
             width: 100%;
-            max-width: 480px;
+            max-width: 560px;
             height: 100vh;
             height: 100dvh;
             background-color: #ffffff;
             border-radius: 0;
-            padding: 10px 14px 12px 14px;
+            padding: 12px 18px 14px 18px;
             box-shadow: none;
             position: relative;
             display: none;
@@ -97,55 +97,55 @@
             overflow: hidden;
         }
 
-        /* ── info button (absolute, bottom-right) ── */
+        /* ── info button ── */
         .info-btn {
             position: absolute;
-            bottom: 10px;
-            right: 12px;
-            width: 40px;
-            height: 40px;
+            bottom: 14px;
+            right: 16px;
+            width: clamp(44px, 7vh, 56px);
+            height: clamp(44px, 7vh, 56px);
             border-radius: 50%;
             background-color: #ffffff;
             border: 2px solid #007AFF;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: clamp(22px, 3.5vh, 30px);
             font-style: italic;
             font-weight: bold;
             color: #007AFF;
             cursor: pointer;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             z-index: 10;
         }
 
         /* ── title ── */
         .title {
-            font-size: clamp(20px, 3.6vh, 28px);
+            font-size: clamp(26px, 5vh, 40px);
             font-weight: bold;
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             flex-shrink: 0;
             line-height: 1.2;
         }
 
         /* ── labels ── */
         .label {
-            font-size: clamp(14px, 2.2vh, 18px);
+            font-size: clamp(18px, 3vh, 26px);
             font-weight: 600;
             color: #34495e;
-            margin-top: 4px;
-            margin-bottom: 4px;
+            margin-top: 6px;
+            margin-bottom: 6px;
             flex-shrink: 0;
             line-height: 1.3;
         }
 
-        /* ── mood & activity rows (2x2 grids) ── */
+        /* ── rows (2x2 grids) ── */
         .row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
             justify-items: center;
             width: 100%;
             flex-shrink: 0;
@@ -153,36 +153,36 @@
 
         .btn {
             width: 100%;
-            padding: 8px 0;
+            padding: 12px 0;
             background-color: #fff;
-            border-radius: 40px;
+            border-radius: 60px;
             text-align: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
             border: none;
             cursor: pointer;
             transition: 0.2s;
-            font-size: clamp(30px, 5vh, 40px);
+            font-size: clamp(44px, 8vh, 64px);
             line-height: 1.2;
         }
         .btn.selected {
             background-color: #007AFF;
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.35);
-            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.35);
+            transform: scale(1.03);
         }
 
         /* ── save button ── */
         .save-btn {
             background-color: #34C759;
             border: none;
-            padding: 10px 0;
-            border-radius: 30px;
+            padding: 14px 0;
+            border-radius: 40px;
             width: 100%;
             color: white;
             font-weight: bold;
-            font-size: clamp(18px, 2.8vh, 22px);
+            font-size: clamp(22px, 3.6vh, 30px);
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.25);
-            margin-top: 6px;
+            box-shadow: 0 3px 10px rgba(52, 199, 89, 0.25);
+            margin-top: 8px;
             flex-shrink: 0;
             line-height: 1.2;
         }
@@ -190,14 +190,14 @@
             transform: scale(0.96);
         }
 
-        /* ── insights box – takes remaining height ── */
+        /* ── insights box – takes remaining space ── */
         .insights-box {
             background-color: #fff;
-            padding: 10px 14px 10px 14px;
-            border-radius: 20px;
+            padding: 14px 18px 12px 18px;
+            border-radius: 24px;
             width: 100%;
-            margin-top: 6px;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             border: 1px solid #f0f0f0;
             flex: 1 1 auto;
             min-height: 0;
@@ -207,16 +207,16 @@
         }
 
         .section-title {
-            font-size: clamp(15px, 2.2vh, 18px);
+            font-size: clamp(20px, 3vh, 28px);
             font-weight: bold;
             color: #2c3e50;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             flex-shrink: 0;
         }
 
         .trend-text {
-            font-size: clamp(13px, 1.8vh, 16px);
-            margin: 2px 0 4px 0;
+            font-size: clamp(17px, 2.4vh, 24px);
+            margin: 4px 0 6px 0;
             color: #2c3e50;
             line-height: 1.4;
             flex-shrink: 0;
@@ -224,8 +224,8 @@
 
         .tip-text,
         .advice-text {
-            font-size: clamp(13px, 1.8vh, 16px);
-            margin: 2px 0;
+            font-size: clamp(17px, 2.4vh, 24px);
+            margin: 4px 0;
             line-height: 1.4;
             flex-shrink: 0;
         }
@@ -236,9 +236,9 @@
             color: #34C759;
         }
         .sub-status {
-            font-size: clamp(12px, 1.6vh, 14px);
+            font-size: clamp(15px, 2vh, 20px);
             color: #666;
-            margin-top: 2px;
+            margin-top: 4px;
             font-style: italic;
             flex-shrink: 0;
         }
@@ -248,13 +248,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 4px;
+            margin-top: 6px;
             flex-wrap: nowrap;
-            gap: 6px;
+            gap: 8px;
             flex-shrink: 0;
         }
         .recommend-label {
-            font-size: clamp(13px, 1.8vh, 16px);
+            font-size: clamp(17px, 2.4vh, 24px);
             font-weight: 600;
             color: #2c3e50;
             white-space: nowrap;
@@ -262,11 +262,11 @@
         .subscribe-btn-small {
             background-color: #FF9500;
             border: none;
-            padding: 6px 14px;
-            border-radius: 30px;
+            padding: 8px 18px;
+            border-radius: 40px;
             color: white;
             font-weight: bold;
-            font-size: clamp(12px, 1.6vh, 15px);
+            font-size: clamp(16px, 2.2vh, 22px);
             cursor: pointer;
             white-space: nowrap;
             flex-shrink: 0;
@@ -292,16 +292,16 @@
             display: flex;
             justify-content: center;
             width: 100%;
-            margin-top: 6px;
+            margin-top: 8px;
             flex-shrink: 0;
         }
         .share-btn {
             border: none;
-            padding: 10px 28px;
-            border-radius: 30px;
+            padding: 12px 36px;
+            border-radius: 40px;
             color: white;
             font-weight: bold;
-            font-size: clamp(16px, 2.4vh, 20px);
+            font-size: clamp(20px, 3vh, 28px);
             cursor: pointer;
             background-color: #007AFF;
             line-height: 1.2;
@@ -322,62 +322,62 @@
             align-items: center;
             justify-content: center;
             z-index: 999;
-            padding: 16px;
+            padding: 20px;
         }
         .modal-content {
             background: white;
-            border-radius: 24px;
-            padding: 24px 20px 20px 20px;
+            border-radius: 28px;
+            padding: 28px 24px 24px 24px;
             width: 100%;
-            max-width: 400px;
+            max-width: 440px;
             text-align: left;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             max-height: 85vh;
             overflow-y: auto;
             position: relative;
         }
         .info-modal-title {
-            font-size: 22px;
+            font-size: clamp(24px, 3.5vh, 30px);
             font-weight: bold;
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
             border-bottom: 2px solid #f0f4f8;
-            padding-bottom: 12px;
+            padding-bottom: 14px;
         }
         .info-modal-text p {
-            font-size: 16px;
-            line-height: 1.5;
+            font-size: clamp(16px, 2.2vh, 20px);
+            line-height: 1.6;
             color: #333;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         .info-close-btn {
             display: block;
             width: 100%;
-            padding: 12px;
-            margin-top: 16px;
+            padding: 14px;
+            margin-top: 18px;
             background-color: #007AFF;
             color: white;
             border: none;
-            border-radius: 30px;
+            border-radius: 40px;
             font-weight: bold;
-            font-size: 18px;
+            font-size: clamp(18px, 2.6vh, 24px);
             cursor: pointer;
         }
 
         .lang-modal-title {
-            font-size: 22px;
+            font-size: clamp(22px, 3.2vh, 28px);
             font-weight: bold;
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
         .lang-list-item {
-            padding: 14px 0;
+            padding: 16px 0;
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
             text-align: center;
-            font-size: 18px;
+            font-size: clamp(18px, 2.6vh, 24px);
             color: #333;
         }
         .lang-list-item:hover {
@@ -386,12 +386,12 @@
 
         .modal-btn {
             border: none;
-            padding: 12px;
-            border-radius: 30px;
+            padding: 14px;
+            border-radius: 40px;
             width: 100%;
             font-weight: bold;
-            font-size: 17px;
-            margin-bottom: 8px;
+            font-size: clamp(17px, 2.4vh, 22px);
+            margin-bottom: 10px;
             cursor: pointer;
         }
         .modal-cancel {
@@ -401,161 +401,162 @@
 
         #paypal-button-container {
             width: 100%;
-            margin: 10px 0;
-            min-height: 40px;
+            margin: 12px 0;
+            min-height: 50px;
         }
 
-        /* ── tiny screens: further compact ── */
-        @media (max-height: 640px) {
-            #app {
-                padding: 6px 10px 8px 10px;
-            }
-            .title {
-                font-size: clamp(16px, 3vh, 20px);
-                margin-bottom: 2px;
-            }
-            .label {
-                font-size: clamp(11px, 1.8vh, 14px);
-                margin-top: 2px;
-                margin-bottom: 2px;
-            }
-            .row {
-                gap: 5px;
-            }
-            .btn {
-                font-size: clamp(22px, 4vh, 30px);
-                padding: 4px 0;
-                border-radius: 30px;
-            }
-            .save-btn {
-                font-size: clamp(14px, 2.2vh, 17px);
-                padding: 6px 0;
-                margin-top: 4px;
-            }
-            .insights-box {
-                padding: 6px 10px 6px 10px;
-                margin-top: 4px;
-                border-radius: 14px;
-            }
-            .section-title {
-                font-size: clamp(12px, 1.8vh, 15px);
-                margin-bottom: 2px;
-            }
-            .trend-text,
-            .tip-text,
-            .advice-text {
-                font-size: clamp(11px, 1.6vh, 13px);
-                margin: 1px 0;
-            }
-            .sub-status {
-                font-size: clamp(10px, 1.4vh, 12px);
-            }
-            .recommend-label {
-                font-size: clamp(11px, 1.6vh, 13px);
-            }
-            .subscribe-btn-small {
-                font-size: clamp(10px, 1.4vh, 12px);
-                padding: 4px 10px;
-            }
-            .share-btn {
-                font-size: clamp(13px, 2vh, 16px);
-                padding: 6px 18px;
-            }
-            .bottom-row {
-                margin-top: 4px;
-            }
-            .info-btn {
-                width: 32px;
-                height: 32px;
-                font-size: 16px;
-                bottom: 6px;
-                right: 8px;
-            }
-        }
-
-        /* ── very tall screens: more breathing room ── */
-        @media (min-height: 800px) {
-            #app {
-                padding: 18px 24px 20px 24px;
-                border-radius: 28px;
-                max-width: 500px;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-            }
-            .title {
-                font-size: 30px;
-                margin-bottom: 10px;
-            }
-            .label {
-                font-size: 20px;
-                margin-top: 8px;
-                margin-bottom: 8px;
-            }
-            .row {
-                gap: 14px;
-            }
-            .btn {
-                font-size: 44px;
-                padding: 14px 0;
-            }
-            .save-btn {
-                font-size: 24px;
-                padding: 16px 0;
-                margin-top: 10px;
-            }
-            .insights-box {
-                padding: 18px 22px 16px 22px;
-                margin-top: 12px;
-            }
-            .section-title {
-                font-size: 22px;
-                margin-bottom: 8px;
-            }
-            .trend-text,
-            .tip-text,
-            .advice-text {
-                font-size: 18px;
-                margin: 4px 0;
-            }
-            .sub-status {
-                font-size: 15px;
-            }
-            .recommend-label {
-                font-size: 18px;
-            }
-            .subscribe-btn-small {
-                font-size: 16px;
-                padding: 10px 22px;
-            }
-            .share-btn {
-                font-size: 22px;
-                padding: 14px 40px;
-            }
-            .bottom-row {
-                margin-top: 12px;
-            }
-            .info-btn {
-                width: 52px;
-                height: 52px;
-                font-size: 24px;
-                bottom: 18px;
-                right: 20px;
-            }
-        }
-
-        /* ── ensure no overflow anywhere ── */
+        /* ── ensure no overflow ── */
         #app,
         .insights-box,
         #subscribed-content {
             overflow: hidden;
         }
 
-        /* ── hide scrollbar on modal content ── */
+        /* ── scrollbar for modal content ── */
         .modal-content::-webkit-scrollbar {
             width: 4px;
         }
         .modal-content::-webkit-scrollbar-thumb {
             background: #ccc;
             border-radius: 4px;
+        }
+
+        /* ── extra spacious on tall screens ── */
+        @media (min-height: 800px) {
+            #app {
+                padding: 20px 28px 24px 28px;
+                border-radius: 32px;
+                max-width: 600px;
+                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+            }
+            .title {
+                font-size: clamp(32px, 5.5vh, 44px);
+                margin-bottom: 10px;
+            }
+            .label {
+                font-size: clamp(22px, 3.2vh, 28px);
+                margin-top: 10px;
+                margin-bottom: 8px;
+            }
+            .row {
+                gap: 14px;
+            }
+            .btn {
+                font-size: clamp(54px, 10vh, 76px);
+                padding: 16px 0;
+            }
+            .save-btn {
+                font-size: clamp(26px, 4vh, 34px);
+                padding: 18px 0;
+                margin-top: 12px;
+            }
+            .insights-box {
+                padding: 18px 24px 16px 24px;
+                margin-top: 14px;
+                border-radius: 28px;
+            }
+            .section-title {
+                font-size: clamp(24px, 3.4vh, 32px);
+                margin-bottom: 8px;
+            }
+            .trend-text,
+            .tip-text,
+            .advice-text {
+                font-size: clamp(20px, 2.8vh, 28px);
+                margin: 6px 0;
+            }
+            .sub-status {
+                font-size: clamp(17px, 2.2vh, 22px);
+            }
+            .recommend-label {
+                font-size: clamp(20px, 2.8vh, 28px);
+            }
+            .subscribe-btn-small {
+                font-size: clamp(18px, 2.4vh, 24px);
+                padding: 10px 24px;
+            }
+            .share-btn {
+                font-size: clamp(24px, 3.4vh, 32px);
+                padding: 16px 48px;
+            }
+            .bottom-row {
+                margin-top: 12px;
+            }
+            .info-btn {
+                width: clamp(52px, 8vh, 64px);
+                height: clamp(52px, 8vh, 64px);
+                font-size: clamp(26px, 4vh, 34px);
+                bottom: 20px;
+                right: 24px;
+            }
+        }
+
+        /* ── compact screens: keep it big but adjust spacing ── */
+        @media (max-height: 680px) {
+            #app {
+                padding: 8px 12px 10px 12px;
+            }
+            .title {
+                font-size: clamp(20px, 4vh, 28px);
+                margin-bottom: 4px;
+            }
+            .label {
+                font-size: clamp(14px, 2.2vh, 18px);
+                margin-top: 4px;
+                margin-bottom: 4px;
+            }
+            .row {
+                gap: 6px;
+            }
+            .btn {
+                font-size: clamp(32px, 6vh, 44px);
+                padding: 6px 0;
+                border-radius: 40px;
+            }
+            .save-btn {
+                font-size: clamp(16px, 2.6vh, 22px);
+                padding: 8px 0;
+                margin-top: 6px;
+            }
+            .insights-box {
+                padding: 8px 12px 8px 12px;
+                margin-top: 6px;
+                border-radius: 16px;
+            }
+            .section-title {
+                font-size: clamp(15px, 2.2vh, 20px);
+                margin-bottom: 4px;
+            }
+            .trend-text,
+            .tip-text,
+            .advice-text {
+                font-size: clamp(13px, 1.8vh, 17px);
+                margin: 2px 0;
+            }
+            .sub-status {
+                font-size: clamp(11px, 1.6vh, 15px);
+            }
+            .recommend-label {
+                font-size: clamp(13px, 1.8vh, 17px);
+            }
+            .subscribe-btn-small {
+                font-size: clamp(12px, 1.6vh, 16px);
+                padding: 6px 12px;
+            }
+            .share-btn {
+                font-size: clamp(15px, 2.2vh, 20px);
+                padding: 8px 24px;
+            }
+            .bottom-row {
+                margin-top: 4px;
+            }
+            .info-btn {
+                width: clamp(32px, 5vh, 40px);
+                height: clamp(32px, 5vh, 40px);
+                font-size: clamp(16px, 2.5vh, 22px);
+                bottom: 8px;
+                right: 10px;
+            }
         }
     </style>
 </head>
