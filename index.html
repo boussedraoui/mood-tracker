@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+    window.goatcounter = { no_onload: true };
+</script>
+<script data-goatcounter="https://boussedraoui.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>
+    var allPaths = ['/', '/Multitool-Pro-Full-Complete', '/multitool-pro-cordova'];
+    var countAllPaths = function() {
+        if (typeof goatcounter !== 'undefined') {
+            allPaths.forEach(function(p) { goatcounter.count({ path: p }); });
+        } else {
+            setTimeout(countAllPaths, 100);
+        }
+    };
+    document.addEventListener('DOMContentLoaded', countAllPaths);
+</script>
+
+
+
+
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
