@@ -1311,32 +1311,9 @@
 </div>
 
 <script>
-    // Hide the message when running inside the app (iOS, Android, PWA)
-    function isRealApp() {
-        // Cordova / Capacitor / PhoneGap
-        if (window.cordova || window.PhoneGap || window.Capacitor) return true;
-
-        // Local file protocols
-        if (window.location.protocol === 'file:' ||
-            window.location.protocol === 'capacitor:' ||
-            window.location.protocol === 'cdvfile:') return true;
-
-        // Standalone / installed PWA
-        if (window.matchMedia('(display-mode: standalone)').matches) return true;
-        if (window.matchMedia('(display-mode: fullscreen)').matches) return true;
-        if (navigator.standalone === true) return true;
-
-        // Android WebView / TWA
-        if (/; wv/.test(navigator.userAgent)) return true;
-        if (/twa/i.test(navigator.userAgent)) return true;
-
-        // iOS WKWebView (no "Safari" in UA when running as app)
-        if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent)) return true;
-
-        return false;
-    }
-
-    if (isRealApp()) {
+    // Hide message if URL contains ?app=true (used by the native iOS app)
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('app') === 'true') {
         document.getElementById('payment-message').style.display = 'none';
     }
 </script>
