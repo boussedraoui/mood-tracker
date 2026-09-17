@@ -1292,5 +1292,54 @@
 
         initStartScreen();
     </script>
+
+
+
+
+
+
+
+
+    <!-- ===== PURCHASE MESSAGE (hidden inside the app) ===== -->
+<div id="payment-message" style="display:flex; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; justify-content:center; align-items:center; padding:20px;">
+    <div style="background:white; padding:32px 26px; border-radius:24px; text-align:center; max-width:380px;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">📱⭐</div>
+        <h2 style="font-size:1.4rem; margin-bottom:12px; color:#2c3e50;">Get the Full App</h2>
+        <p style="font-size:1rem; color:#555; margin-bottom:20px;">For the best experience, download <strong>Daily Insights Mood Tracker</strong> from the App Store.</p>
+        <a href="https://www.apple.com" target="_blank" style="display:inline-block; background:#007AFF; color:white; padding:14px 28px; border-radius:40px; font-weight:bold; text-decoration:none; font-size:1rem;">🍎 Download on App Store</a>
+    </div>
+</div>
+
+<script>
+    // Hide the message when running inside the app (iOS, Android, PWA)
+    function isRealApp() {
+        // Cordova / Capacitor / PhoneGap
+        if (window.cordova || window.PhoneGap || window.Capacitor) return true;
+
+        // Local file protocols
+        if (window.location.protocol === 'file:' ||
+            window.location.protocol === 'capacitor:' ||
+            window.location.protocol === 'cdvfile:') return true;
+
+        // Standalone / installed PWA
+        if (window.matchMedia('(display-mode: standalone)').matches) return true;
+        if (window.matchMedia('(display-mode: fullscreen)').matches) return true;
+        if (navigator.standalone === true) return true;
+
+        // Android WebView / TWA
+        if (/; wv/.test(navigator.userAgent)) return true;
+        if (/twa/i.test(navigator.userAgent)) return true;
+
+        // iOS WKWebView (no "Safari" in UA when running as app)
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent)) return true;
+
+        return false;
+    }
+
+    if (isRealApp()) {
+        document.getElementById('payment-message').style.display = 'none';
+    }
+</script>
+<!-- ===== END PURCHASE MESSAGE ===== -->
 </body>
 </html>
