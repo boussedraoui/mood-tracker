@@ -7,9 +7,19 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
+      - name: Install pods
+        script: |
+          cd src
+          pod install || true
+      - name: List workspace and schemes
+        script: |
+          cd src
+          ls -la
+          xcodebuild -list -workspace *.xcworkspace || xcodebuild -list -project *.xcodeproj
       - name: Build iOS app (no signing)
         script: |
           cd src
-          xcodebuild -workspace "Mood Tracker.xcworkspace" -scheme "Mood Tracker" -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
+          WORKSPACE=$(ls -d *.xcworkspace | head -1)
+          xcodebuild -workspace "$WORKSPACE" -scheme "Mood Tracker" -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
     artifacts:
       - src/build/**/*.app
