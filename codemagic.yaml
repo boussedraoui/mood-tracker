@@ -13,11 +13,9 @@ workflows:
         script: |
           cd src
           pod install || true
-      - name: Fetch signing files
+      - name: Fetch provisioning profile
         script: |
-          keychain initialize
-          app-store-connect fetch-signing-files "com.moodtracker.daily" --type IOS_APP_STORE --create
-          keychain add-certificates
+          app-store-connect fetch-signing-files "com.moodtracker.daily" --type IOS_APP_STORE --create --skip-certificate
       - name: Set up code signing
         script: |
           cd src
