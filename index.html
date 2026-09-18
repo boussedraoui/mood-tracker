@@ -1259,9 +1259,9 @@
         }
 
         shareBtn.onclick = () => {
-            if (navigator.share) { navigator.share({ title: 'Daily Mood Tracker', url: window.location.href }); } else { navigator
-                    .clipboard.writeText(window.location.href).then(() => alert('Link copied!')); }
-        };
+    if (navigator.share) { navigator.share({ title: 'Daily Mood Tracker', url: 'https://www.apple.com' }); }
+    else { navigator.clipboard.writeText('https://www.apple.com').then(() => alert('Link copied!')); }
+};
 
         infoBtn.onclick = () => { infoModal.classList.remove('hidden'); };
         infoCloseBtn.onclick = () => { infoModal.classList.add('hidden'); };
