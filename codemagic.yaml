@@ -8,14 +8,14 @@ workflows:
     environment:
       xcode: latest
       cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.moodtracker.daily
     scripts:
       - name: Install pods
         script: |
           cd src
           pod install || true
-      - name: Fetch provisioning profile
-        script: |
-          app-store-connect fetch-signing-files "com.moodtracker.daily" --type IOS_APP_STORE --create --skip-certificate
       - name: Set up code signing
         script: |
           cd src
