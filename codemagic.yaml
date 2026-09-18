@@ -26,3 +26,7 @@ workflows:
           xcode-project build-ipa --workspace "Mood Tracker.xcworkspace" --scheme "Mood Tracker"
     artifacts:
       - src/build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
