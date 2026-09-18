@@ -2,6 +2,7 @@ platform :ios, '15.0'
 
 target 'Mood Tracker' do
   use_frameworks!
+  pod 'Firebase/Messaging'
 end
 
 post_install do |installer|
