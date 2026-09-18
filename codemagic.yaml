@@ -25,4 +25,4 @@ workflows:
           cd src
           xcode-project build-ipa --workspace "Mood Tracker.xcworkspace" --scheme "Mood Tracker"
     artifacts:
-      - build/ios/ipa/*.ipa
+      - src/build/ios/ipa/*.ipa
