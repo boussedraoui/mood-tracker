@@ -19,11 +19,10 @@ workflows:
           keychain initialize
           app-store-connect fetch-signing-files "com.moodtracker.daily" --type IOS_APP_STORE --create
           keychain add-certificates
-          xcode-project use-profiles
+          xcode-project use-profiles --project "Mood Tracker.xcodeproj"
       - name: Build iOS app
         script: |
           cd src
-          WORKSPACE=$(ls -d *.xcworkspace | head -1)
-          xcode-project build-ipa --workspace "$WORKSPACE" --scheme "Mood Tracker"
+          xcode-project build-ipa --project "Mood Tracker.xcodeproj" --scheme "Mood Tracker"
     artifacts:
       - build/ios/ipa/*.ipa
