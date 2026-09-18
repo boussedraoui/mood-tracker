@@ -23,6 +23,6 @@ workflows:
       - name: Build iOS app
         script: |
           cd src
-          xcode-project build-ipa --project "Mood Tracker.xcodeproj" --scheme "Mood Tracker"
+          xcode-project build-ipa --workspace "Mood Tracker.xcworkspace" --scheme "Mood Tracker"
     artifacts:
       - build/ios/ipa/*.ipa
