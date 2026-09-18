@@ -14,6 +14,8 @@ func createWebView(container: UIView, WKSMH: WKScriptMessageHandler, WKND: WKNav
     userContentController.add(WKSMH, name: "push-permission-request")
     userContentController.add(WKSMH, name: "push-permission-state")
     userContentController.add(WKSMH, name: "push-token")
+    userContentController.add(WKSMH, name: "iap-purchase")
+    userContentController.add(WKSMH, name: "iap-check")
 
     config.userContentController = userContentController
 
@@ -33,7 +35,6 @@ func createWebView(container: UIView, WKSMH: WKScriptMessageHandler, WKND: WKNav
     webView.allowsBackForwardNavigationGestures = true
     
     // Check if macCatalyst 16.4+ is available and if so, enable web inspector.
-    // This allows the web app to be inspected using Safari Web Inspector. Supported on iOS 16.4+ and macOS 13.3+
     if #available(iOS 16.4, macOS 13.3, *) {
         webView.isInspectable = true
     }
@@ -120,8 +121,6 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
         }
 
         if let requestUrl = navigationAction.request.url{
-            // Schemes that should always be handed off to the system/other apps rather than
-            // being processed as in-app navigation (e.g. phone calls, email, maps, FaceTime, etc.)
             let externalSchemes = ["tel", "telprompt", "mailto", "facetime", "facetime-audio", "fb", "fb-messenger", "sms", "itms-services", "itms-apps", "itms", "maps"]
             if let requestScheme = requestUrl.scheme?.lowercased(), externalSchemes.contains(requestScheme) {
                 decisionHandler(.cancel)
@@ -132,7 +131,6 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
             }
 
             if let requestHost = requestUrl.host {
-                // NOTE: Match auth origin first, because host origin may be a subset of auth origin and may therefore always match
                 let matchingAuthOrigin = authOrigins.first(where: { requestHost.range(of: $0) != nil })
                 if (matchingAuthOrigin != nil) {
                     decisionHandler(.allow)
@@ -145,7 +143,6 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
 
                 let matchingHostOrigin = allowedOrigins.first(where: { requestHost.range(of: $0) != nil })
                 if (matchingHostOrigin != nil) {
-                    // Open in main webview
                     decisionHandler(.allow)
                     if (!toolbarView.isHidden) {
                         toolbarView.isHidden = true
@@ -156,7 +153,6 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
                 if (navigationAction.navigationType == .other &&
                     navigationAction.value(forKey: "syntheticClickType") as! Int == 0 &&
                     (navigationAction.targetFrame != nil) &&
-                    // no error here, fake warning
                     (navigationAction.sourceFrame != nil)
                 ) {
                     decisionHandler(.allow)
@@ -168,11 +164,9 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
 
 
                 if ["http", "https"].contains(requestUrl.scheme?.lowercased() ?? "") {
-                    // Can open with SFSafariViewController
                     let safariViewController = SFSafariViewController(url: requestUrl)
                     self.present(safariViewController, animated: true, completion: nil)
                 } else {
-                    // Scheme is not supported or no scheme is given, use openURL
                     if (UIApplication.shared.canOpenURL(requestUrl)) {
                         UIApplication.shared.open(requestUrl)
                     }
@@ -180,12 +174,8 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
             } else {
                 decisionHandler(.cancel)
                 if requestUrl.isFileURL {
-                    // not tested
                     downloadAndOpenFile(url: requestUrl.absoluteURL)
                 }
-                // if (requestUrl.absoluteString.contains("base64")){
-                //     downloadAndOpenBase64File(base64String: requestUrl.absoluteString)
-                // }
             }
         }
         else {
@@ -199,25 +189,21 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping () -> Void) {
 
-        // Set the message as the UIAlertController message
         let alert = UIAlertController(
             title: nil,
             message: message,
             preferredStyle: .alert
         )
 
-        // Add a confirmation action “OK”
         let okAction = UIAlertAction(
             title: "OK",
             style: .default,
             handler: { _ in
-                // Call completionHandler
                 completionHandler()
             }
         )
         alert.addAction(okAction)
 
-        // Display the NSAlert
         present(alert, animated: true, completion: nil)
     }
     // Handle javascript: `window.confirm(message: String)`
@@ -226,36 +212,30 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping (Bool) -> Void) {
 
-        // Set the message as the UIAlertController message
         let alert = UIAlertController(
             title: nil,
             message: message,
             preferredStyle: .alert
         )
 
-        // Add a confirmation action “Cancel”
         let cancelAction = UIAlertAction(
             title: "Cancel",
             style: .cancel,
             handler: { _ in
-                // Call completionHandler
                 completionHandler(false)
             }
         )
 
-        // Add a confirmation action “OK”
         let okAction = UIAlertAction(
             title: "OK",
             style: .default,
             handler: { _ in
-                // Call completionHandler
                 completionHandler(true)
             }
         )
         alert.addAction(cancelAction)
         alert.addAction(okAction)
 
-        // Display the NSAlert
         present(alert, animated: true, completion: nil)
     }
     // Handle javascript: `window.prompt(prompt: String, defaultText: String?)`
@@ -265,29 +245,24 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
         initiatedByFrame frame: WKFrameInfo,
         completionHandler: @escaping (String?) -> Void) {
 
-        // Set the message as the UIAlertController message
         let alert = UIAlertController(
             title: nil,
             message: prompt,
             preferredStyle: .alert
         )
 
-        // Add a confirmation action “Cancel”
         let cancelAction = UIAlertAction(
             title: "Cancel",
             style: .cancel,
             handler: { _ in
-                // Call completionHandler
                 completionHandler(nil)
             }
         )
 
-        // Add a confirmation action “OK”
         let okAction = UIAlertAction(
             title: "OK",
             style: .default,
             handler: { _ in
-                // Call completionHandler with Alert input
                 if let input = alert.textFields?.first?.text {
                     completionHandler(input)
                 }
@@ -300,7 +275,6 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
         alert.addAction(cancelAction)
         alert.addAction(okAction)
 
-        // Display the NSAlert
         present(alert, animated: true, completion: nil)
     }
 
@@ -328,32 +302,6 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
         task.resume()
     }
 
-    // func downloadAndOpenBase64File(base64String: String) {
-    //     // Split the base64 string to extract the data and the file extension
-    //     let components = base64String.components(separatedBy: ";base64,")
-
-    //     // Make sure the base64 string has the correct format
-    //     guard components.count == 2, let format = components.first?.split(separator: "/").last else {
-    //         print("Invalid base64 string format")
-    //         return
-    //     }
-
-    //     // Remove the data type prefix to get the base64 data
-    //     let dataString = components.last!
-
-    //     if let imageData = Data(base64Encoded: dataString) {
-    //         let documentsUrl: URL  =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    //         let destinationFileUrl = documentsUrl.appendingPathComponent("image.\(format)")
-
-    //         do {
-    //             try imageData.write(to: destinationFileUrl)
-    //             self.openFile(url: destinationFileUrl)
-    //         } catch {
-    //             print("Error writing image to file url: \(destinationFileUrl): \(error)")
-    //         }
-    //     }
-    // }
-
     func openFile(url: URL) {
         self.documentController = UIDocumentInteractionController(url: url)
         self.documentController?.delegate = self
@@ -371,7 +319,6 @@ extension ViewController: WKUIDelegate, WKDownloadDelegate {
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let fileURL = documentsPath.appendingPathComponent(suggestedFilename)
 
-        // Remove existing file if it exists, otherwise it may show an old file/content just by having the same name.
         if FileManager.default.fileExists(atPath: fileURL.path) {
             try? FileManager.default.removeItem(at: fileURL)
         }
