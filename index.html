@@ -734,7 +734,8 @@
         // WEB GATE: show only the App Store message on the web
         // In the native app (?app=true), the gate stays hidden.
         // ============================================================
-        var isInApp = /PWAShell/.test(navigator.userAgent);
+        var urlParams = new URLSearchParams(window.location.search);
+var isInApp = /PWAShell/.test(navigator.userAgent) || urlParams.get('screenshot') === '1';
 if (!isInApp) {
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('web-gate').classList.add('active');
