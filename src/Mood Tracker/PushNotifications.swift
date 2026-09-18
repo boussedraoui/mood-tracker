@@ -1,5 +1,4 @@
 import WebKit
-import FirebaseMessaging
 
 class SubscribeMessage {
     var topic  = ""
@@ -25,26 +24,16 @@ class SubscribeMessage {
 }
 
 func handleSubscribeTouch(message: WKScriptMessage) {
-  // [START subscribe_topic]
     let subscribeMessages = parseSubscribeMessage(message: message)
     if (subscribeMessages.count > 0){
-        let _message = subscribeMessages[0]
-        if (_message.unsubscribe) {
-            Messaging.messaging().unsubscribe(fromTopic: _message.topic) { error in }
-        }
-        else {
-            Messaging.messaging().subscribe(toTopic: _message.topic) { error in }
-        }
+        // Firebase removed – push subscriptions are disabled
+        print("Push subscription requested but Firebase is disabled.")
     }
-    
-
-  // [END subscribe_topic]
 }
 
 func parseSubscribeMessage(message: WKScriptMessage) -> [SubscribeMessage] {
     var subscribeMessages = [SubscribeMessage]()
     if let objStr = message.body as? String {
-
         let data: Data = objStr.data(using: .utf8)!
         do {
             let jsObj = try JSONSerialization.jsonObject(with: data, options: .init(rawValue: 0))
@@ -58,7 +47,6 @@ func parseSubscribeMessage(message: WKScriptMessage) -> [SubscribeMessage] {
                 }
             }
         } catch _ {
-            
         }
     }
     return subscribeMessages
@@ -74,6 +62,7 @@ func returnPermissionResult(isGranted: Bool){
         }
     })
 }
+
 func returnPermissionState(state: String){
     DispatchQueue.main.async(execute: {
         MoodTracker.webView.evaluateJavaScript("this.dispatchEvent(new CustomEvent('push-permission-state', { detail: '\(state)' }))")
@@ -82,37 +71,38 @@ func returnPermissionState(state: String){
 
 func handlePushPermission() {
     UNUserNotificationCenter.current().getNotificationSettings () { settings in
-            switch settings.authorizationStatus {
-            case .notDetermined:
-                let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-                UNUserNotificationCenter.current().requestAuthorization(
-                    options: authOptions,
-                    completionHandler: { (success, error) in
-                        if error == nil {
-                            if success == true {
-                                returnPermissionResult(isGranted: true)
-                                DispatchQueue.main.async {
-                                  UIApplication.shared.registerForRemoteNotifications()
-                                }
-                            }
-                            else {
-                                returnPermissionResult(isGranted: false)
+        switch settings.authorizationStatus {
+        case .notDetermined:
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: { (success, error) in
+                    if error == nil {
+                        if success == true {
+                            returnPermissionResult(isGranted: true)
+                            DispatchQueue.main.async {
+                                UIApplication.shared.registerForRemoteNotifications()
                             }
                         }
                         else {
                             returnPermissionResult(isGranted: false)
                         }
                     }
-                )
-            case .denied:
-                returnPermissionResult(isGranted: false)
-            case .authorized, .ephemeral, .provisional:
-                returnPermissionResult(isGranted: true)
-            @unknown default:
-                return;
-            }
+                    else {
+                        returnPermissionResult(isGranted: false)
+                    }
+                }
+            )
+        case .denied:
+            returnPermissionResult(isGranted: false)
+        case .authorized, .ephemeral, .provisional:
+            returnPermissionResult(isGranted: true)
+        @unknown default:
+            return;
         }
+    }
 }
+
 func handlePushState() {
     UNUserNotificationCenter.current().getNotificationSettings () { settings in
         switch settings.authorizationStatus {
@@ -147,17 +137,8 @@ func checkViewAndEvaluate(event: String, detail: String) {
 }
 
 func handleFCMToken(){
-    DispatchQueue.main.async(execute: {
-        Messaging.messaging().token { token, error in
-            if let error = error {
-                print("Error fetching FCM registration token: \(error)")
-                checkViewAndEvaluate(event: "push-token", detail: "ERROR GET TOKEN")
-            } else if let token = token {
-                print("FCM registration token: \(token)")
-                checkViewAndEvaluate(event: "push-token", detail: "'\(token)'")
-            }
-        }   
-    })
+    // Firebase removed – no FCM token available
+    checkViewAndEvaluate(event: "push-token", detail: "'no-token'")
 }
 
 func sendPushToWebView(userInfo: [AnyHashable: Any]){
