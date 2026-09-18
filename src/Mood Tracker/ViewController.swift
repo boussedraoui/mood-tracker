@@ -100,7 +100,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UIDocumentInteract
         let toolbarView = UIToolbar(frame: CGRect(x: 0, y: 0, width: webviewView.frame.width, height: 0))
         toolbarView.sizeToFit()
         toolbarView.frame = CGRect(x: 0, y: 0, width: webviewView.frame.width, height: toolbarView.frame.height + statusBarHeight)
-//        toolbarView.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin, .flexibleWidth]
         
         let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let close = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(loadRootUrl))
@@ -220,7 +219,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UIDocumentInteract
         }
         else {
             UIView.animate(withDuration: 0.3, delay: 0, options: [], animations: {
-                self.connectionProblemView.alpha = 0 // Here you will get the animation you want
+                self.connectionProblemView.alpha = 0
             }, completion: { _ in
                 self.connectionProblemView.isHidden = true;
                 self.connectionProblemView.layer.removeAllAnimations();
@@ -234,22 +233,11 @@ class ViewController: UIViewController, WKNavigationDelegate, UIDocumentInteract
 }
 
 extension UIColor {
-    // Check if the color is light or dark, as defined by the injected lightness threshold.
-    // Some people report that 0.7 is best. I suggest to find out for yourself.
-    // A nil value is returned if the lightness couldn't be determined.
     func isLight(threshold: Float = 0.5) -> Bool? {
         let originalCGColor = self.cgColor
-
-        // Now we need to convert it to the RGB colorspace. UIColor.white / UIColor.black are greyscale and not RGB.
-        // If you don't do this then you will crash when accessing components index 2 below when evaluating greyscale colors.
         let RGBCGColor = originalCGColor.converted(to: CGColorSpaceCreateDeviceRGB(), intent: .defaultIntent, options: nil)
-        guard let components = RGBCGColor?.components else {
-            return nil
-        }
-        guard components.count >= 3 else {
-            return nil
-        }
-
+        guard let components = RGBCGColor?.components else { return nil }
+        guard components.count >= 3 else { return nil }
         let brightness = Float(((components[0] * 299) + (components[1] * 587) + (components[2] * 114)) / 1000)
         return (brightness > threshold)
     }
@@ -271,6 +259,22 @@ extension ViewController: WKScriptMessageHandler {
         }
         if message.name == "push-token" {
             handleFCMToken()
+        }
+        if message.name == "iap-purchase" {
+            StoreKitManager.shared.purchase { success in
+                let js = success
+                    ? "this.dispatchEvent(new CustomEvent('iap-purchase-result', { detail: 'success' }))"
+                    : "this.dispatchEvent(new CustomEvent('iap-purchase-result', { detail: 'failed' }))"
+                MoodTracker.webView.evaluateJavaScript(js)
+            }
+        }
+        if message.name == "iap-check" {
+            StoreKitManager.shared.checkActiveSubscription { active in
+                let js = active
+                    ? "this.dispatchEvent(new CustomEvent('iap-status', { detail: 'active' }))"
+                    : "this.dispatchEvent(new CustomEvent('iap-status', { detail: 'inactive' }))"
+                MoodTracker.webView.evaluateJavaScript(js)
+            }
         }
   }
 }
