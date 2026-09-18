@@ -734,15 +734,14 @@
         // WEB GATE: show only the App Store message on the web
         // In the native app (?app=true), the gate stays hidden.
         // ============================================================
-        var urlParams = new URLSearchParams(window.location.search);
-        var isInApp = (urlParams.get('app') === 'true');
-        if (!isInApp) {
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('web-gate').classList.add('active');
-                document.getElementById('start-screen').classList.add('hidden');
-                document.getElementById('app').style.display = 'none';
-            });
-        }
+        var isInApp = /PWAShell/.test(navigator.userAgent);
+if (!isInApp) {
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('web-gate').classList.add('active');
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('app').style.display = 'none';
+    });
+}
 
         const languages = [
             { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
@@ -1205,8 +1204,8 @@
 
         // Only initialize the app if we're in the native app
         if (isInApp) {
-            initStartScreen();
-        }
+    initStartScreen();
+}
     </script>
 </body>
 </html>
