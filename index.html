@@ -1283,55 +1283,60 @@ if (!isInApp) {
 
 
 
-    <!-- ============ DEMO MODE (TEMPORARY - REMOVE BEFORE FINAL SUBMISSION) ============ -->
-<script>
+    <script>
 (function() {
     var params = new URLSearchParams(window.location.search);
     if (params.get('demo') !== '1') return;
 
-    // Force the start screen (icon + language picker)
-    try { localStorage.removeItem('appLang'); } catch(e) {}
+    function startDemo() {
+        // Hide web gate (purchase message for web visitors)
+        var gate = document.getElementById('web-gate');
+        if (gate) { gate.classList.remove('active'); gate.style.display = 'none'; }
 
-    // Hide the web gate (purchase message for web visitors)
-    var gate = document.getElementById('web-gate');
-    if (gate) { gate.classList.remove('active'); gate.style.display = 'none'; }
+        // Hide App Store purchase message
+        var pay = document.getElementById('payment-message');
+        if (pay) pay.style.display = 'none';
 
-    // Hide the App Store purchase message
-    var pay = document.getElementById('payment-message');
-    if (pay) pay.style.display = 'none';
+        // Force fresh start screen
+        try { localStorage.removeItem('appLang'); } catch(e) {}
 
-    // Show the start screen manually
-    var ss = document.getElementById('start-screen');
-    var app = document.getElementById('app');
-    if (ss) { ss.classList.remove('hidden'); ss.style.display = 'flex'; }
-    if (app) { app.style.display = 'none'; }
+        // Initialize the app
+        if (typeof initStartScreen === 'function') {
+            initStartScreen();
+        }
+    }
 
-    // Make Subscribe button unlock directly (no payment)
-    var tryOverride = setInterval(function() {
+    if (document.readyState === 'complete') {
+        startDemo();
+    } else {
+        window.addEventListener('load', startDemo);
+    }
+
+    // Override Subscribe button — unlock directly without payment
+    var checkSub = setInterval(function() {
         var sb = document.getElementById('subscribe-btn');
         if (!sb) return;
-        clearInterval(tryOverride);
-        sb.onclick = function() {
+        clearInterval(checkSub);
+        sb.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             var now = new Date().getTime();
             var expiry = now + 30 * 24 * 60 * 60 * 1000;
-            try { localStorage.setItem('subExpiry', expiry.toString()); } catch(e) {}
+            try { localStorage.setItem('subExpiry', expiry.toString()); } catch(err) {}
             isSubscribed = true;
             expiryTime = expiry;
-            var pc = document.getElementById('premium-content');
-            var sc = document.getElementById('subscribed-content');
-            if (pc) pc.classList.add('hidden');
-            if (sc) sc.classList.remove('hidden');
+            document.getElementById('premium-content').classList.add('hidden');
+            document.getElementById('subscribed-content').classList.remove('hidden');
             if (typeof updateUIText === 'function') updateUIText(currentLang);
-        };
+        }, true);
     }, 100);
 
-    // Hide "Active until" line permanently
+    // Permanently hide "Active until"
     setInterval(function() {
         var el = document.getElementById('expiry-text');
         if (el) el.style.display = 'none';
     }, 200);
 })();
 </script>
-<!-- ============ END DEMO MODE ============ -->
 </body>
 </html>
