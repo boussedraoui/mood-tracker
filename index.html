@@ -1207,5 +1207,47 @@ if (!isInApp) {
     initStartScreen();
 }
     </script>
+
+
+
+
+
+
+    <!-- ============ DEMO MODE (TEMPORARY - REMOVE BEFORE FINAL SUBMISSION) ============ -->
+<script>
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('demo') !== '1') return;
+
+    // 1) Hide the web gate (purchase message for web visitors)
+    var gate = document.getElementById('web-gate');
+    if (gate) { gate.classList.remove('active'); gate.style.display = 'none'; }
+
+    // 2) Hide the App Store purchase message
+    var pay = document.getElementById('payment-message');
+    if (pay) pay.style.display = 'none';
+
+    // 3) Force-initialize the app
+    if (typeof initStartScreen === 'function') initStartScreen();
+
+    // 4) Make Subscribe button unlock directly (no payment, for demo recording)
+    var sb = document.getElementById('subscribe-btn');
+    if (sb) {
+        sb.onclick = function() {
+            var now = new Date().getTime();
+            var expiry = now + 30 * 24 * 60 * 60 * 1000;
+            try { localStorage.setItem('subExpiry', expiry.toString()); } catch(e) {}
+            isSubscribed = true;
+            expiryTime = expiry;
+            var pc = document.getElementById('premium-content');
+            var sc = document.getElementById('subscribed-content');
+            if (pc) pc.classList.add('hidden');
+            if (sc) sc.classList.remove('hidden');
+            if (typeof updateUIText === 'function') updateUIText(currentLang);
+        };
+    }
+})();
+</script>
+<!-- ============ END DEMO MODE ============ -->
 </body>
 </html>
