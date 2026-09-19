@@ -1289,20 +1289,28 @@ if (!isInApp) {
     var params = new URLSearchParams(window.location.search);
     if (params.get('demo') !== '1') return;
 
-    // 1) Hide the web gate (purchase message for web visitors)
+    // Force the start screen (icon + language picker)
+    try { localStorage.removeItem('appLang'); } catch(e) {}
+
+    // Hide the web gate (purchase message for web visitors)
     var gate = document.getElementById('web-gate');
     if (gate) { gate.classList.remove('active'); gate.style.display = 'none'; }
 
-    // 2) Hide the App Store purchase message
+    // Hide the App Store purchase message
     var pay = document.getElementById('payment-message');
     if (pay) pay.style.display = 'none';
 
-    // 3) Force-initialize the app
-    if (typeof initStartScreen === 'function') initStartScreen();
+    // Show the start screen manually
+    var ss = document.getElementById('start-screen');
+    var app = document.getElementById('app');
+    if (ss) { ss.classList.remove('hidden'); ss.style.display = 'flex'; }
+    if (app) { app.style.display = 'none'; }
 
-    // 4) Make Subscribe button unlock directly (no payment, for demo recording)
-    var sb = document.getElementById('subscribe-btn');
-    if (sb) {
+    // Make Subscribe button unlock directly (no payment)
+    var tryOverride = setInterval(function() {
+        var sb = document.getElementById('subscribe-btn');
+        if (!sb) return;
+        clearInterval(tryOverride);
         sb.onclick = function() {
             var now = new Date().getTime();
             var expiry = now + 30 * 24 * 60 * 60 * 1000;
@@ -1315,7 +1323,13 @@ if (!isInApp) {
             if (sc) sc.classList.remove('hidden');
             if (typeof updateUIText === 'function') updateUIText(currentLang);
         };
-    }
+    }, 100);
+
+    // Hide "Active until" line permanently
+    setInterval(function() {
+        var el = document.getElementById('expiry-text');
+        if (el) el.style.display = 'none';
+    }, 200);
 })();
 </script>
 <!-- ============ END DEMO MODE ============ -->
