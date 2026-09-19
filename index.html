@@ -1226,6 +1226,63 @@ if (!isInApp) {
 
 
 
+    <script>
+    // Share button override: native share sheet on mobile, silent copy + custom toast on desktop
+    (function() {
+        var tryOverride = setInterval(function() {
+            var sb = document.getElementById('share-btn');
+            if (!sb) return;
+            clearInterval(tryOverride);
+
+            var appleLink = 'https://www.apple.com';
+
+            sb.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // 1) Mobile / modern browsers → native device share sheet
+                if (navigator.share) {
+                    navigator.share({ title: 'Daily Insights Mood Tracker', url: appleLink })
+                        .catch(function() {});
+                    return;
+                }
+
+                // 2) Desktop → silent copy + our own custom toast (no domain popup)
+                var ta = document.createElement('textarea');
+                ta.value = appleLink;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                ta.style.top = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                try { document.execCommand('copy'); } catch(err) {}
+                document.body.removeChild(ta);
+
+                // Custom small toast
+                var toast = document.getElementById('custom-share-toast');
+                if (!toast) {
+                    toast = document.createElement('div');
+                    toast.id = 'custom-share-toast';
+                    toast.style.cssText = 'position:fixed;bottom:40px;left:50%;transform:translateX(-50%);' +
+                        'background:#333;color:#fff;padding:12px 24px;border-radius:30px;' +
+                        'font-size:14px;font-weight:bold;z-index:999999;opacity:0;' +
+                        'transition:opacity 0.3s;pointer-events:none;';
+                    toast.textContent = 'Link copied!';
+                    document.body.appendChild(toast);
+                }
+                toast.style.opacity = '1';
+                setTimeout(function() { toast.style.opacity = '0'; }, 1500);
+            };
+        }, 100);
+    })();
+</script>
+
+
+
+
+
+
     <!-- ============ DEMO MODE (TEMPORARY - REMOVE BEFORE FINAL SUBMISSION) ============ -->
 <script>
 (function() {
