@@ -1296,25 +1296,24 @@ if (!isInApp) {
 
 
 
-    <script>
-  // Code temporaire pour tester l'app sur le web avec ?demo=1
-  document.addEventListener('DOMContentLoaded', function() {
-    // Vérifie si l'URL contient le paramètre demo=1
-    var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('demo') && urlParams.get('demo') === '1') {
-      
-      // 1. Cache la Web Gate (le message de purchase)
-      var gate = document.getElementById('web-gate') || 
-                 document.querySelector('.web-gate') || 
-                 document.querySelector('.purchase-message');
-      if (gate) gate.style.display = 'none';
-
-      // 2. Affiche le conteneur principal de l'application
-      var app = document.getElementById('app') || 
-                document.querySelector('.app-container') || 
-                document.getElementById('main-app');
-      if (app) app.style.display = 'block'; // ou 'flex' selon votre design
-    }
-  });
-</script>
+    <style>
+  .privacy-tab {
+    position: fixed;
+    bottom: 80px; /* Keep or adjust to align with your Share button */
+    left: 0; /* CHANGED from right: 0 */
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    background-color: #007aff;
+    color: white;
+    padding: 15px 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 0 8px 8px 0; /* CHANGED for left side */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2); /* CHANGED for left side */
+    z-index: 9999;
+  }
+</style>
+<a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" class="privacy-tab">Privacy Policy</a>
 </html>
