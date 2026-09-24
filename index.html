@@ -1421,5 +1421,34 @@ if (!isInApp) {
     }, 100); // Check every 100ms for the Share button
   });
 </script>
+
+
+
+
+
+
+
+
+    <script>
+  // Code temporaire pour tester l'app sur le web avec ?demo=1
+  document.addEventListener('DOMContentLoaded', function() {
+    // Vérifie si l'URL contient le paramètre demo=1
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('demo') && urlParams.get('demo') === '1') {
+      
+      // 1. Cache la Web Gate (le message de purchase)
+      var gate = document.getElementById('web-gate') || 
+                 document.querySelector('.web-gate') || 
+                 document.querySelector('.purchase-message');
+      if (gate) gate.style.display = 'none';
+
+      // 2. Affiche le conteneur principal de l'application
+      var app = document.getElementById('app') || 
+                document.querySelector('.app-container') || 
+                document.getElementById('main-app');
+      if (app) app.style.display = 'block'; // ou 'flex' selon votre design
+    }
+  });
+</script>
     </body>
 </html>
