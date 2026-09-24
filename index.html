@@ -1288,49 +1288,17 @@ if (!isInApp) {
 
 
 
-    <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Check if the URL contains ?demo=1
-    if (window.location.search.includes('demo=1')) {
-      
-      // 1. Hide the web gate (finds the element with 'Download on App Store' text)
-      var allElements = document.querySelectorAll('*');
-      var gateFound = false;
-      
-      for (var i = 0; i < allElements.length; i++) {
-        var el = allElements[i];
-        if (el.innerText && el.innerText.includes('Download on App Store') && !gateFound) {
-          // Find the main container wrapping this message and hide it
-          var container = el.closest('.card') || el.closest('.container') || el.parentElement.parentElement;
-          if (container) {
-            container.style.display = 'none';
-            gateFound = true;
-          }
-        }
-      }
+    <!-- Privacy Policy (Left Side) -->
+<a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" style="position: fixed; bottom: 80px; left: 0; writing-mode: vertical-rl; background: #007aff; color: white; padding: 15px 6px; font-size: 12px; font-weight: bold; text-decoration: none; border-radius: 0 8px 8px 0; z-index: 9999;">Privacy Policy</a>
 
-      // 2. Show the main app container
-      var appContainer = document.getElementById('app') || 
-                         document.getElementById('root') || 
-                         document.querySelector('.app') || 
-                         document.querySelector('main');
-                         
-      if (appContainer) {
-        appContainer.style.display = 'block';
-      } else {
-        // Fallback: Force show everything in the body that isn't the gate
-        var bodyChildren = document.body.children;
-        for (var j = 0; j < bodyChildren.length; j++) {
-          var child = bodyChildren[j];
-          if (child.tagName !== 'SCRIPT' && child.tagName !== 'STYLE') {
-            if (!child.innerText.includes('Download on App Store')) {
-              child.style.display = 'block';
-            }
-          }
-        }
-      }
-    }
-  });
+<!-- Demo Mode ?demo=1 -->
+<script>
+  if (window.location.search.includes('demo=1')) {
+    var gate = document.getElementById('web-gate') || document.querySelector('.web-gate') || document.querySelector('.gate') || document.querySelector('.purchase-message');
+    if (gate) gate.style.display = 'none';
+    
+    var app = document.getElementById('app') || document.getElementById('root') || document.querySelector('.app') || document.querySelector('main');
+    if (app) app.style.display = 'block';
+  }
 </script>
-<a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" class="privacy-tab">Privacy Policy</a>
 </html>
