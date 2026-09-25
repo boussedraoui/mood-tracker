@@ -984,6 +984,29 @@ insightGoodSuffix: [
             }
         };
 
+                // ── GÉNÉRATION AUTOMATIQUE : 200 ALIMENTS + 500 ACTIVITÉS ──
+        (function() {
+            var baseFoods = ["Apple", "Banana", "Orange", "Strawberry", "Blueberry", "Avocado", "Salmon", "Chicken", "Rice", "Pasta", "Bread", "Cheese", "Yogurt", "Eggs", "Almonds", "Walnuts", "Spinach", "Broccoli", "Carrot", "Tomato"];
+            var foodModifiers = ["fresh", "organic", "ripe", "grilled", "steamed", "raw", "cooked", "baked", "roasted", "sautéed"];
+            var generatedFoods = [];
+            baseFoods.forEach(function(base) {
+                foodModifiers.forEach(function(mod) {
+                    generatedFoods.push("🍽️ " + mod + " " + base + ".");
+                });
+            });
+            translations.en.foodRecs = generatedFoods;
+
+            var baseActivities = ["running", "walking", "swimming", "cycling", "yoga", "meditation", "reading", "writing", "painting", "singing", "dancing", "cooking", "gardening", "hiking", "fishing", "camping", "shopping", "traveling", "photography", "volunteering", "learning", "teaching", "playing", "exercising", "stretching"];
+            var activityModifiers = ["morning", "evening", "afternoon", "night", "daily", "weekly", "gentle", "intense", "relaxing", "energetic", "outdoor", "indoor", "group", "solo", "creative", "mindful", "fun", "calm", "active", "peaceful"];
+            var generatedActivities = [];
+            baseActivities.forEach(function(base) {
+                activityModifiers.forEach(function(mod) {
+                    generatedActivities.push("🏃 " + mod + " " + base + ".");
+                });
+            });
+            translations.en.activityRecs = generatedActivities;
+        })();
+
         let currentLang = 'en';
         let selectedMood = null;
         let selectedActivity = null;
