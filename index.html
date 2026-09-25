@@ -39,7 +39,7 @@
     <link rel="apple-touch-icon" href="./assets/1783351665167.png">
     <meta name="theme-color" content="#ffffff">
     <link rel="manifest" href="./manifest.json">
-    <title>Daily Mood Tracker</title>
+    <title>Daily Insights Mood Trackerr</title>
     <style>
         /* ── reset & base ── */
         * {
@@ -659,7 +659,7 @@
 
     <!-- MAIN APP -->
     <div id="app">
-        <div class="title" id="app-title">Daily Mood Tracker</div>
+        <div class="title" id="app-title">Daily Insights Mood Tracker</div>
 
         <div class="label" id="mood-label">Mood:</div>
         <div class="row" id="mood-buttons">
@@ -754,7 +754,7 @@ if (!isInApp) {
 
         const translations = {
             'en': {
-                title: 'Daily Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
+                title: 'Daily Insights Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
                 insights: 'Your Insights', trend: 'Mood Trend:', recs: 'Recommendations:',
                 subscribe: 'Subscribe ($4.99/mo)', share: 'Share', close: 'Close',
                 info_title: '🌟 About This App',
@@ -1168,7 +1168,7 @@ if (!isInApp) {
         });
 
         shareBtn.onclick = () => {
-            if (navigator.share) { navigator.share({ title: 'Daily Mood Tracker', url: 'https://www.apple.com' }); }
+            if (navigator.share) { navigator.share({ title: 'Daily Insights Mood Tracker', url: 'https://www.apple.com' }); }
             else { navigator.clipboard.writeText('https://www.apple.com').then(() => alert('Link copied!')); }
         };
 
