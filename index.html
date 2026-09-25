@@ -1203,7 +1203,7 @@ if (!isInApp) {
         }
 
         // Only initialize the app if we're in the native app
-        if (isInApp) {
+        if (isInApp || window.location.search.includes('demo=1')) {
     initStartScreen();
 }
     </script>
