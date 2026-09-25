@@ -692,17 +692,51 @@
         });
     </script>
 
+
+
+
+
+
+
+
+
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('demo') && urlParams.get('demo') === '1') {
-                var gate = document.getElementById('web-gate');
-                if (gate) gate.style.display = 'none';
-                var app = document.getElementById('app');
-                if (app) app.style.display = 'flex';
-            }
-        });
-    </script>
+  // ══ CODE DE TEST TEMPORAIRE (À SUPPRIMER AVANT SOUMISSION) ══
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. Bypass la web gate et affiche l'app
+    var gate = document.getElementById('web-gate');
+    if (gate) gate.style.display = 'none';
+
+    // 2. Simule l'environnement iOS (pour que le start-screen s'affiche)
+    // → On garde isInApp à true via un override
+    window.isInApp = true;
+
+    // 3. Affiche le start-screen (choix de langue) comme sur iOS
+    var start = document.getElementById('start-screen');
+    if (start) start.classList.remove('hidden');
+    var app = document.getElementById('app');
+    if (app) app.style.display = 'none';
+
+    // 4. Initialise le start-screen (choix de langue + timer)
+    if (typeof initStartScreen === 'function') {
+      initStartScreen();
+    }
+
+    // 5. INTERCEPTE le clic sur Subscribe pour SIMULER un paiement réussi
+    setTimeout(function() {
+      var subBtn = document.getElementById('subscribe-btn');
+      if (subBtn) {
+        subBtn.onclick = function() {
+          // Simule le retour de succès d'Apple StoreKit
+          var event = new CustomEvent('iap-purchase-result', { detail: 'success' });
+          document.dispatchEvent(event);
+        };
+      }
+    }, 500);
+  });
+</script>
 
 </body>
 </html>
