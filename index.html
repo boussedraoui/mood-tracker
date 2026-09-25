@@ -1295,60 +1295,18 @@ if (!isInApp) {
 
 
 
-    <div id="privacy-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:2147483647; overflow:hidden;">
+    <!-- 1. Privacy Policy Button (Left Side) -->
+<a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" style="position: fixed; bottom: 20px; left: 0; writing-mode: vertical-rl; text-orientation: mixed; background-color: #f0f0f0; color: #333; padding: 12px 6px; font-family: -apple-system, sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; border-radius: 0 8px 8px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); z-index: 9999;">Privacy Policy</a>
+
+<!-- 2. Privacy Policy Overlay (Keeps user inside the app) -->
+<div id="privacy-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:2147483647; overflow:hidden;">
   <iframe id="privacy-iframe" style="width:100%; height:100%; border:none;"></iframe>
 </div>
 
+<!-- 3. The Script -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // 1. Intercept the Privacy Policy link click
-    document.body.addEventListener('click', function(e) {
-      var target = e.target.closest('a');
-      if (target && target.href && target.href.includes('privacy.html')) {
-        e.preventDefault(); // Stop Safari from opening
-        var overlay = document.getElementById('privacy-overlay');
-        var iframe = document.getElementById('privacy-iframe');
-        overlay.style.display = 'block';
-        iframe.src = target.href;
-        
-        // 2. Handle the "Back to App" button inside the iframe
-        iframe.onload = function() {
-          try {
-            var backBtn = iframe.contentDocument.querySelector('.back-button');
-            if (backBtn) {
-              backBtn.addEventListener('click', function(ev) {
-                ev.preventDefault();
-                overlay.style.display = 'none';
-                iframe.src = '';
-                window.location.href = 'https://boussedraoui.github.io/mood-tracker/?app=true';
-              });
-            }
-          } catch(err) {
-            console.log('Iframe error: ', err);
-          }
-        };
-      }
-    });
-  });
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // 1. MODE TEST (demo=1)
+    // MODE TEST (demo=1) - Hide web gate, show app
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('demo') && urlParams.get('demo') === '1') {
       var gate = document.getElementById('web-gate') || 
@@ -1362,35 +1320,37 @@ if (!isInApp) {
       if (app) app.style.display = 'block';
     }
 
-    // 2. UNE SEULE PAGE (pas de scroll)
+    // SINGLE PAGE (No scrolling up/down, left/right)
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100vh';
     document.body.style.width = '100vw';
 
-    // 3. PRIVACY POLICY OVERLAY (pour ton bouton vertical existant)
+    // PRIVACY POLICY OVERLAY (Opens inside the app, returns to ?app=true inside the app)
     document.body.addEventListener('click', function(e) {
       var target = e.target.closest('a');
       if (target && target.href && target.href.includes('privacy.html')) {
         e.preventDefault(); 
         var overlay = document.getElementById('privacy-overlay');
         var iframe = document.getElementById('privacy-iframe');
-        overlay.style.display = 'block';
-        iframe.src = target.href;
-        
-        iframe.onload = function() {
-          try {
-            var backBtn = iframe.contentDocument.querySelector('.back-button');
-            if (backBtn) {
-              backBtn.addEventListener('click', function(ev) {
-                ev.preventDefault();
-                overlay.style.display = 'none';
-                iframe.src = '';
-                window.location.href = 'https://boussedraoui.github.io/mood-tracker/?app=true';
-              });
-            }
-          } catch(err) {}
-        };
+        if (overlay && iframe) {
+          overlay.style.display = 'block';
+          iframe.src = target.href;
+          
+          iframe.onload = function() {
+            try {
+              var backBtn = iframe.contentDocument.querySelector('.back-button');
+              if (backBtn) {
+                backBtn.addEventListener('click', function(ev) {
+                  ev.preventDefault();
+                  overlay.style.display = 'none';
+                  iframe.src = '';
+                  window.location.href = 'https://boussedraoui.github.io/mood-tracker/?app=true';
+                });
+              }
+            } catch(err) {}
+          };
+        }
       }
     });
   });
