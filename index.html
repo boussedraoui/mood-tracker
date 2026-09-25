@@ -101,6 +101,29 @@
         }
         .main-action-btn { background: linear-gradient(135deg, #007AFF, #34C759); color: white; border: none; padding: 18px 20px; border-radius: 40px; font-size: clamp(20px, 3vh, 26px); font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(0,122,255,0.25); }
         .main-action-btn:active { transform: scale(0.97); }
+        .io-btn {
+    position: absolute;
+    bottom: 14px;
+    right: 76px;
+    width: clamp(44px, 7vh, 56px);
+    height: clamp(44px, 7vh, 56px);
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 2px solid #007AFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(22px, 3.5vh, 30px);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 10;
+}
+@media (min-height: 800px) {
+    .io-btn { width: clamp(52px, 8vh, 64px); height: clamp(52px, 8vh, 64px); font-size: clamp(26px, 4vh, 34px); bottom: 20px; right: 96px; }
+}
+@media (max-height: 680px) {
+    .io-btn { width: clamp(32px, 5vh, 40px); height: clamp(32px, 5vh, 40px); font-size: clamp(16px, 2.5vh, 22px); bottom: 8px; right: 60px; }
+}
     </style>
 </head>
 <body>
@@ -148,6 +171,7 @@
             <button class="share-btn" id="share-btn">🔗 Share</button>
         </div>
         <button class="info-btn" id="info-btn">i</button>
+        <button class="io-btn" id="io-btn">📦</button>
     </div>
 
     <div class="modal-overlay hidden" id="info-modal">
@@ -1251,6 +1275,39 @@
                 document.getElementById('privacy-iframe').srcdoc = '';
             });
         });
+        document.getElementById('io-btn').onclick = () => {
+    var choice = confirm('📤 = Export\n\n📥 = Import\n\nOK = Export | Cancel = Import');
+    if (choice) {
+        var data = localStorage.getItem('moodData') || '[]';
+        var blob = new Blob([data], {type:'application/json'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'mood-backup-' + new Date().toISOString().slice(0,10) + '.json';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } else {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = (e) => {
+            var f = e.target.files[0];
+            if (!f) return;
+            var r = new FileReader();
+            r.onload = (ev) => {
+                try {
+                    var p = JSON.parse(ev.target.result);
+                    if (Array.isArray(p)) {
+                        localStorage.setItem('moodData', JSON.stringify(p));
+                        location.reload();
+                    }
+                } catch(err) { alert('❌'); }
+            };
+            r.readAsText(f);
+        };
+        input.click();
+    }
+};
     </script>
 
     <script>
