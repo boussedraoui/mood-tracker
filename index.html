@@ -1387,6 +1387,79 @@ Object.assign(translations['it'], {stats_title:'📊 Statistiche', stats_total:'
 Object.assign(translations['ko'], {stats_title:'📊 통계', stats_total:'총 항목', stats_top_mood:'가장 많은 기분', stats_last:'마지막 항목', stats_entries:'항목', stats_no_data:'아직 항목이 없습니다'});
 Object.assign(translations['hi'], {stats_title:'📊 आंकड़े', stats_total:'कुल प्रविष्टियाँ', stats_top_mood:'सबसे आम मूड', stats_last:'अंतिम प्रविष्टि', stats_entries:'प्रविष्टियाँ', stats_no_data:'अभी तक कोई प्रविष्टि नहीं'});
 </script>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="modal-overlay hidden" id="onboarding-modal">
+    <div class="modal-content">
+        <div class="info-modal-title" id="onboarding-title">👋</div>
+        <div id="onboarding-subtitle" style="text-align:center; font-size:clamp(14px,2vh,18px); color:#666; margin-bottom:20px; line-height:1.5;"></div>
+        <div class="row" id="onboarding-mood-buttons" style="margin-bottom:20px;">
+            <button class="btn" data-value="😊">😊</button>
+            <button class="btn" data-value="😢">😢</button>
+            <button class="btn" data-value="😤">😤</button>
+            <button class="btn" data-value="😰">😰</button>
+        </div>
+        <button class="info-close-btn" id="onboarding-submit">OK</button>
+    </div>
+</div>
+
+<script>
+Object.assign(translations['en'], {onboarding_title:'👋 Welcome!', onboarding_subtitle:'How are you feeling right now? This helps us personalize your first insight. Used only on your device, never shared.', onboarding_submit:'Continue'});
+Object.assign(translations['ar'], {onboarding_title:'👋 مرحباً!', onboarding_subtitle:'كيف تشعر الآن؟ هذا يساعدنا في تخصيص رؤيتك الأولى. يُستخدم فقط على جهازك، ولا يُشارك أبداً.', onboarding_submit:'متابعة'});
+Object.assign(translations['zh'], {onboarding_title:'👋 欢迎！', onboarding_subtitle:'你现在感觉如何？这有助于我们个性化你的第一个洞察。仅在您的设备上使用，绝不共享。', onboarding_submit:'继续'});
+Object.assign(translations['es'], {onboarding_title:'👋 ¡Bienvenido!', onboarding_subtitle:'¿Cómo te sientes ahora mismo? Esto nos ayuda a personalizar tu primera perspectiva. Solo se usa en tu dispositivo, nunca se comparte.', onboarding_submit:'Continuar'});
+Object.assign(translations['fr'], {onboarding_title:'👋 Bienvenue !', onboarding_subtitle:'Comment vous sentez-vous en ce moment ? Cela nous aide à personnaliser votre premier aperçu. Utilisé uniquement sur votre appareil, jamais partagé.', onboarding_submit:'Continuer'});
+Object.assign(translations['de'], {onboarding_title:'👋 Willkommen!', onboarding_subtitle:'Wie fühlen Sie sich gerade? Dies hilft uns, Ihren ersten Einblick zu personalisieren. Nur auf Ihrem Gerät verwendet, niemals geteilt.', onboarding_submit:'Weiter'});
+Object.assign(translations['ja'], {onboarding_title:'👋 ようこそ！', onboarding_subtitle:'今の気分はいかがですか？最初の洞察をパーソナライズするのに役立ちます。お使いのデバイスでのみ使用され、共有されることはありません。', onboarding_submit:'続ける'});
+Object.assign(translations['ru'], {onboarding_title:'👋 Добро пожаловать!', onboarding_subtitle:'Как вы себя чувствуете прямо сейчас? Это помогает персонализировать ваш первый инсайт. Используется только на вашем устройстве, никогда не передаётся.', onboarding_submit:'Продолжить'});
+Object.assign(translations['pt'], {onboarding_title:'👋 Bem-vindo!', onboarding_subtitle:'Como você está se sentindo agora? Isso nos ajuda a personalizar seu primeiro insight. Usado apenas no seu dispositivo, nunca compartilhado.', onboarding_submit:'Continuar'});
+Object.assign(translations['it'], {onboarding_title:'👋 Benvenuto!', onboarding_subtitle:'Come ti senti adesso? Questo ci aiuta a personalizzare il tuo primo insight. Usato solo sul tuo dispositivo, mai condiviso.', onboarding_submit:'Continua'});
+Object.assign(translations['ko'], {onboarding_title:'👋 환영합니다!', onboarding_subtitle:'지금 기분이 어떠세요? 첫 번째 인사이트를 개인화하는 데 도움이 됩니다. 기기에서만 사용되며 절대 공유되지 않습니다.', onboarding_submit:'계속'});
+Object.assign(translations['hi'], {onboarding_title:'👋 स्वागत है!', onboarding_subtitle:'अभी आप कैसा महसूस कर रहे हैं? यह आपकी पहली अंतर्दृष्टि को व्यक्तिगत बनाने में मदद करता है। केवल आपके डिवाइस पर उपयोग किया जाता है, कभी साझा नहीं किया जाता।', onboarding_submit:'जारी रखें'});
+
+(function() {
+    var shown = false;
+    function showOnboarding() {
+        if (shown) return;
+        if (localStorage.getItem('onboardingDone')) return;
+        shown = true;
+        var t = translations[currentLang];
+        if (!t || !t.onboarding_title) return;
+        document.getElementById('onboarding-title').innerText = t.onboarding_title;
+        document.getElementById('onboarding-subtitle').innerText = t.onboarding_subtitle;
+        document.getElementById('onboarding-submit').innerText = t.onboarding_submit;
+        document.getElementById('onboarding-modal').classList.remove('hidden');
+    }
+    var appEl = document.getElementById('app');
+    if (appEl) {
+        var obs = new MutationObserver(function() {
+            if (appEl.style.display === 'flex') {
+                setTimeout(showOnboarding, 500);
+            }
+        });
+        obs.observe(appEl, { attributes: true, attributeFilter: ['style'] });
+    }
+    document.getElementById('onboarding-submit').onclick = function() {
+        localStorage.setItem('onboardingDone', '1');
+        document.getElementById('onboarding-modal').classList.add('hidden');
+    };
+    document.querySelectorAll('#onboarding-mood-buttons .btn').forEach(function(b) {
+        b.onclick = function() {
+            document.querySelectorAll('#onboarding-mood-buttons .btn').forEach(function(x) { x.classList.remove('selected'); });
+            b.classList.add('selected');
+        };
+    });
+})();
+</script>
     
 </body>
 </html>
