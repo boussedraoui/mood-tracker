@@ -1344,81 +1344,57 @@ if (!isInApp) {
 
 
 
+
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // 1. Prevent scrolling entirely (Single page: no up/down, left/right)
+    // 1. MODE TEST (demo=1)
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('demo') && urlParams.get('demo') === '1') {
+      var gate = document.getElementById('web-gate') || 
+                 document.querySelector('.web-gate') || 
+                 document.querySelector('.purchase-message');
+      if (gate) gate.style.display = 'none';
+      
+      var app = document.getElementById('app') || 
+                document.querySelector('.app-container') || 
+                document.getElementById('main-app');
+      if (app) app.style.display = 'block';
+    }
+
+    // 2. UNE SEULE PAGE (pas de scroll)
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100vh';
     document.body.style.width = '100vw';
 
-    // 2. Wait for the app to load and find the Share button
-    var checkExist = setInterval(function() {
-      var shareBtn = Array.from(document.querySelectorAll('button, a')).find(el => el.innerText.trim().includes('Share'));
-      
-      if (shareBtn) {
-        clearInterval(checkExist);
-        var parent = shareBtn.parentElement;
+    // 3. PRIVACY POLICY OVERLAY (pour ton bouton vertical existant)
+    document.body.addEventListener('click', function(e) {
+      var target = e.target.closest('a');
+      if (target && target.href && target.href.includes('privacy.html')) {
+        e.preventDefault(); 
+        var overlay = document.getElementById('privacy-overlay');
+        var iframe = document.getElementById('privacy-iframe');
+        overlay.style.display = 'block';
+        iframe.src = target.href;
         
-        // 3. Force parent to be a flex row (keeps i, Share, Privacy on same line)
-        parent.style.display = 'flex';
-        parent.style.flexDirection = 'row';
-        parent.style.justifyContent = 'center';
-        parent.style.alignItems = 'center';
-        parent.style.gap = '8px';
-        parent.style.flexWrap = 'nowrap';
-
-        // 4. Add Privacy Policy button inline if it doesn't exist
-        if (!parent.querySelector('.privacy-inline-btn')) {
-          var pBtn = document.createElement('a');
-          pBtn.className = 'privacy-inline-btn';
-          pBtn.innerText = 'Privacy';
-          pBtn.href = "https://boussedraoui.github.io/mood-tracker/privacy.html";
-          
-          // Styling to match the row
-          pBtn.style.padding = '8px 12px';
-          pBtn.style.backgroundColor = '#f0f0f0';
-          pBtn.style.color = '#333';
-          pBtn.style.textDecoration = 'none';
-          pBtn.style.borderRadius = '20px';
-          pBtn.style.fontFamily = '-apple-system, sans-serif';
-          pBtn.style.fontSize = '12px';
-          pBtn.style.fontWeight = 'bold';
-          pBtn.style.whiteSpace = 'nowrap';
-          pBtn.style.cursor = 'pointer';
-          
-          // 5. Open inside app (Overlay logic)
-          pBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            var overlay = document.getElementById('privacy-overlay');
-            var iframe = document.getElementById('privacy-iframe');
-            overlay.style.display = 'block';
-            iframe.src = pBtn.href;
-            
-            iframe.onload = function() {
-              try {
-                var backBtn = iframe.contentDocument.querySelector('.back-button');
-                if (backBtn) {
-                  backBtn.addEventListener('click', function(ev) {
-                    ev.preventDefault();
-                    overlay.style.display = 'none';
-                    iframe.src = '';
-                    window.location.href = 'https://boussedraoui.github.io/mood-tracker/?app=true';
-                  });
-                }
-              } catch(err) {
-                console.log('Iframe error: ', err);
-              }
-            };
-          });
-
-          parent.appendChild(pBtn);
-        }
+        iframe.onload = function() {
+          try {
+            var backBtn = iframe.contentDocument.querySelector('.back-button');
+            if (backBtn) {
+              backBtn.addEventListener('click', function(ev) {
+                ev.preventDefault();
+                overlay.style.display = 'none';
+                iframe.src = '';
+                window.location.href = 'https://boussedraoui.github.io/mood-tracker/?app=true';
+              });
+            }
+          } catch(err) {}
+        };
       }
-    }, 100); // Check every 100ms for the Share button
+    });
   });
 </script>
-
 
 
 
