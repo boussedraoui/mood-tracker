@@ -652,6 +652,21 @@
         padding: 26px 34px 22px 34px;
     }
 }
+        .main-action-btn {
+    background: linear-gradient(135deg, #007AFF, #34C759);
+    color: white;
+    border: none;
+    padding: 18px 20px;
+    border-radius: 40px;
+    font-size: clamp(20px, 3vh, 26px);
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0,122,255,0.25);
+}
+.main-action-btn:active {
+    transform: scale(0.97);
+}
     </style>
 </head>
 <body>
@@ -696,22 +711,12 @@
 
         <button class="save-btn" id="save-btn">Save</button>
 
-        <div class="insights-box">
-            <div class="section-title" id="insights-title">Your Insights</div>
-            <div class="trend-text" id="mood-trend">Mood Trend: Start logging to see trends.</div>
-
-            <div id="premium-content">
-                <div class="recommend-row">
-                    <span class="recommend-label" id="recommend-label">Recommendations:</span>
-                    <button class="subscribe-btn-small" id="subscribe-btn">Subscribe ($4.99/mo)</button>
-                </div>
-            </div>
-            <div id="subscribed-content" class="hidden">
-                <div class="tip-text" id="food-tip">Food Recommendations: Log a mood to get tips.</div>
-                <div class="advice-text" id="activity-advice">Activity Advice: Log 3 entries for advice.</div>
-                <div class="sub-status" id="expiry-text">Active until: --</div>
-            </div>
-        </div>
+                <div class="insights-box" style="display:flex; flex-direction:column; justify-content:center; gap:12px;">
+    <button class="main-action-btn" id="btn-open-insight">📊 Your Insights</button>
+    <button class="main-action-btn" id="btn-open-recs">💡 Recommendations</button>
+    <button class="subscribe-btn-small" id="subscribe-btn" style="width:100%; padding:18px; font-size:clamp(20px,3vh,26px);">Subscribe ($4.99/mo)</button>
+    <div id="sub-status" class="hidden" style="text-align:center; font-size:clamp(14px,2vh,18px); color:#34C759; font-weight:bold;">✅ Premium Active</div>
+</div>
 
         <div class="bottom-row">
             <button class="share-btn" id="share-btn">🔗 Share</button>
@@ -779,7 +784,34 @@ if (!isInApp) {
                 lang_btn: 'English', timer: 'Entering in 3 seconds...', active_until: 'Active until:',
                 food_tip: 'Food Recommendations:', activity_tip: 'Activity Advice:',
                 no_data: 'Start logging to see personalized tips.',
-                insightGood: ["Your trend is positive! 🌟", "Great vibes this week! 🎉", "You are rocking it! 🚀", "Your mood is high! ☀️", "Excellent emotional state! 💯"],
+                insightGoodBase: [
+    "Your trend is positive", "Great vibes this week", "You are rocking it", "Your mood is high", "Excellent emotional state",
+    "You are thriving", "Happiness is shining through", "You are on fire", "Your energy is amazing", "You are glowing",
+    "Life is treating you well", "You are unstoppable", "Your smile says it all", "You are in a great place", "Joy is your companion",
+    "You are blooming", "Your heart is light", "You are radiating positivity", "Your spirit is soaring", "You are full of life",
+    "Happiness flows through you", "You are at your best", "Your mind is at peace", "You are winning today", "Your vibes are immaculate",
+    "You are a ray of sunshine", "Your joy is contagious", "You are living your best life", "Your energy is magnetic", "You are absolutely thriving",
+    "Peace is within you", "You are aligned and happy", "Your mood is stellar", "You are feeling fantastic", "Your happiness is inspiring",
+    "You are a bright light", "Your positivity is powerful", "You are embracing joy", "Your soul is smiling", "You are wonderfully happy",
+    "You are celebrating life", "Your energy is unmatched", "You are feeling blessed", "Your happiness is well-deserved", "You are on cloud nine",
+    "You are a joy to be around", "Your mood is exceptional", "You are feeling magnificent", "Your happiness shines bright", "You are truly thriving",
+    "You are at peace with yourself", "Your joy is boundless", "You are feeling incredible", "Your spirit is unbreakable", "You are a happy soul",
+    "You are embracing positivity", "Your mood is radiant", "You are feeling wonderful", "Your happiness is beautiful", "You are a beacon of joy",
+    "You are thriving beautifully", "Your energy is vibrant", "You are feeling amazing", "Your happiness is contagious", "You are a star",
+    "You are living joyfully", "Your mood is fantastic", "You are feeling superb", "Your happiness is glowing", "You are a happy warrior",
+    "You are embracing happiness", "Your mood is brilliant", "You are feeling outstanding", "Your joy is inspiring", "You are a joyful soul",
+    "You are thriving wonderfully", "Your energy is beautiful", "You are feeling great", "Your happiness is radiant", "You are a happy spirit",
+    "You are embracing life", "Your mood is wonderful", "You are feeling excellent", "Your joy is amazing", "You are a bright soul",
+    "You are thriving amazingly", "Your energy is wonderful", "You are feeling brilliant", "Your happiness is amazing", "You are a wonderful soul",
+    "You are embracing joy fully", "Your mood is amazing", "You are feeling superb today", "Your joy is wonderful", "You are a shining star",
+    "You are thriving today", "Your energy is superb", "You are feeling fantastic today", "Your happiness is wonderful", "You are a beautiful soul"
+],
+insightGoodSuffix: [
+    "! 🌟", "! 🎉", "! 🚀", "! ☀️", "! 💯", "! ✨", "! 🏆", "! 💫", "! 👏", "! 🧠",
+    "! 🌈", "! 🔥", "! ⚡", "! 💪", "! 🎯", "! 🌻", "! 🍀", "! ⭐", "! 💎", "! 🎊",
+    "! Keep going! 🌟", "! Stay strong! 💪", "! Well done! 👏", "! You deserve it! 🏆", "! Stay amazing! 💫",
+    "! Keep shining! ✨", "! You got this! 🚀", "! Keep it up! 🔥", "! Way to go! 🎉", "! Proud of you! 🌈"
+],
                 insightStable: ["Your mood is stable. ⚖️", "Balanced as always! 🧘", "Steady and consistent. 🌊", "Maintaining balance! ✅"],
                 insightBad: ["You need more self-care. 💪", "Take a break, you deserve it. 🛋️", "Prioritize rest today. 🌿", "Self-care is vital now. 🕯️"],
                 foodRecs: ["🍫 Dark chocolate.", "🍌 A banana.", "🥗 A green salad.", "🍣 Fresh salmon.", "🥛 A glass of warm milk.", "🌿 Chamomile tea.", "🥑 Avocado toast.", "🍓 Fresh berries.", "🫐 Blueberry smoothie.", "🥜 Almonds and walnuts.", "🍊 Orange juice.", "🍳 Poached eggs.", "🧀 Cheese and crackers.", "🌽 Corn salad.", "🥪 A turkey sandwich."],
@@ -970,13 +1002,6 @@ if (!isInApp) {
         const moodBtns = document.querySelectorAll('#mood-buttons .btn');
         const activityBtns = document.querySelectorAll('#activity-buttons .btn');
         const saveBtn = document.getElementById('save-btn');
-        const trendEl = document.getElementById('mood-trend');
-        const insightsTitle = document.getElementById('insights-title');
-        const premiumContent = document.getElementById('premium-content');
-        const subscribedContent = document.getElementById('subscribed-content');
-        const foodTipEl = document.getElementById('food-tip');
-        const adviceEl = document.getElementById('activity-advice');
-        const expiryEl = document.getElementById('expiry-text');
         const subscribeBtn = document.getElementById('subscribe-btn');
         const shareBtn = document.getElementById('share-btn');
         const infoBtn = document.getElementById('info-btn');
@@ -996,58 +1021,19 @@ if (!isInApp) {
             return chosen;
         }
 
-        function updateUIText(lang) {
+                function updateUIText(lang) {
             const t = translations[lang];
             document.getElementById('app-title').innerText = t.title;
             document.getElementById('mood-label').innerText = t.mood;
             document.getElementById('activity-label').innerText = t.activity;
             document.getElementById('save-btn').innerText = t.save;
-            insightsTitle.innerText = t.insights;
-            document.getElementById('recommend-label').innerText = t.recs;
-            document.getElementById('subscribe-btn').innerText = t.subscribe;
             document.getElementById('share-btn').innerText = '🔗 ' + t.share;
             document.querySelector('.info-modal-title').innerText = t.info_title;
-            infoTextContent.innerHTML = t.info_text;
+            document.getElementById('info-text-content').innerHTML = t.info_text;
             document.getElementById('info-close-btn').innerText = t.close;
             langBtn.innerText = t.lang_btn;
             timerText.innerText = t.timer;
-
-            if (isSubscribed) {
-                expiryEl.innerText = t.active_until + ' ' + formatDate(expiryTime);
-            }
-
-            if (entries.length > 0) {
-                const last = entries[entries.length - 1];
-                const foods = t.foodRecs;
-                const activities = t.activityRecs;
-                let chosenFood = getNextFromPool(foods, 'foodQueue_' + lang);
-                let chosenActivity = getNextFromPool(activities, 'activityQueue_' + lang);
-                foodTipEl.innerText = t.food_tip + ' ' + chosenFood;
-                adviceEl.innerText = t.activity_tip + ' ' + chosenActivity;
-            } else {
-                foodTipEl.innerText = t.food_tip + ' ' + t.no_data;
-                adviceEl.innerText = t.activity_tip + ' ' + t.no_data;
-            }
-
-            if (entries.length === 0) {
-                trendEl.innerText = t.trend + ' ' + t.no_data;
-            } else {
-                const recent = entries.slice(-7);
-                const happy = recent.filter(e => e.mood === '😊').length;
-                const total = recent.length;
-                let poolKey = 'insightBad';
-                if (total > 0) {
-                    let ratio = happy / total;
-                    if (ratio >= 0.6) poolKey = 'insightGood';
-                    else if (ratio >= 0.3) poolKey = 'insightStable';
-                    else poolKey = 'insightBad';
-                }
-                let insightPool = t[poolKey];
-                let chosenInsight = getNextFromPool(insightPool, 'insightQueue_' + poolKey + '_' + lang);
-                trendEl.innerText = t.trend + ' ' + chosenInsight;
-            }
         }
-
         function formatDate(timestamp) {
             if (!timestamp) return '--';
             const date = new Date(timestamp);
@@ -1162,8 +1148,8 @@ if (!isInApp) {
                 localStorage.setItem('subExpiry', expiry.toString());
                 isSubscribed = true;
                 expiryTime = expiry;
-                premiumContent.classList.add('hidden');
-                subscribedContent.classList.remove('hidden');
+                document.getElementById('subscribe-btn').classList.add('hidden');
+                document.getElementById('sub-status').classList.remove('hidden');
                 updateUIText(currentLang);
                 alert("Payment successful! Premium features unlocked.");
             } else {
@@ -1178,8 +1164,8 @@ if (!isInApp) {
                 localStorage.setItem('subExpiry', expiry.toString());
                 isSubscribed = true;
                 expiryTime = expiry;
-                premiumContent.classList.add('hidden');
-                subscribedContent.classList.remove('hidden');
+                document.getElementById('subscribe-btn').classList.add('hidden');
+                document.getElementById('sub-status').classList.remove('hidden');
                 updateUIText(currentLang);
             }
         });
@@ -1200,6 +1186,33 @@ if (!isInApp) {
 };
 
         infoBtn.onclick = () => { infoModal.classList.remove('hidden'); };
+        // ── INSIGHT & RECOMMENDATIONS MODALS ──
+var insightModal = document.getElementById('insight-modal');
+var recsModal = document.getElementById('recs-modal');
+var insightContent = document.getElementById('insight-content');
+var recsContent = document.getElementById('recs-content');
+
+document.getElementById('btn-open-insight').onclick = () => {
+    var t = translations[currentLang];
+    var bases = t.insightGoodBase || t.insightGood;
+    var suffixes = t.insightGoodSuffix || ["! 🌟"];
+    var base = getNextFromPool(bases, 'insightBase_' + currentLang);
+    var suffix = getNextFromPool(suffixes, 'insightSuffix_' + currentLang);
+    insightContent.innerText = base + suffix;
+    insightModal.classList.remove('hidden');
+};
+document.getElementById('close-insight-btn').onclick = () => insightModal.classList.add('hidden');
+
+document.getElementById('btn-open-recs').onclick = () => {
+    var t = translations[currentLang];
+    var foods = t.foodRecs;
+    var acts = t.activityRecs;
+    var food = getNextFromPool(foods, 'foodQueue_' + currentLang);
+    var act = getNextFromPool(acts, 'activityQueue_' + currentLang);
+    recsContent.innerText = "🍽️ " + food + "\n\n🏃 " + act;
+    recsModal.classList.remove('hidden');
+};
+document.getElementById('close-recs-btn').onclick = () => recsModal.classList.add('hidden');
         infoCloseBtn.onclick = () => { infoModal.classList.add('hidden'); };
         window.onclick = (e) => { if (e.target === infoModal) infoModal.classList.add('hidden'); };
 
@@ -1210,8 +1223,8 @@ if (!isInApp) {
                 if (now < parseInt(expiry)) {
                     isSubscribed = true;
                     expiryTime = parseInt(expiry);
-                    premiumContent.classList.add('hidden');
-                    subscribedContent.classList.remove('hidden');
+                    document.getElementById('subscribe-btn').classList.add('hidden');
+                    document.getElementById('sub-status').classList.remove('hidden');
                 } else {
                     isSubscribed = false;
                     localStorage.removeItem('subExpiry');
@@ -1278,6 +1291,30 @@ if (!isInApp) {
     });
   });
 </script>
+
+
+
+
+
+
+
+    <!-- INSIGHT MODAL -->
+<div class="modal-overlay hidden" id="insight-modal">
+    <div class="modal-content">
+        <div class="info-modal-title">📊 Your Insights</div>
+        <div id="insight-content" style="font-size: clamp(18px, 2.6vh, 24px); line-height: 1.7; color: #333; text-align: center;"></div>
+        <button class="info-close-btn" id="close-insight-btn">Close</button>
+    </div>
+</div>
+
+<!-- RECOMMENDATIONS MODAL -->
+<div class="modal-overlay hidden" id="recs-modal">
+    <div class="modal-content">
+        <div class="info-modal-title">💡 Recommendations</div>
+        <div id="recs-content" style="font-size: clamp(18px, 2.6vh, 24px); line-height: 1.7; color: #333; text-align: center;"></div>
+        <button class="info-close-btn" id="close-recs-btn">Close</button>
+    </div>
+</div>
 
 
 
