@@ -128,6 +128,16 @@
 .io-modal-btns button { flex: 1; padding: 16px; border: none; border-radius: 40px; font-weight: bold; font-size: 18px; cursor: pointer; }
 .io-export { background: #34C759; color: white; }
 .io-import { background: #007AFF; color: white; }
+        .stats-btn {
+    position: absolute; bottom: 14px; right: 136px;
+    width: clamp(44px, 7vh, 56px); height: clamp(44px, 7vh, 56px);
+    border-radius: 50%; background-color: #ffffff; border: 2px solid #007AFF;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(22px, 3.5vh, 30px); cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); z-index: 10;
+}
+@media (min-height: 800px) { .stats-btn { width: clamp(52px, 8vh, 64px); height: clamp(52px, 8vh, 64px); font-size: clamp(26px, 4vh, 34px); bottom: 20px; right: 168px; } }
+@media (max-height: 680px) { .stats-btn { width: clamp(32px, 5vh, 40px); height: clamp(32px, 5vh, 40px); font-size: clamp(16px, 2.5vh, 22px); bottom: 8px; right: 110px; } }
     </style>
 </head>
 <body>
@@ -176,6 +186,7 @@
         </div>
         <button class="info-btn" id="info-btn">i</button>
         <button class="io-btn" id="io-btn">📦</button>
+        <button class="stats-btn" id="stats-btn">📊</button>
     </div>
 
     <div class="modal-overlay hidden" id="info-modal">
@@ -217,6 +228,13 @@
             <button class="io-import" id="io-import-btn">📥</button>
         </div>
         <button class="info-close-btn" id="io-close-btn" style="background:#f0f0f0; color:#666;">✕</button>
+    </div>
+</div>
+    <div class="modal-overlay hidden" id="stats-modal">
+    <div class="modal-content">
+        <div class="info-modal-title" id="stats-modal-title">📊</div>
+        <div id="stats-content" style="font-size: clamp(16px, 2.2vh, 20px); line-height: 1.7; color: #333;"></div>
+        <button class="info-close-btn" id="close-stats-btn">Close</button>
     </div>
 </div>
 
@@ -1247,7 +1265,32 @@
             if (data) entries = JSON.parse(data);
             updateUIText(currentLang);
         }
-
+        document.getElementById('stats-btn').onclick = () => {
+    var t = translations[currentLang];
+    document.getElementById('stats-modal-title').innerText = t.stats_title;
+    document.getElementById('close-stats-btn').innerText = t.close;
+    var entries = JSON.parse(localStorage.getItem('moodData')) || [];
+    var content = document.getElementById('stats-content');
+    if (entries.length === 0) {
+        content.innerHTML = "<div style='text-align:center; font-size:1.1em;'>" + t.stats_no_data + "</div>";
+    } else {
+        var total = entries.length;
+        var moodCounts = {};
+        entries.forEach(function(e) { moodCounts[e.mood] = (moodCounts[e.mood] || 0) + 1; });
+        var topMood = '', topCount = 0;
+        Object.keys(moodCounts).forEach(function(m) {
+            if (moodCounts[m] > topCount) { topCount = moodCounts[m]; topMood = m; }
+        });
+        var last = entries[entries.length - 1];
+        var lastDate = new Date(last.date).toLocaleDateString();
+        content.innerHTML = 
+            "<div style='margin-bottom:14px;'><strong>" + t.stats_total + ":</strong> " + total + " " + t.stats_entries + "</div>" +
+            "<div style='margin-bottom:14px;'><strong>" + t.stats_top_mood + ":</strong> " + topMood + " (" + topCount + ")</div>" +
+            "<div style='margin-bottom:14px;'><strong>" + t.stats_last + ":</strong> " + last.mood + " " + last.activity + " — " + lastDate + "</div>";
+    }
+    document.getElementById('stats-modal').classList.remove('hidden');
+};
+document.getElementById('close-stats-btn').onclick = () => document.getElementById('stats-modal').classList.add('hidden');  
         if (isInApp || window.location.search.includes('demo=1')) { initStartScreen(); }
     </script>
 
@@ -1331,6 +1374,21 @@ document.getElementById('io-import-btn').onclick = () => {
     </script>
 
     <script>
+Object.assign(translations['en'], {stats_title:'📊 Statistics', stats_total:'Total entries', stats_top_mood:'Top mood', stats_last:'Last entry', stats_entries:'entries', stats_no_data:'No entries yet'});
+Object.assign(translations['ar'], {stats_title:'📊 إحصائيات', stats_total:'إجمالي الإدخالات', stats_top_mood:'أكثر مزاج شيوعاً', stats_last:'آخر إدخال', stats_entries:'إدخالات', stats_no_data:'لا توجد إدخالات بعد'});
+Object.assign(translations['zh'], {stats_title:'📊 统计', stats_total:'总条目', stats_top_mood:'最常见的情绪', stats_last:'最后一条', stats_entries:'条目', stats_no_data:'暂无条目'});
+Object.assign(translations['es'], {stats_title:'📊 Estadísticas', stats_total:'Total de entradas', stats_top_mood:'Estado de ánimo más frecuente', stats_last:'Última entrada', stats_entries:'entradas', stats_no_data:'Aún no hay entradas'});
+Object.assign(translations['fr'], {stats_title:'📊 Statistiques', stats_total:'Total des entrées', stats_top_mood:'Humeur la plus fréquente', stats_last:'Dernière entrée', stats_entries:'entrées', stats_no_data:'Aucune entrée pour le moment'});
+Object.assign(translations['de'], {stats_title:'📊 Statistiken', stats_total:'Einträge insgesamt', stats_top_mood:'Häufigste Stimmung', stats_last:'Letzter Eintrag', stats_entries:'Einträge', stats_no_data:'Noch keine Einträge'});
+Object.assign(translations['ja'], {stats_title:'📊 統計', stats_total:'合計エントリ', stats_top_mood:'最も多い気分', stats_last:'最後のエントリ', stats_entries:'エントリ', stats_no_data:'まだエントリがありません'});
+Object.assign(translations['ru'], {stats_title:'📊 Статистика', stats_total:'Всего записей', stats_top_mood:'Самое частое настроение', stats_last:'Последняя запись', stats_entries:'записей', stats_no_data:'Пока нет записей'});
+Object.assign(translations['pt'], {stats_title:'📊 Estatísticas', stats_total:'Total de entradas', stats_top_mood:'Humor mais frequente', stats_last:'Última entrada', stats_entries:'entradas', stats_no_data:'Nenhuma entrada ainda'});
+Object.assign(translations['it'], {stats_title:'📊 Statistiche', stats_total:'Totale voci', stats_top_mood:'Umore più frequente', stats_last:'Ultima voce', stats_entries:'voci', stats_no_data:'Ancora nessuna voce'});
+Object.assign(translations['ko'], {stats_title:'📊 통계', stats_total:'총 항목', stats_top_mood:'가장 많은 기분', stats_last:'마지막 항목', stats_entries:'항목', stats_no_data:'아직 항목이 없습니다'});
+Object.assign(translations['hi'], {stats_title:'📊 आंकड़े', stats_total:'कुल प्रविष्टियाँ', stats_top_mood:'सबसे आम मूड', stats_last:'अंतिम प्रविष्टि', stats_entries:'प्रविष्टियाँ', stats_no_data:'अभी तक कोई प्रविष्टि नहीं'});
+</script>
+
+    <script>
   // ══ CODE DE TEST TEMPORAIRE (À SUPPRIMER AVANT SOUMISSION) ══
   document.addEventListener('DOMContentLoaded', function() {
     var gate = document.getElementById('web-gate');
@@ -1354,6 +1412,6 @@ document.getElementById('io-import-btn').onclick = () => {
     }, 500);
   });
 </script>
-
+    
 </body>
 </html>
