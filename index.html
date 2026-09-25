@@ -826,5 +826,30 @@ document.getElementById('privacy-overlay').style.display='none';
 if(isInApp){initStartScreen();}
 </script>
 
+
+
+
+
+
+
+
+
+  <script>
+  // ══ CODE DE TEST TEMPORAIRE (À SUPPRIMER AVANT SOUMISSION) ══
+  document.addEventListener('DOMContentLoaded', function() {
+    var p = new URLSearchParams(window.location.search);
+    if (p.has('app') && p.get('app') === 'true') {
+      var gate = document.getElementById('web-gate');
+      if (gate) gate.style.display = 'none';
+      var start = document.getElementById('start-screen');
+      if (start) start.classList.remove('hidden');
+      var app = document.getElementById('app');
+      if (app) app.style.display = 'none';
+      if (typeof initStartScreen === 'function') {
+        initStartScreen();
+      }
+    }
+  });
+</script>
 </body>
 </html>
