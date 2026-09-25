@@ -39,7 +39,7 @@
     <link rel="apple-touch-icon" href="./assets/1783351665167.png">
     <meta name="theme-color" content="#ffffff">
     <link rel="manifest" href="./manifest.json">
-    <title>Daily Insights Mood Trackerr</title>
+    <title>Daily Insights Mood Tracker</title>
     <style>
         /* ── reset & base ── */
         * {
@@ -1214,119 +1214,20 @@ if (!isInApp) {
 
 
 
-    <script>
-    setInterval(function() {
-        var el = document.getElementById('expiry-text');
-        if (el) { el.style.display = 'none'; }
-    }, 200);
-</script>
+       <a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" style="position: fixed; bottom: 20px; left: 0; writing-mode: vertical-rl; text-orientation: mixed; background-color: #f0f0f0; color: #333; padding: 12px 6px; font-family: -apple-system, sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; border-radius: 0 8px 8px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); z-index: 9999;">Privacy Policy</a>
 
-
-
-
-
-
-    <script>
-    // Share button override: native share sheet on mobile, silent copy + custom toast on desktop
-    (function() {
-        var tryOverride = setInterval(function() {
-            var sb = document.getElementById('share-btn');
-            if (!sb) return;
-            clearInterval(tryOverride);
-
-            var appleLink = 'https://www.apple.com';
-
-            sb.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                // 1) Mobile / modern browsers → native device share sheet
-                if (navigator.share) {
-                    navigator.share({ title: 'Daily Insights Mood Tracker', url: appleLink })
-                        .catch(function() {});
-                    return;
-                }
-
-                // 2) Desktop → silent copy + our own custom toast (no domain popup)
-                var ta = document.createElement('textarea');
-                ta.value = appleLink;
-                ta.style.position = 'fixed';
-                ta.style.left = '-9999px';
-                ta.style.top = '0';
-                document.body.appendChild(ta);
-                ta.focus();
-                ta.select();
-                try { document.execCommand('copy'); } catch(err) {}
-                document.body.removeChild(ta);
-
-                // Custom small toast
-                var toast = document.getElementById('custom-share-toast');
-                if (!toast) {
-                    toast = document.createElement('div');
-                    toast.id = 'custom-share-toast';
-                    toast.style.cssText = 'position:fixed;bottom:40px;left:50%;transform:translateX(-50%);' +
-                        'background:#333;color:#fff;padding:12px 24px;border-radius:30px;' +
-                        'font-size:14px;font-weight:bold;z-index:999999;opacity:0;' +
-                        'transition:opacity 0.3s;pointer-events:none;';
-                    toast.textContent = 'Link copied!';
-                    document.body.appendChild(toast);
-                }
-                toast.style.opacity = '1';
-                setTimeout(function() { toast.style.opacity = '0'; }, 1500);
-            };
-        }, 100);
-    })();
-</script>
-
-
-
-
-
-
-
-
-
-
-    <a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" style="position: fixed; bottom: 20px; left: 0; writing-mode: vertical-rl; text-orientation: mixed; background-color: #f0f0f0; color: #333; padding: 12px 6px; font-family: -apple-system, sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; border-radius: 0 8px 8px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); z-index: 9999;">Privacy Policy</a>
-
-
-
-
-
-
-
-    <!-- 1. Privacy Policy Button (Left Side) -->
-<a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" style="position: fixed; bottom: 20px; left: 0; writing-mode: vertical-rl; text-orientation: mixed; background-color: #f0f0f0; color: #333; padding: 12px 6px; font-family: -apple-system, sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; border-radius: 0 8px 8px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); z-index: 9999;">Privacy Policy</a>
-
-<!-- 2. Privacy Policy Overlay (Keeps user inside the app) -->
 <div id="privacy-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:2147483647; overflow:hidden;">
+  <button id="close-privacy-btn" style="position:absolute; top:15px; right:15px; z-index:2147483648; background:#007aff; color:white; border:none; border-radius:20px; padding:10px 20px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.2);">Close</button>
   <iframe id="privacy-iframe" style="width:100%; height:100%; border:none;"></iframe>
 </div>
 
-<!-- 3. The Script -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // MODE TEST (demo=1) - Hide web gate, show app
-    var urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('demo') && urlParams.get('demo') === '1') {
-      var gate = document.getElementById('web-gate') || 
-                 document.querySelector('.web-gate') || 
-                 document.querySelector('.purchase-message');
-      if (gate) gate.style.display = 'none';
-      
-      var app = document.getElementById('app') || 
-                document.querySelector('.app-container') || 
-                document.getElementById('main-app');
-      if (app) app.style.display = 'block';
-    }
-
-    // SINGLE PAGE (No scrolling up/down, left/right)
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100vh';
     document.body.style.width = '100vw';
 
-    // PRIVACY POLICY OVERLAY (Opens inside the app, returns to ?app=true inside the app)
     document.body.addEventListener('click', function(e) {
       var target = e.target.closest('a');
       if (target && target.href && target.href.includes('privacy.html')) {
@@ -1336,21 +1237,16 @@ if (!isInApp) {
         if (overlay && iframe) {
           overlay.style.display = 'block';
           iframe.src = target.href;
-          
-          iframe.onload = function() {
-            try {
-              var backBtn = iframe.contentDocument.querySelector('.back-button');
-              if (backBtn) {
-                backBtn.addEventListener('click', function(ev) {
-                  ev.preventDefault();
-                  overlay.style.display = 'none';
-                  iframe.src = '';
-                  window.location.href = 'https://boussedraoui.github.io/mood-tracker/?app=true';
-                });
-              }
-            } catch(err) {}
-          };
         }
+      }
+    });
+
+    document.getElementById('close-privacy-btn').addEventListener('click', function() {
+      var overlay = document.getElementById('privacy-overlay');
+      var iframe = document.getElementById('privacy-iframe');
+      if (overlay && iframe) {
+        overlay.style.display = 'none';
+        iframe.src = '';
       }
     });
   });
