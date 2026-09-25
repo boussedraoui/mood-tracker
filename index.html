@@ -1168,9 +1168,19 @@ if (!isInApp) {
         });
 
         shareBtn.onclick = () => {
-            if (navigator.share) { navigator.share({ title: 'Daily Insights Mood Tracker', url: 'https://www.apple.com' }); }
-            else { navigator.clipboard.writeText('https://www.apple.com').then(() => alert('Link copied!')); }
-        };
+    if (navigator.share) {
+        navigator.share({ title: 'Daily Insights Mood Tracker', url: 'https://www.apple.com' });
+    } else {
+        navigator.clipboard.writeText('https://www.apple.com').then(() => {
+            var toast = document.createElement('div');
+            toast.innerText = 'Link copied!';
+            toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:bold;z-index:999999;opacity:0;transition:opacity 0.3s;pointer-events:none;';
+            document.body.appendChild(toast);
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => document.body.removeChild(toast), 300); }, 1500);
+        });
+    }
+};
 
         infoBtn.onclick = () => { infoModal.classList.remove('hidden'); };
         infoCloseBtn.onclick = () => { infoModal.classList.add('hidden'); };
