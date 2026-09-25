@@ -607,19 +607,20 @@
         var insightContent = document.getElementById('insight-content');
         var recsContent = document.getElementById('recs-content');
 
-        document.getElementById('btn-open-insight').onclick = () => {
-            var t = translations[currentLang];
-            document.getElementById('insight-modal-title').innerText = t.insights_title;
-            var bases = t.insightGoodBase || ["Your trend is positive"];
-            var middles = insightMiddle[currentLang] || insightMiddle['en'];
-            var suffixes = t.insightGoodSuffix || ["! 🌟"];
-            var base = getNextFromPool(bases, 'insightBase_' + currentLang);
-            var middle = getNextFromPool(middles, 'insightMiddle_' + currentLang);
-            var suffix = getNextFromPool(suffixes, 'insightSuffix_' + currentLang);
-            insightContent.innerHTML = "<div style='font-weight:bold; font-size:1.1em; margin-bottom:14px;'>" + base + suffix + "</div>" +
-                                       "<div style='font-size:0.95em; line-height:1.6;'>" + middle + "</div>";
-            insightModal.classList.remove('hidden');
-        };
+       document.getElementById('btn-open-insight').onclick = () => {
+    var t = translations[currentLang];
+    document.getElementById('insight-modal-title').innerText = t.insights_title;
+    var bases = t.insightGoodBase || ["Your trend is positive"];
+    var middles = insightMiddle[currentLang] || insightMiddle['en'];
+    var suffixes = t.insightGoodSuffix || ["! 🌟"];
+    var base = getNextFromPool(bases, 'insightBase_' + currentLang);
+    var middle = getNextFromPool(middles, 'insightMiddle_' + currentLang);
+    var suffix = getNextFromPool(suffixes, 'insightSuffix_' + currentLang);
+    insightContent.innerHTML = "<div style='font-weight:bold; font-size:1.05em; margin-bottom:12px;'>" + base + "</div>" +
+                               "<div style='font-weight:bold; font-size:1.05em; margin-bottom:16px;'>" + suffix + "</div>" +
+                               "<div style='font-size:0.95em; line-height:1.6;'>" + middle + "</div>";
+    insightModal.classList.remove('hidden');
+};
         document.getElementById('close-insight-btn').onclick = () => insightModal.classList.add('hidden');
 
         document.getElementById('btn-open-recs').onclick = () => {
