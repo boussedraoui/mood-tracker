@@ -1,741 +1,829 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-    window.goatcounter = { no_onload: true };
-</script>
+<script>window.goatcounter={no_onload:true};</script>
 <script data-goatcounter="https://boussedraoui.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-<script>
-    var allPaths = ['/','/Multitool-Pro-Full-Complete','/multitool-pro-cordova','/mood-tracker','/procreate-studio-android','/procreate-studio-amazon','/my-site','/procreate-studio','/studiocreate','/Test'];
-    var countAllPaths = function() {
-        if (typeof goatcounter !== 'undefined') { allPaths.forEach(function(p) { goatcounter.count({ path: p }); }); }
-        else { setTimeout(countAllPaths, 100); }
-    };
-    document.addEventListener('DOMContentLoaded', countAllPaths);
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="./assets/1783351665167.png">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="manifest" href="./manifest.json">
-    <title>Daily Insights Mood Tracker</title>
-    <style>
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-        html, body { height: 100vh; height: 100dvh; overflow: hidden; margin: 0; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; overscroll-behavior: none; }
-        #start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; height: 100dvh; position: absolute; top: 0; left: 0; background: #f0f4f8; z-index: 100; padding: 20px; }
-        .start-icon { width: 120px; height: 120px; border-radius: 30px; margin-bottom: 20px; }
-        .start-title { font-size: clamp(32px, 7vh, 48px); font-weight: bold; color: #2c3e50; margin-bottom: 30px; }
-        .lang-btn { background: #fff; padding: 18px 50px; border-radius: 40px; border: 1px solid #ddd; font-size: clamp(20px, 4vh, 28px); font-weight: bold; cursor: pointer; margin-bottom: 16px; }
-        .timer-text { font-size: clamp(16px, 2.5vh, 22px); color: #888; }
-        .hidden { display: none !important; }
-        #app { width: 100%; max-width: 600px; height: 100vh; height: 100dvh; background-color: #ffffff; border-radius: 0; padding: 12px 18px 14px 18px; box-shadow: none; position: relative; display: none; flex-direction: column; overflow: hidden; }
-        .info-btn { position: absolute; bottom: 14px; right: 16px; width: clamp(44px, 7vh, 56px); height: clamp(44px, 7vh, 56px); border-radius: 50%; background-color: #ffffff; border: 2px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: clamp(22px, 3.5vh, 30px); font-style: italic; font-weight: bold; color: #007AFF; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); z-index: 10; }
-        .title { font-size: clamp(26px, 5vh, 40px); font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 6px; flex-shrink: 0; line-height: 1.2; }
-        .label { font-size: clamp(18px, 3vh, 26px); font-weight: 600; color: #34495e; margin-top: 6px; margin-bottom: 6px; flex-shrink: 0; line-height: 1.3; }
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; justify-items: center; width: 100%; flex-shrink: 0; }
-        .btn { width: 100%; padding: 12px 0; background-color: #fff; border-radius: 60px; text-align: center; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06); border: none; cursor: pointer; transition: 0.2s; font-size: clamp(44px, 8vh, 64px); line-height: 1.2; }
-        .btn.selected { background-color: #007AFF; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.35); transform: scale(1.03); }
-        .save-btn { background-color: #34C759; border: none; padding: 12px 0; border-radius: 40px; width: 100%; color: white; font-weight: bold; font-size: clamp(20px, 3.2vh, 28px); cursor: pointer; box-shadow: 0 3px 10px rgba(52, 199, 89, 0.25); margin-top: 6px; flex-shrink: 0; line-height: 1.2; }
-        .save-btn:active { transform: scale(0.96); }
-        .insights-box { background-color: #fff; padding: 18px 20px 16px 20px; border-radius: 24px; width: 100%; margin-top: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f0f0f0; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: space-evenly; overflow: hidden; }
-        .sub-status { font-size: clamp(18px, 2.4vh, 26px); color: #666; margin-top: 4px; font-style: italic; flex-shrink: 0; }
-        .subscribe-btn-small { background-color: #FF9500; border: none; padding: 12px 24px; border-radius: 40px; color: white; font-weight: bold; font-size: clamp(20px, 2.8vh, 28px); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-        .bottom-row { display: flex; justify-content: center; width: 100%; margin-top: 8px; flex-shrink: 0; }
-        .share-btn { border: none; padding: 14px 40px; border-radius: 40px; color: white; font-weight: bold; font-size: clamp(22px, 3.2vh, 30px); cursor: pointer; background-color: #007AFF; line-height: 1.2; }
-        .share-btn:active { transform: scale(0.96); }
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 20px; }
-        .modal-content { background: white; border-radius: 28px; padding: 28px 24px 24px 24px; width: 100%; max-width: 440px; text-align: left; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); max-height: 85vh; overflow-y: auto; position: relative; }
-        .info-modal-title { font-size: clamp(24px, 3.5vh, 30px); font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 16px; border-bottom: 2px solid #f0f4f8; padding-bottom: 14px; }
-        .info-modal-text p { font-size: clamp(16px, 2.2vh, 20px); line-height: 1.6; color: #333; margin-bottom: 14px; }
-        .info-close-btn { display: block; width: 100%; padding: 14px; margin-top: 18px; background-color: #007AFF; color: white; border: none; border-radius: 40px; font-weight: bold; font-size: clamp(18px, 2.6vh, 24px); cursor: pointer; }
-        .lang-modal-title { font-size: clamp(22px, 3.2vh, 28px); font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 16px; }
-        .lang-list-item { padding: 16px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; text-align: center; font-size: clamp(18px, 2.6vh, 24px); color: #333; }
-        .lang-list-item:hover { background-color: #f9f9f9; }
-        .modal-btn { border: none; padding: 14px; border-radius: 40px; width: 100%; font-weight: bold; font-size: clamp(17px, 2.4vh, 22px); margin-bottom: 10px; cursor: pointer; }
-        .modal-cancel { background-color: #f0f0f0; color: #666; }
-        #app, .insights-box { overflow: hidden; }
-        .modal-content::-webkit-scrollbar { width: 4px; }
-        .modal-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-        @media (min-height: 800px) {
-            #app { padding: 20px 28px 24px 28px; border-radius: 32px; max-width: 680px; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06); }
-            .title { font-size: clamp(32px, 5.5vh, 44px); margin-bottom: 10px; }
-            .label { font-size: clamp(22px, 3.2vh, 28px); margin-top: 10px; margin-bottom: 8px; }
-            .row { gap: 14px; }
-            .btn { font-size: clamp(54px, 10vh, 76px); padding: 16px 0; }
-            .save-btn { font-size: clamp(24px, 3.6vh, 32px); padding: 16px 0; margin-top: 10px; }
-            .insights-box { padding: 24px 30px 20px 30px; margin-top: 14px; border-radius: 28px; }
-            .sub-status { font-size: clamp(20px, 2.8vh, 28px); }
-            .subscribe-btn-small { font-size: clamp(22px, 3vh, 30px); padding: 14px 28px; }
-            .share-btn { font-size: clamp(26px, 3.6vh, 34px); padding: 18px 50px; }
-            .bottom-row { margin-top: 12px; }
-            .info-btn { width: clamp(52px, 8vh, 64px); height: clamp(52px, 8vh, 64px); font-size: clamp(26px, 4vh, 34px); bottom: 20px; right: 24px; }
-        }
-        @media (max-height: 680px) {
-            #app { padding: 8px 12px 10px 12px; }
-            .title { font-size: clamp(20px, 4vh, 28px); margin-bottom: 4px; }
-            .label { font-size: clamp(14px, 2.2vh, 18px); margin-top: 4px; margin-bottom: 4px; }
-            .row { gap: 6px; }
-            .btn { font-size: clamp(32px, 6vh, 44px); padding: 6px 0; border-radius: 40px; }
-            .save-btn { font-size: clamp(16px, 2.6vh, 22px); padding: 8px 0; margin-top: 6px; }
-            .insights-box { padding: 12px 14px 10px 14px; margin-top: 6px; border-radius: 16px; }
-            .sub-status { font-size: clamp(13px, 1.8vh, 17px); }
-            .subscribe-btn-small { font-size: clamp(14px, 2vh, 18px); padding: 8px 16px; }
-            .share-btn { font-size: clamp(17px, 2.4vh, 22px); padding: 10px 28px; }
-            .bottom-row { margin-top: 4px; }
-            .info-btn { width: clamp(32px, 5vh, 40px); height: clamp(32px, 5vh, 40px); font-size: clamp(16px, 2.5vh, 22px); bottom: 8px; right: 10px; }
-        }
-        #web-gate { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #f0f4f8; z-index: 999999; justify-content: center; align-items: center; padding: 24px; }
-        #web-gate.active { display: flex; }
-        .web-gate-card { background: #ffffff; padding: 40px 32px; border-radius: 32px; text-align: center; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .web-gate-icon { width: 120px; height: 120px; border-radius: 30px; margin-bottom: 20px; }
-        .web-gate-title { font-size: 26px; font-weight: bold; color: #2c3e50; margin-bottom: 12px; }
-        .web-gate-text { font-size: 16px; color: #555; margin-bottom: 24px; line-height: 1.5; }
-        .web-gate-btn { display: inline-block; background: #007AFF; color: #ffffff; padding: 16px 32px; border-radius: 40px; font-weight: bold; text-decoration: none; font-size: 17px; }
-        @media (min-width: 768px) {
-            #app { max-width: 700px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-            .btn { font-size: clamp(56px, 9vh, 80px); }
-            .title { font-size: clamp(34px, 5vh, 48px); }
-            .insights-box { padding: 26px 34px 22px 34px; }
-        }
-        .main-action-btn { background: linear-gradient(135deg, #007AFF, #34C759); color: white; border: none; padding: 18px 20px; border-radius: 40px; font-size: clamp(20px, 3vh, 26px); font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(0,122,255,0.25); }
-        .main-action-btn:active { transform: scale(0.97); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="./assets/1783351665167.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="./manifest.json">
+<title>Daily Insights Mood Tracker</title>
+<style>
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+html,body{height:100vh;height:100dvh;overflow:hidden;margin:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);background-color:#f0f4f8;display:flex;justify-content:center;align-items:center;overscroll-behavior:none}
+#start-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100vh;height:100dvh;position:absolute;top:0;left:0;background:#f0f4f8;z-index:100;padding:20px}
+.start-icon{width:120px;height:120px;border-radius:30px;margin-bottom:20px}
+.start-title{font-size:clamp(32px,7vh,48px);font-weight:bold;color:#2c3e50;margin-bottom:30px}
+.lang-btn{background:#fff;padding:18px 50px;border-radius:40px;border:1px solid #ddd;font-size:clamp(20px,4vh,28px);font-weight:bold;cursor:pointer;margin-bottom:16px}
+.timer-text{font-size:clamp(16px,2.5vh,22px);color:#888}
+.hidden{display:none !important}
+#app{width:100%;max-width:600px;height:100vh;height:100dvh;background-color:#ffffff;padding:12px 18px 14px 18px;position:relative;display:none;flex-direction:column;overflow:hidden}
+.info-btn{position:absolute;bottom:14px;right:16px;width:clamp(44px,7vh,56px);height:clamp(44px,7vh,56px);border-radius:50%;background:#fff;border:2px solid #007AFF;display:flex;align-items:center;justify-content:center;font-size:clamp(22px,3.5vh,30px);font-style:italic;font-weight:bold;color:#007AFF;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.08);z-index:10}
+.title{font-size:clamp(26px,5vh,40px);font-weight:bold;color:#2c3e50;text-align:center;margin-bottom:6px;flex-shrink:0;line-height:1.2}
+.label{font-size:clamp(18px,3vh,26px);font-weight:600;color:#34495e;margin-top:6px;margin-bottom:6px;flex-shrink:0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;justify-items:center;width:100%;flex-shrink:0}
+.btn{width:100%;padding:12px 0;background:#fff;border-radius:60px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.06);border:none;cursor:pointer;transition:0.2s;font-size:clamp(44px,8vh,64px);line-height:1.2}
+.btn.selected{background:#007AFF;box-shadow:0 4px 12px rgba(0,122,255,0.35);transform:scale(1.03)}
+.save-btn{background:#34C759;border:none;padding:12px 0;border-radius:40px;width:100%;color:#fff;font-weight:bold;font-size:clamp(20px,3.2vh,28px);cursor:pointer;box-shadow:0 3px 10px rgba(52,199,89,0.25);margin-top:6px;flex-shrink:0}
+.insights-box{background:#fff;padding:18px 20px 16px 20px;border-radius:24px;width:100%;margin-top:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid #f0f0f0;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:space-evenly;overflow:hidden}
+.sub-status{font-size:clamp(18px,2.4vh,26px);color:#666;margin-top:4px;font-style:italic;flex-shrink:0}
+.subscribe-btn-small{background:#FF9500;border:none;padding:12px 24px;border-radius:40px;color:#fff;font-weight:bold;font-size:clamp(20px,2.8vh,28px);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.bottom-row{display:flex;justify-content:center;width:100%;margin-top:8px;flex-shrink:0}
+.share-btn{border:none;padding:14px 40px;border-radius:40px;color:#fff;font-weight:bold;font-size:clamp(22px,3.2vh,30px);cursor:pointer;background:#007AFF}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
+.modal-content{background:#fff;border-radius:28px;padding:28px 24px 24px 24px;width:100%;max-width:440px;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,0.2);max-height:85vh;overflow-y:auto;position:relative}
+.info-modal-title{font-size:clamp(24px,3.5vh,30px);font-weight:bold;color:#2c3e50;text-align:center;margin-bottom:16px;border-bottom:2px solid #f0f4f8;padding-bottom:14px}
+.info-modal-text p{font-size:clamp(16px,2.2vh,20px);line-height:1.6;color:#333;margin-bottom:14px}
+.info-close-btn{display:block;width:100%;padding:14px;margin-top:18px;background:#007AFF;color:#fff;border:none;border-radius:40px;font-weight:bold;font-size:clamp(18px,2.6vh,24px);cursor:pointer}
+.lang-modal-title{font-size:clamp(22px,3.2vh,28px);font-weight:bold;color:#2c3e50;text-align:center;margin-bottom:16px}
+.lang-list-item{padding:16px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;text-align:center;font-size:clamp(18px,2.6vh,24px);color:#333}
+.modal-btn{border:none;padding:14px;border-radius:40px;width:100%;font-weight:bold;font-size:clamp(17px,2.4vh,22px);margin-bottom:10px;cursor:pointer}
+.modal-cancel{background:#f0f0f0;color:#666}
+#app,.insights-box{overflow:hidden}
+#web-gate{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#f0f4f8;z-index:999999;justify-content:center;align-items:center;padding:24px}
+#web-gate.active{display:flex}
+.web-gate-card{background:#fff;padding:40px 32px;border-radius:32px;text-align:center;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,0.08)}
+.web-gate-icon{width:120px;height:120px;border-radius:30px;margin-bottom:20px}
+.web-gate-title{font-size:26px;font-weight:bold;color:#2c3e50;margin-bottom:12px}
+.web-gate-text{font-size:16px;color:#555;margin-bottom:24px;line-height:1.5}
+.web-gate-btn{display:inline-block;background:#007AFF;color:#fff;padding:16px 32px;border-radius:40px;font-weight:bold;text-decoration:none;font-size:17px}
+.main-action-btn{background:linear-gradient(135deg,#007AFF,#34C759);color:#fff;border:none;padding:18px 20px;border-radius:40px;font-size:clamp(20px,3vh,26px);font-weight:bold;cursor:pointer;width:100%;box-shadow:0 4px 12px rgba(0,122,255,0.25)}
+@media (min-height:800px){#app{padding:20px 28px 24px 28px;border-radius:32px;max-width:680px}.title{font-size:clamp(32px,5.5vh,44px)}.btn{font-size:clamp(54px,10vh,76px);padding:16px 0}}
+@media (max-width:768px){.modal-content{max-width:92vw}}
+</style>
 </head>
 <body>
 
-    <div id="web-gate">
-        <div class="web-gate-card">
-            <img src="./assets/1783351665167.png" class="web-gate-icon" alt="App Icon">
-            <div class="web-gate-title">Daily Insights Mood Tracker</div>
-            <div class="web-gate-text">Track your mood and daily activities. Download the full app on the App Store.</div>
-            <a href="https://www.apple.com" target="_blank" class="web-gate-btn">🍎 Download on App Store</a>
-        </div>
-    </div>
+<div id="web-gate">
+  <div class="web-gate-card">
+    <img src="./assets/1783351665167.png" class="web-gate-icon" alt="App Icon">
+    <div class="web-gate-title" id="wg-title">Daily Insights Mood Tracker</div>
+    <div class="web-gate-text" id="wg-text">Track your mood and daily activities. Download the full app on the App Store.</div>
+    <a href="https://www.apple.com" target="_blank" class="web-gate-btn" id="wg-btn">🍎 Download on App Store</a>
+  </div>
+</div>
 
-    <div id="start-screen">
-        <img src="./assets/1783351665167.png" class="start-icon" alt="App Icon">
-        <div class="start-title">Mood Tracker</div>
-        <button class="lang-btn" id="lang-select-btn">English</button>
-        <div class="timer-text" id="timer-text">Entering in 3 seconds...</div>
-    </div>
+<div id="start-screen">
+  <img src="./assets/1783351665167.png" class="start-icon" alt="App Icon">
+  <div class="start-title" id="start-title">Mood Tracker</div>
+  <button class="lang-btn" id="lang-select-btn">English</button>
+  <div class="timer-text" id="timer-text">Entering in 3 seconds...</div>
+</div>
 
-    <div id="app">
-        <div class="title" id="app-title">Daily Insights Mood Tracker</div>
-        <div class="label" id="mood-label">Mood:</div>
-        <div class="row" id="mood-buttons">
-            <button class="btn" data-value="😊">😊</button>
-            <button class="btn" data-value="😢">😢</button>
-            <button class="btn" data-value="😤">😤</button>
-            <button class="btn" data-value="😰">😰</button>
-        </div>
-        <div class="label" id="activity-label">Activity:</div>
-        <div class="row" id="activity-buttons">
-            <button class="btn" data-value="💼">💼</button>
-            <button class="btn" data-value="🏃">🏃</button>
-            <button class="btn" data-value="🛌">🛌</button>
-            <button class="btn" data-value="🍽️">🍽️</button>
-        </div>
-        <button class="save-btn" id="save-btn">Save</button>
-        <div class="insights-box" style="display:flex; flex-direction:column; justify-content:center; gap:12px;">
-            <button class="main-action-btn" id="btn-open-insight">📊 Your Insights</button>
-            <button class="main-action-btn hidden" id="btn-open-recs">💡 Recommendations</button>
-            <button class="subscribe-btn-small" id="subscribe-btn" style="width:100%; padding:18px; font-size:clamp(20px,3vh,26px);">Subscribe ($4.99/mo)</button>
-            <div id="sub-status" class="hidden" style="text-align:center; font-size:clamp(14px,2vh,18px); color:#34C759; font-weight:bold;">✅ Premium Active</div>
-        </div>
-        <div class="bottom-row">
-            <button class="share-btn" id="share-btn">🔗 Share</button>
-        </div>
-        <button class="info-btn" id="info-btn">i</button>
-    </div>
+<div id="app">
+  <div class="title" id="app-title">Daily Insights Mood Tracker</div>
+  <div class="label" id="mood-label">Mood:</div>
+  <div class="row" id="mood-buttons">
+    <button class="btn" data-value="😊">😊</button>
+    <button class="btn" data-value="😢">😢</button>
+    <button class="btn" data-value="😤">😤</button>
+    <button class="btn" data-value="😰">😰</button>
+  </div>
+  <div class="label" id="activity-label">Activity:</div>
+  <div class="row" id="activity-buttons">
+    <button class="btn" data-value="💼">💼</button>
+    <button class="btn" data-value="🏃">🏃</button>
+    <button class="btn" data-value="🛌">🛌</button>
+    <button class="btn" data-value="🍽️">🍽️</button>
+  </div>
+  <button class="save-btn" id="save-btn">Save</button>
+  <div class="insights-box" style="display:flex;flex-direction:column;justify-content:center;gap:12px;">
+    <button class="main-action-btn" id="btn-open-insight">📊 Your Insights</button>
+    <button class="main-action-btn hidden" id="btn-open-recs">💡 Recommendations</button>
+    <button class="subscribe-btn-small" id="subscribe-btn" style="width:100%;padding:18px;font-size:clamp(20px,3vh,26px);">Subscribe ($4.99/mo)</button>
+    <div id="sub-status" class="hidden" style="text-align:center;font-size:clamp(14px,2vh,18px);color:#34C759;font-weight:bold;">✅ Premium Active</div>
+  </div>
+  <div class="bottom-row"><button class="share-btn" id="share-btn">🔗 Share</button></div>
+  <button class="info-btn" id="info-btn">i</button>
+</div>
 
-    <div class="modal-overlay hidden" id="info-modal">
-        <div class="modal-content info-modal-text">
-            <div class="info-modal-title">🌟 About This App</div>
-            <div id="info-text-content"></div>
-            <button class="info-close-btn" id="info-close-btn">Close</button>
-        </div>
-    </div>
+<div class="modal-overlay hidden" id="info-modal">
+  <div class="modal-content info-modal-text">
+    <div class="info-modal-title" id="info-modal-title">🌟 About This App</div>
+    <div id="info-text-content"></div>
+    <button class="info-close-btn" id="info-close-btn">Close</button>
+  </div>
+</div>
 
-    <div class="modal-overlay hidden" id="lang-modal">
-        <div class="modal-content">
-            <div class="lang-modal-title" id="lang-modal-title">Choose Language</div>
-            <div id="lang-list-container"></div>
-            <button class="modal-btn modal-cancel" id="close-lang-modal" style="margin-top:10px;">Cancel</button>
-        </div>
-    </div>
+<div class="modal-overlay hidden" id="lang-modal">
+  <div class="modal-content">
+    <div class="lang-modal-title" id="lang-modal-title">Choose Language</div>
+    <div id="lang-list-container"></div>
+    <button class="modal-btn modal-cancel" id="close-lang-modal">Cancel</button>
+  </div>
+</div>
 
-    <div class="modal-overlay hidden" id="insight-modal">
-        <div class="modal-content">
-            <div class="info-modal-title" id="insight-modal-title">📊 Your Insights</div>
-            <div id="insight-content" style="font-size: clamp(18px, 2.6vh, 24px); line-height: 1.7; color: #333; text-align: center;"></div>
-            <button class="info-close-btn" id="close-insight-btn">Close</button>
-        </div>
-    </div>
+<div class="modal-overlay hidden" id="insight-modal">
+  <div class="modal-content">
+    <div class="info-modal-title" id="insight-modal-title">📊 Your Insights</div>
+    <div id="insight-content" style="font-size:clamp(18px,2.6vh,24px);line-height:1.7;color:#333;text-align:center;"></div>
+    <button class="info-close-btn" id="close-insight-btn">Close</button>
+  </div>
+</div>
 
-    <div class="modal-overlay hidden" id="recs-modal">
-        <div class="modal-content">
-            <div class="info-modal-title" id="recs-modal-title">💡 Recommendations</div>
-            <div id="recs-content" style="font-size: clamp(18px, 2.6vh, 24px); line-height: 1.7; color: #333; text-align: center;"></div>
-            <button class="info-close-btn" id="close-recs-btn">Close</button>
-        </div>
-    </div>
+<div class="modal-overlay hidden" id="recs-modal">
+  <div class="modal-content">
+    <div class="info-modal-title" id="recs-modal-title">💡 Recommendations</div>
+    <div id="recs-content" style="font-size:clamp(18px,2.6vh,24px);line-height:1.7;color:#333;text-align:center;"></div>
+    <button class="info-close-btn" id="close-recs-btn">Close</button>
+  </div>
+</div>
 
-    <script>
-        var isInApp = /PWAShell/.test(navigator.userAgent);
-        if (!isInApp) {
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('web-gate').classList.add('active');
-                document.getElementById('start-screen').classList.add('hidden');
-                document.getElementById('app').style.display = 'none';
-            });
-        }
+<a href="#" id="privacy-link" style="position:fixed;bottom:20px;left:0;writing-mode:vertical-rl;text-orientation:mixed;background-color:#f0f0f0;color:#333;padding:12px 6px;font-family:-apple-system,sans-serif;font-size:11px;font-weight:bold;text-decoration:none;border-radius:0 8px 8px 0;box-shadow:2px 2px 5px rgba(0,0,0,0.1);z-index:9999;">Privacy Policy</a>
 
-        const languages = [
-            { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
-            { code: 'zh', name: '中文' }, { code: 'es', name: 'Español' },
-            { code: 'fr', name: 'Français' }, { code: 'de', name: 'Deutsch' },
-            { code: 'ja', name: '日本語' }, { code: 'ru', name: 'Русский' },
-            { code: 'pt', name: 'Português' }, { code: 'it', name: 'Italiano' },
-            { code: 'ko', name: '한국어' }, { code: 'hi', name: 'हिन्दी' }
-        ];
+<div id="privacy-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2147483647;overflow:auto;">
+  <button id="close-privacy-btn" style="position:fixed;top:15px;right:15px;z-index:2147483648;background:#007aff;color:#fff;border:none;border-radius:20px;padding:10px 20px;font-weight:bold;font-size:16px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.2);">Close</button>
+  <div id="privacy-content" style="max-width:720px;margin:0 auto;padding:60px 24px 40px 24px;font-family:-apple-system,sans-serif;color:#333;line-height:1.7;"></div>
+</div>
 
-        const translations = {
-            'en': {
-                title: 'Daily Insights Mood Tracker', mood: 'Mood:', activity: 'Activity:', save: 'Save',
-                subscribe: 'Subscribe ($4.99/mo)', share: 'Share', close: 'Close',
-                info_title: '🌟 About This App',
-                info_text: `<p><strong>🧠 A Product of Collective Wisdom</strong><br>This application has been rigorously tested and refined by professionals across technical, medical, and scientific fields. It is the culmination of deep research, distilled into a simple, elegant tool for your daily life.</p><p><strong>🎯 Simplicity Above All</strong><br>We believe in the power of minimalism. There are no distracting audio or visual effects—only pure, purposeful interaction designed for comfort and maximum mental benefit.</p><p><strong>🤖 Your Daily Companion, Uniquely Yours</strong><br>Our intelligent advice engine ensures that tips and instructions never repeat. It evolves with you, guiding you day by day toward a better, healthier version of yourself. Every sentence is a key to your daily happiness.</p><p><strong>🔒 The Value of Commitment</strong><br>Why do we recommend our small monthly subscription? Because commitment brings focus. When you invest, you pay attention. Professionals endorse this model because a dedicated user is a thriving user. For the price of a single consultation with a coach or doctor, you gain access to a lifetime of distilled wisdom—from nutritionists, psychologists, and wellness experts—all in one place.</p><p><strong>🚀 Why We Are Different</strong><br>We have thoroughly reviewed countless other apps and websites. Most bombard you with lengthy, generic articles that are not tailored to your specific state of mind. We are different. We deliver concise, targeted, scientifically-backed guidance exactly when you need it.</p><p><strong>🌍 A Global Movement</strong><br>This isn't just an app; it's a global movement. It has already transformed the daily lives of people worldwide, one mood at a time.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Start your journey today. Your daily dose of clarity is just a tap away. ✨</p>`,
-                lang_btn: 'English', timer: 'Entering in 3 seconds...',
-                insights_title: '📊 Your Insights', recs_title: '💡 Recommendations',
-                lang_modal_title: 'Choose Language', lang_modal_cancel: 'Cancel',
-                premium_active: '✅ Premium Active',
-                insightGoodBase: ["Your trend is positive","Great vibes this week","You are rocking it","Your mood is high","Excellent emotional state","You are thriving","Happiness is shining through","You are on fire","Your energy is amazing","You are glowing","Life is treating you well","You are unstoppable","Your smile says it all","You are in a great place","Joy is your companion","You are blooming","Your heart is light","Your spirit is soaring","You are full of life","You are a ray of sunshine"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! Keep going! 🌟"]
-            },
-            'ar': {
-                title: 'متتبع المزاج اليومي', mood: 'المزاج:', activity: 'النشاط:', save: 'حفظ',
-                subscribe: 'اشتراك ($4.99/شهر)', share: 'مشاركة', close: 'إغلاق',
-                info_title: '🌟 حول هذا التطبيق',
-                info_text: `<p><strong>🧠 منتج الحكمة الجماعية</strong><br>تم اختبار هذا التطبيق وتحسينه بدقة من قبل محترفين في المجالات التقنية والطبية والعلمية. إنه تتويج لأبحاث عميقة، تم تقطيرها في أداة بسيطة وأنيقة لحياتك اليومية.</p><p><strong>🎯 البساطة قبل كل شيء</strong><br>نحن نؤمن بقوة التبسيط. لا توجد مؤثرات صوتية أو بصرية مشتتة للانتباه - فقط تفاعل نقي وهادف مصمم للراحة والفائدة العقلية القصوى.</p><p><strong>🤖 رفيقك اليومي، الخاص بك فقط</strong><br>يضمن محرك النصائح الذكي لدينا أن النصائح والتعليمات لا تتكرر أبدًا. إنه يتطور معك، ويرشدك يومًا بعد يوم نحو نسخة أفضل وأكثر صحة من نفسك. كل جملة هي مفتاح لسعادتك اليومية.</p><p><strong>🔒 قيمة الالتزام</strong><br>لماذا نوصي باشتراكنا الشهري الصغير؟ لأن الالتزام يجلب التركيز. عندما تستثمر، فإنك تنتبه. يؤيد المحترفون هذا النموذج لأن المستخدم الملتزم هو مستخدم مزدهر. مقابل تكلفة استشارة واحدة مع مدرب أو طبيب، تحصل على الوصول إلى ثروة من الحكمة المقطرة من خبراء التغذية وعلماء النفس وخبراء الصحة - كل ذلك في مكان واحد.</p><p><strong>🚀 لماذا نحن مختلفون</strong><br>لقد راجعنا بدقة عددًا لا يحصى من التطبيقات والمواقع الأخرى. معظمها يقصفك بمقالات طويلة وعامة غير مصممة خصيصًا لحالتك الذهنية المحددة. نحن مختلفون. نقدم إرشادات موجزة ومركزة ومدعومة علميًا بالضبط عندما تحتاج إليها.</p><p><strong>🌍 حركة عالمية</strong><br>هذا ليس مجرد تطبيق ؛ إنها حركة عالمية. لقد غيرت بالفعل الحياة اليومية للناس في جميع أنحاء العالم، مزاج واحد في كل مرة.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">ابدأ رحلتك اليوم. جرعتك اليومية من الوضوح على بعد نقرة واحدة. ✨</p>`,
-                lang_btn: 'العربية', timer: 'الدخول بعد 3 ثواني...',
-                insights_title: '📊 رؤيتك', recs_title: '💡 توصيات',
-                lang_modal_title: 'اختر اللغة', lang_modal_cancel: 'إلغاء',
-                premium_active: '✅ مميز نشط',
-                insightGoodBase: ["اتجاهك إيجابي","أجواء رائعة هذا الأسبوع","أنت تبلي بلاءً حسناً","مزاجك مرتفع","حالة عاطفية ممتازة","أنت مزدهر","السعادة تتألق من خلالك","أنت في أفضل حالاتك","طاقتك مذهلة","أنت متوهج","الحياة تعاملك جيداً","لا يمكن إيقافك","ابتسامتك تقول كل شيء","أنت في مكان رائع","الفرح رفيقك","أنت تتفتح","قلبك خفيف","روحك تحلق","أنت مليء بالحياة","أنت شعاع من الشمس"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! استمر! 🌟"]
-            },
-            'zh': {
-                title: '每日情绪追踪', mood: '心情:', activity: '活动:', save: '保存',
-                subscribe: '订阅 ($4.99/月)', share: '分享', close: '关闭',
-                info_title: '🌟 关于此应用',
-                info_text: `<p><strong>🧠 集体智慧的结晶</strong><br>此应用经过技术、医学和科学领域专业人士的严格测试和完善。它是深入研究的结晶，提炼成简单、优雅的工具，用于您的日常生活。</p><p><strong>🎯 极简至上</strong><br>我们相信极简主义的力量。没有分散注意力的音频或视觉效果—只有纯粹、有目的的交互设计，旨在提供舒适感和最大的心理益处。</p><p><strong>🤖 您的日常伴侣，独一无二</strong><br>我们的智能建议引擎确保提示和说明永不重复。它会随着您的发展而发展，引导您日复一日地走向更好、更健康的自己。每一句话都是您日常幸福的关键。</p><p><strong>🔒 承诺的价值</strong><br>我们为什么要推荐我们的小额月度订阅？因为承诺带来专注。当您投资时，您会集中注意力。专业人士认可这种模式，因为专注的用户是茁壮成长的用户。只需一次与教练或医生咨询的费用，您就能获得来自营养师、心理学家和健康专家的终身智慧精华—全部集中在一个地方。</p><p><strong>🚀 我们为何不同</strong><br>我们彻底审查了无数其他应用和网站。大多数会用冗长、通用的文章轰炸您，这些文章不适合您特定的心态。我们不同。我们提供简洁、有针对性、有科学依据的指导，就在您最需要的时候。</p><p><strong>🌍 全球运动</strong><br>这不仅仅是一个应用；这是一场全球运动。它已经改变了世界各地人们的日常生活，一次一个情绪。</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">今天就开始您的旅程。您的每日清晰一触即达。 ✨</p>`,
-                lang_btn: '中文', timer: '3秒后进入...',
-                insights_title: '📊 您的洞察', recs_title: '💡 建议',
-                lang_modal_title: '选择语言', lang_modal_cancel: '取消',
-                premium_active: '✅ 高级已激活',
-                insightGoodBase: ["您的趋势是积极的","本周气氛很棒","您做得很好","您的心情很高","情绪状态极佳","您正在茁壮成长","幸福在闪耀","您充满活力","您的能量惊人","您容光焕发","生活对您很好","您势不可挡","您的笑容说明一切","您处于绝佳状态","快乐是您的伴侣","您正在绽放","您的心情轻松","您的精神在翱翔","您充满生机","您是阳光"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! 继续加油! 🌟"]
-            },
-            'es': {
-                title: 'Rastreador de Estado de Ánimo', mood: 'Estado de ánimo:', activity: 'Actividad:', save: 'Guardar',
-                subscribe: 'Suscribirse ($4.99/mes)', share: 'Compartir', close: 'Cerrar',
-                info_title: '🌟 Sobre esta aplicación',
-                info_text: `<p><strong>🧠 Un producto de sabiduría colectiva</strong><br>Esta aplicación ha sido probada y refinada rigurosamente por profesionales de los campos técnico, médico y científico. Es la culminación de una profunda investigación, destilada en una herramienta simple y elegante para su vida diaria.</p><p><strong>🎯 Simplicidad ante todo</strong><br>Creemos en el poder del minimalismo. No hay efectos de audio o visuales que distraigan, solo una interacción pura y con propósito diseñada para la comodidad y el máximo beneficio mental.</p><p><strong>🤖 Su compañero diario, exclusivamente suyo</strong><br>Nuestro motor de consejos inteligente garantiza que los consejos e instrucciones nunca se repitan. Evoluciona con usted, guiándolo día a día hacia una versión mejor y más saludable de sí mismo. Cada frase es una clave para su felicidad diaria.</p><p><strong>🔒 El valor del compromiso</strong><br>¿Por qué recomendamos nuestra pequeña suscripción mensual? Porque el compromiso trae concentración. Cuando inviertes, prestas atención. Los profesionales respaldan este modelo porque un usuario dedicado es un usuario próspero. Por el precio de una sola consulta con un entrenador o médico, obtiene acceso a una vida de sabiduría destilada de nutricionistas, psicólogos y expertos en bienestar, todo en un solo lugar.</p><p><strong>🚀 Por qué somos diferentes</strong><br>Hemos revisado minuciosamente innumerables otras aplicaciones y sitios web. La mayoría lo bombardea con artículos largos y genéricos que no se adaptan a su estado mental específico. Nosotros somos diferentes. Brindamos orientación concisa, específica y respaldada científicamente exactamente cuando la necesita.</p><p><strong>🌍 Un movimiento global</strong><br>Esto no es solo una aplicación; es un movimiento global. Ya ha transformado las vidas diarias de personas en todo el mundo, un estado de ánimo a la vez.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Comience su viaje hoy. Su dosis diaria de claridad está a solo un toque de distancia. ✨</p>`,
-                lang_btn: 'Español', timer: 'Entrando en 3 segundos...',
-                insights_title: '📊 Tus perspectivas', recs_title: '💡 Recomendaciones',
-                lang_modal_title: 'Elegir idioma', lang_modal_cancel: 'Cancelar',
-                premium_active: '✅ Premium activo',
-                insightGoodBase: ["Tu tendencia es positiva","Excelentes vibras esta semana","Lo estás haciendo genial","Tu estado de ánimo es alto","Excelente estado emocional","Estás prosperando","La felicidad brilla a través de ti","Estás en racha","Tu energía es increíble","Estás radiante","La vida te trata bien","Eres imparable","Tu sonrisa lo dice todo","Estás en un gran lugar","La alegría es tu compañera","Estás floreciendo","Tu corazón está ligero","Tu espíritu está volando","Estás lleno de vida","Eres un rayo de sol"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! ¡Sigue así! 🌟"]
-            },
-            'fr': {
-                title: 'Suivi d\'Humeur', mood: 'Humeur:', activity: 'Activité:', save: 'Enregistrer',
-                subscribe: 'S\'abonner ($4.99/mois)', share: 'Partager', close: 'Fermer',
-                info_title: '🌟 À propos de cette application',
-                info_text: `<p><strong>🧠 Un produit de sagesse collective</strong><br>Cette application a été rigoureusement testée et affinée par des professionnels des domaines techniques, médicaux et scientifiques. Elle est l'aboutissement de recherches approfondies, distillées dans un outil simple et élégant pour votre vie quotidienne.</p><p><strong>🎯 La simplicité avant tout</strong><br>Nous croyons au pouvoir du minimalisme. Il n'y a pas d'effets audio ou visuels distrayants, seulement une interaction pure et ciblée conçue pour le confort et un bénéfice mental maximal.</p><p><strong>🤖 Votre compagnon quotidien, uniquement vôtre</strong><br>Notre moteur de conseils intelligent garantit que les conseils et instructions ne se répètent jamais. Il évolue avec vous, vous guidant jour après jour vers une version meilleure et plus saine de vous-même. Chaque phrase est une clé pour votre bonheur quotidien.</p><p><strong>🔒 La valeur de l'engagement</strong><br>Pourquoi recommandons-nous notre petit abonnement mensuel ? Parce que l'engagement apporte de la concentration. Lorsque vous investissez, vous faites attention. Les professionnels approuvent ce modèle car un utilisateur dédié est un utilisateur qui s'épanouit. Pour le prix d'une seule consultation avec un coach ou un médecin, vous accédez à une vie de sagesse distillée de nutritionnistes, psychologues et experts en bien-être, tout en un seul endroit.</p><p><strong>🚀 Pourquoi nous sommes différents</strong><br>Nous avons examiné en profondeur d'innombrables autres applications et sites Web. La plupart vous bombardent d'articles longs et génériques qui ne sont pas adaptés à votre état d'esprit spécifique. Nous sommes différents. Nous fournissons des conseils concis, ciblés et soutenus scientifiquement exactement quand vous en avez besoin.</p><p><strong>🌍 Un mouvement mondial</strong><br>Ce n'est pas juste une application ; c'est un mouvement mondial. Elle a déjà transformé la vie quotidienne de personnes dans le monde entier, une humeur à la fois.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Commencez votre voyage aujourd'hui. Votre dose quotidienne de clarté est à un seul clic. ✨</p>`,
-                lang_btn: 'Français', timer: 'Entrée dans 3 secondes...',
-                insights_title: '📊 Vos aperçus', recs_title: '💡 Recommandations',
-                lang_modal_title: 'Choisir la langue', lang_modal_cancel: 'Annuler',
-                premium_active: '✅ Premium actif',
-                insightGoodBase: ["Votre tendance est positive","Excellentes ondes cette semaine","Vous assurez","Votre humeur est excellente","Excellent état émotionnel","Vous prospérez","Le bonheur brille à travers vous","Vous êtes en feu","Votre énergie est incroyable","Vous rayonnez","La vie vous traite bien","Vous êtes inarrêtable","Votre sourire dit tout","Vous êtes dans un endroit formidable","La joie est votre compagne","Vous fleurissez","Votre cœur est léger","Votre esprit s'envole","Vous êtes plein de vie","Vous êtes un rayon de soleil"],
-                insightGoodSuffix: [" ! 🌟"," ! 🎉"," ! 🚀"," ! ☀️"," ! 💯"," ! ✨"," ! 🏆"," ! 💫"," ! 👏"," ! Continuez ! 🌟"]
-            },
-            'de': {
-                title: 'Stimmungs-Tracker', mood: 'Stimmung:', activity: 'Aktivität:', save: 'Speichern',
-                subscribe: 'Abonnieren ($4.99/Monat)', share: 'Teilen', close: 'Schließen',
-                info_title: '🌟 Über diese App',
-                info_text: `<p><strong>🧠 Ein Produkt kollektiver Weisheit</strong><br>Diese App wurde von Fachleuten aus den Bereichen Technik, Medizin und Wissenschaft streng getestet und verfeinert. Sie ist der Höhepunkt tiefer Forschung, destilliert in ein einfaches, elegantes Werkzeug für Ihren täglichen Gebrauch.</p><p><strong>🎯 Einfachheit über alles</strong><br>Wir glauben an die Kraft des Minimalismus. Es gibt keine ablenkenden Audio- oder visuellen Effekte – nur reine, zielgerichtete Interaktion, die auf Komfort und maximalen mentalen Nutzen ausgelegt ist.</p><p><strong>🤖 Ihr täglicher Begleiter, einzigartig für Sie</strong><br>Unsere intelligente Ratschlag-Engine stellt sicher, dass sich Tipps und Anweisungen nie wiederholen. Sie entwickelt sich mit Ihnen weiter und führt Sie Tag für Tag zu einer besseren, gesünderen Version Ihrer selbst. Jeder Satz ist ein Schlüssel zu Ihrem täglichen Glück.</p><p><strong>🔒 Der Wert des Engagements</strong><br>Warum empfehlen wir unser kleines monatliches Abonnement? Weil Engagement Fokus bringt. Wenn Sie investieren, zahlen Sie aufmerksam. Fachleute befürworten dieses Modell, weil ein engagierter Nutzer ein gedeihender Nutzer ist. Für den Preis einer einzigen Beratung mit einem Coach oder Arzt erhalten Sie Zugang zu einem Leben voller destillierter Weisheit von Ernährungswissenschaftlern, Psychologen und Wellness-Experten – alles an einem Ort.</p><p><strong>🚀 Warum wir anders sind</strong><br>Wir haben unzählige andere Apps und Websites gründlich überprüft. Die meisten bombardieren Sie mit langen, allgemeinen Artikeln, die nicht auf Ihren spezifischen Geisteszustand zugeschnitten sind. Wir sind anders. Wir liefern prägnante, zielgerichtete und wissenschaftlich fundierte Anleitungen genau dann, wenn Sie sie brauchen.</p><p><strong>🌍 Eine globale Bewegung</strong><br>Dies ist nicht nur eine App; es ist eine globale Bewegung. Sie hat bereits das tägliche Leben von Menschen weltweit verändert, eine Stimmung nach der anderen.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Beginnen Sie Ihre Reise heute. Ihre tägliche Dosis Klarheit ist nur einen Klick entfernt. ✨</p>`,
-                lang_btn: 'Deutsch', timer: 'Eintritt in 3 Sekunden...',
-                insights_title: '📊 Deine Einblicke', recs_title: '💡 Empfehlungen',
-                lang_modal_title: 'Sprache wählen', lang_modal_cancel: 'Abbrechen',
-                premium_active: '✅ Premium aktiv',
-                insightGoodBase: ["Ihr Trend ist positiv","Tolle Stimmung diese Woche","Sie rocken es","Ihre Stimmung ist hoch","Ausgezeichneter emotionaler Zustand","Sie gedeihen","Das Glück scheint durch","Sie sind in Bestform","Ihre Energie ist erstaunlich","Sie strahlen","Das Leben behandelt Sie gut","Sie sind unaufhaltsam","Ihr Lächeln sagt alles","Sie sind an einem großartigen Ort","Freude ist Ihr Begleiter","Sie blühen auf","Ihr Herz ist leicht","Ihr Geist schwebt","Sie sind voller Leben","Sie sind ein Sonnenstrahl"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! Weiter so! 🌟"]
-            },
-            'ja': {
-                title: '毎日の気分トラッカー', mood: '気分:', activity: '活動:', save: '保存',
-                subscribe: 'サブスク ($4.99/月)', share: '共有', close: '閉じる',
-                info_title: '🌟 このアプリについて',
-                info_text: `<p><strong>🧠 集合知の産物</strong><br>このアプリケーションは、技術、医療、科学分野の専門家によって厳格にテストされ、改良されてきました。深い研究の集大成であり、日常の生活に役立つシンプルで洗練されたツールに凝縮されています。</p><p><strong>🎯 何よりもシンプルさ</strong><br>私たちはミニマリズムの力を信じています。気を散らす音声や視覚効果はありません。快適さと最大限の精神的利益のために設計された、純粋で目的のあるインタラクションだけがあります。</p><p><strong>🤖 あなただけの毎日のコンパニオン</strong><br>私たちのインテリジェントなアドバイスエンジンは、ヒントや指示が決して繰り返されないことを保証します。それはあなたと共に進化し、より良く、より健康な自分自身へと毎日導きます。すべての文章が、あなたの毎日の幸せへの鍵です。</p><p><strong>🔒 コミットメントの価値</strong><br>なぜ私たちは少額の月額サブスクリプションをお勧めするのでしょうか？コミットメントが集中力をもたらすからです。投資するとき、あなたは注意を払います。専門家はこのモデルを支持します。なぜなら、熱心なユーザーは成長するユーザーだからです。コーチや医師への1回の相談料で、栄養士、心理学者、ウェルネス専門家から抽出された生涯の知恵にアクセスできます。すべてが1つの場所にあります。</p><p><strong>🚀 私たちが違う理由</strong><br>私たちは数え切れないほどの他のアプリやウェブサイトを徹底的にレビューしました。ほとんどは、あなたの特定の精神状態に合わせていない長くて一般的な記事であなたを攻め立てます。私たちは違います。あなたが必要とするまさにその時に、簡潔で、的を絞った、科学的に裏付けられたガイダンスを提供します。</p><p><strong>🌍 グローバルな運動</strong><br>これは単なるアプリではありません。グローバルな運動です。それはすでに世界中の人々の日常生活を変えてきました。一度に一つの気分で。</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">今日から旅を始めましょう。あなたの毎日の明晰さは、ただのタップで届きます。 ✨</p>`,
-                lang_btn: '日本語', timer: '3秒後に入力...',
-                insights_title: '📊 あなたの洞察', recs_title: '💡 おすすめ',
-                lang_modal_title: '言語を選択', lang_modal_cancel: 'キャンセル',
-                premium_active: '✅ プレミアム有効',
-                insightGoodBase: ["あなたの傾向はポジティブです","今週は最高の雰囲気","あなたは素晴らしい","気分が高揚しています","優れた感情状態","あなたは成長しています","幸福が輝いています","あなたは燃えています","あなたのエネルギーは素晴らしい","あなたは輝いています","人生はあなたを大切にしています","あなたは止められません","あなたの笑顔がすべてを語る","あなたは素晴らしい場所にいます","喜びはあなたの仲間です","あなたは咲いています","あなたの心は軽い","あなたの精神は舞い上がっています","あなたは生命力に満ちています","あなたは太陽の光です"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! 続けて! 🌟"]
-            },
-            'ru': {
-                title: 'Трекер настроения', mood: 'Настроение:', activity: 'Активность:', save: 'Сохранить',
-                subscribe: 'Подписка ($4.99/мес)', share: 'Поделиться', close: 'Закрыть',
-                info_title: '🌟 Об этом приложении',
-                info_text: `<p><strong>🧠 Продукт коллективной мудрости</strong><br>Это приложение было тщательно протестировано и усовершенствовано профессионалами в технических, медицинских и научных областях. Это кульминация глубоких исследований, воплощенная в простой и элегантный инструмент для вашей повседневной жизни.</p><p><strong>🎯 Простота превыше всего</strong><br>Мы верим в силу минимализма. Нет отвлекающих аудио- или визуальных эффектов — только чистое, целенаправленное взаимодействие, разработанное для комфорта и максимальной пользы для психики.</p><p><strong>🤖 Ваш ежедневный спутник, уникальный для вас</strong><br>Наш интеллектуальный движок советов гарантирует, что советы и инструкции никогда не повторяются. Он развивается вместе с вами, направляя вас день за днем к лучшей и более здоровой версии себя. Каждое предложение — ключ к вашему ежедневному счастью.</p><p><strong>🔒 Ценность обязательств</strong><br>Почему мы рекомендуем нашу небольшую ежемесячную подписку? Потому что обязательства приносят сосредоточенность. Когда вы вкладываете средства, вы обращаете внимание. Профессионалы одобряют эту модель, потому что преданный пользователь — это процветающий пользователь. За цену одной консультации с тренером или врачом вы получаете доступ к целой жизни дистиллированной мудрости от диетологов, психологов и экспертов по здоровью — и все это в одном месте.</p><p><strong>🚀 Почему мы другие</strong><br>Мы тщательно изучили бесчисленные другие приложения и веб-сайты. Большинство из них забрасывают вас длинными, общими статьями, которые не адаптированы к вашему конкретному состоянию ума. Мы другие. Мы предоставляем краткое, целенаправленное, научно обоснованное руководство именно тогда, когда оно вам нужно.</p><p><strong>🌍 Глобальное движение</strong><br>Это не просто приложение; это глобальное движение. Оно уже изменило повседневную жизнь людей по всему миру, по одному настроению за раз.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Начните свое путешествие сегодня. Ваша ежедневная доза ясности — всего в одном касании. ✨</p>`,
-                lang_btn: 'Русский', timer: 'Вход через 3 секунды...',
-                insights_title: '📊 Ваши инсайты', recs_title: '💡 Рекомендации',
-                lang_modal_title: 'Выбрать язык', lang_modal_cancel: 'Отмена',
-                premium_active: '✅ Премиум активен',
-                insightGoodBase: ["Ваш тренд положительный","Отличная атмосфера на этой неделе","Вы великолепны","Ваше настроение на высоте","Отличное эмоциональное состояние","Вы процветаете","Счастье сияет через вас","Вы в ударе","Ваша энергия удивительна","Вы сияете","Жизнь хорошо к вам относится","Вас не остановить","Ваша улыбка говорит всё","Вы в отличном месте","Радость — ваш спутник","Вы расцветаете","Ваше сердце легко","Ваш дух парит","Вы полны жизни","Вы — луч солнца"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! Продолжайте! 🌟"]
-            },
-            'pt': {
-                title: 'Monitor de Humor', mood: 'Humor:', activity: 'Atividade:', save: 'Salvar',
-                subscribe: 'Assinar ($4.99/mês)', share: 'Compartilhar', close: 'Fechar',
-                info_title: '🌟 Sobre este aplicativo',
-                info_text: `<p><strong>🧠 Um produto da sabedoria coletiva</strong><br>Este aplicativo foi rigorosamente testado e refinado por profissionais das áreas técnica, médica e científica. É o culminar de pesquisas profundas, destilado em uma ferramenta simples e elegante para sua vida diária.</p><p><strong>🎯 Simplicidade acima de tudo</strong><br>Acreditamos no poder do minimalismo. Não há efeitos de áudio ou visuais que distraiam - apenas interação pura e proposital, projetada para conforto e máximo benefício mental.</p><p><strong>🤖 Seu companheiro diário, exclusivamente seu</strong><br>Nosso mecanismo de conselhos inteligente garante que dicas e instruções nunca se repitam. Ele evolui com você, guiando-o dia após dia em direção a uma versão melhor e mais saudável de si mesmo. Cada frase é uma chave para sua felicidade diária.</p><p><strong>🔒 O valor do compromisso</strong><br>Por que recomendamos nossa pequena assinatura mensal? Porque o compromisso traz foco. Quando você investe, você presta atenção. Os profissionais endossam este modelo porque um usuário dedicado é um usuário próspero. Pelo preço de uma única consulta com um coach ou médico, você obtém acesso a uma vida de sabedoria destilada de nutricionistas, psicólogos e especialistas em bem-estar, tudo em um só lugar.</p><p><strong>🚀 Por que somos diferentes</strong><br>Revisamos minuciosamente inúmeros outros aplicativos e sites. A maioria bombardeia você com artigos longos e genéricos que não são adaptados ao seu estado de espírito específico. Nós somos diferentes. Nós fornecemos orientação concisa, direcionada e com respaldo científico exatamente quando você precisa.</p><p><strong>🌍 Um movimento global</strong><br>Este não é apenas um aplicativo; é um movimento global. Já transformou a vida diária de pessoas em todo o mundo, um humor de cada vez.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Comece sua jornada hoje. Sua dose diária de clareza está a apenas um toque de distância. ✨</p>`,
-                lang_btn: 'Português', timer: 'Entrando em 3 segundos...',
-                insights_title: '📊 Seus insights', recs_title: '💡 Recomendações',
-                lang_modal_title: 'Escolher idioma', lang_modal_cancel: 'Cancelar',
-                premium_active: '✅ Premium ativo',
-                insightGoodBase: ["Sua tendência é positiva","Ótimas vibrações esta semana","Você está arrasando","Seu humor está alto","Excelente estado emocional","Você está prosperando","A felicidade brilha através de você","Você está em chamas","Sua energia é incrível","Você está radiante","A vida está te tratando bem","Você é imparável","Seu sorriso diz tudo","Você está em um ótimo lugar","A alegria é sua companheira","Você está florescendo","Seu coração está leve","Seu espírito está voando","Você está cheio de vida","Você é um raio de sol"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! Continue! 🌟"]
-            },
-            'it': {
-                title: 'Monitor Umore', mood: 'Umore:', activity: 'Attività:', save: 'Salva',
-                subscribe: 'Abbonati ($4.99/mese)', share: 'Condividi', close: 'Chiudi',
-                info_title: '🌟 Informazioni su questa app',
-                info_text: `<p><strong>🧠 Un prodotto della saggezza collettiva</strong><br>Questa applicazione è stata rigorosamente testata e perfezionata da professionisti nei campi tecnico, medico e scientifico. È il culmine di una profonda ricerca, distillata in uno strumento semplice ed elegante per la tua vita quotidiana.</p><p><strong>🎯 Semplicità sopra ogni cosa</strong><br>Crediamo nel potere del minimalismo. Non ci sono effetti audio o visivi che distraggono, solo un'interazione pura e mirata progettata per il comfort e il massimo beneficio mentale.</p><p><strong>🤖 Il tuo compagno quotidiano, unicamente tuo</strong><br>Il nostro motore di consigli intelligente garantisce che suggerimenti e istruzioni non si ripetano mai. Si evolve con te, guidandoti giorno dopo giorno verso una versione migliore e più sana di te stesso. Ogni frase è una chiave per la tua felicità quotidiana.</p><p><strong>🔒 Il valore dell'impegno</strong><br>Perché consigliamo il nostro piccolo abbonamento mensile? Perché l'impegno porta concentrazione. Quando investi, presti attenzione. I professionisti approvano questo modello perché un utente dedicato è un utente fiorente. Per il prezzo di una singola consulenza con un coach o un medico, ottieni l'accesso a una vita di saggezza distillata da nutrizionisti, psicologi ed esperti di benessere, tutto in un unico posto.</p><p><strong>🚀 Perché siamo diversi</strong><br>Abbiamo esaminato a fondo innumerevoli altre app e siti web. La maggior parte ti bombarda con articoli lunghi e generici che non sono adattati al tuo specifico stato d'animo. Noi siamo diversi. Forniamo una guida concisa, mirata e supportata scientificamente esattamente quando ne hai bisogno.</p><p><strong>🌍 Un movimento globale</strong><br>Questa non è solo un'app; è un movimento globale. Ha già trasformato la vita quotidiana di persone in tutto il mondo, un umore alla volta.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">Inizia il tuo viaggio oggi. La tua dose quotidiana di chiarezza è a un solo tocco di distanza. ✨</p>`,
-                lang_btn: 'Italiano', timer: 'Entrata in 3 secondi...',
-                insights_title: '📊 I tuoi insight', recs_title: '💡 Raccomandazioni',
-                lang_modal_title: 'Scegli lingua', lang_modal_cancel: 'Annulla',
-                premium_active: '✅ Premium attivo',
-                insightGoodBase: ["Il tuo trend è positivo","Ottime vibrazioni questa settimana","Stai andando alla grande","Il tuo umore è alto","Eccellente stato emotivo","Stai prosperando","La felicità brilla attraverso di te","Sei in forma smagliante","La tua energia è incredibile","Stai brillando","La vita ti tratta bene","Sei inarrestabile","Il tuo sorriso dice tutto","Sei in un ottimo posto","La gioia è la tua compagna","Stai fiorendo","Il tuo cuore è leggero","Il tuo spirito sta volando","Sei pieno di vita","Sei un raggio di sole"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! Continua così! 🌟"]
-            },
-            'ko': {
-                title: '일일 기분 추적기', mood: '기분:', activity: '활동:', save: '저장',
-                subscribe: '구독 ($4.99/월)', share: '공유', close: '닫기',
-                info_title: '🌟 이 앱 정보',
-                info_text: `<p><strong>🧠 집단 지혜의 산물</strong><br>이 애플리케이션은 기술, 의료 및 과학 분야의 전문가들에 의해 엄격하게 테스트되고 개선되었습니다. 깊은 연구의 결정체로, 일상 생활을 위한 간단하고 우아한 도구로 정제되었습니다.</p><p><strong>🎯 무엇보다도 단순함</strong><br>우리는 미니멀리즘의 힘을 믿습니다. 산만한 오디오나 시각적 효과는 없습니다. 편안함과 최대의 정신적 이익을 위해 설계된 순수하고 목적 있는 상호작용만 있습니다.</p><p><strong>🤖 당신만을 위한 일상의 동반자</strong><br>지능형 조언 엔진은 팁과 지침이 절대 반복되지 않도록 보장합니다. 그것은 당신과 함께 진화하며, 더 나은, 더 건강한 자신으로 매일 안내합니다. 모든 문장은 당신의 일상적인 행복의 열쇠입니다.</p><p><strong>🔒 헌신의 가치</strong><br>왜 우리는 소액의 월간 구독을 권장할까요? 헌신은 집중력을 가져오기 때문입니다. 투자할 때, 당신은 주의를 기울입니다. 전문가들은 이 모델을 지지합니다. 왜냐하면 전용 사용자는 번성하는 사용자이기 때문입니다. 코치나 의사와의 단 한 번의 상담 가격으로, 영양사, 심리학자 및 웰빙 전문가의 평생 증류된 지혜에 액세스할 수 있습니다. 모두 한 곳에 있습니다.</p><p><strong>🚀 우리가 다른 이유</strong><br>우리는 수많은 다른 앱과 웹사이트를 철저히 검토했습니다. 대부분은 당신의 특정 심리 상태에 맞지 않는 길고 일반적인 기사로 당신을 공격합니다. 우리는 다릅니다. 우리는 당신이 필요로 할 때 정확하게 간결하고, 목표 지향적이며, 과학적으로 뒷받침되는 지침을 제공합니다.</p><p><strong>🌍 글로벌 무브먼트</strong><br>이것은 단순한 앱이 아닙니다. 그것은 글로벌 무브먼트입니다. 그것은 이미 전 세계 사람들의 일상을 변화시켰습니다. 한 번에 하나의 기분으로.</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">오늘 여정을 시작하세요. 당신의 일일 명확성의 복용량은 단 한 번의 탭에 있습니다. ✨</p>`,
-                lang_btn: '한국어', timer: '3초 후 진입...',
-                insights_title: '📊 당신의 인사이트', recs_title: '💡 추천',
-                lang_modal_title: '언어 선택', lang_modal_cancel: '취소',
-                premium_active: '✅ 프리미엄 활성',
-                insightGoodBase: ["당신의 트렌드는 긍정적입니다","이번 주 분위기가 좋아요","당신은 멋지게 하고 있어요","기분이 좋아요","훌륭한 감정 상태","당신은 번성하고 있어요","행복이 빛나고 있어요","당신은 불타오르고 있어요","당신의 에너지는 놀라워요","당신은 빛나고 있어요","삶이 당신을 잘 대하고 있어요","당신은 멈출 수 없어요","당신의 미소가 모든 것을 말해요","당신은 좋은 곳에 있어요","기쁨이 당신의 동반자예요","당신은 꽃피고 있어요","당신의 마음은 가벼워요","당신의 영혼이 날아오르고 있어요","당신은 생기로 가득해요","당신은 햇살이에요"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! 계속하세요! 🌟"]
-            },
-            'hi': {
-                title: 'दैनिक मूड ट्रैकर', mood: 'मूड:', activity: 'गतिविधि:', save: 'सहेजें',
-                subscribe: 'सदस्यता ($4.99/महीना)', share: 'साझा करें', close: 'बंद करें',
-                info_title: '🌟 इस ऐप के बारे में',
-                info_text: `<p><strong>🧠 सामूहिक ज्ञान का उत्पाद</strong><br>इस एप्लिकेशन का तकनीकी, चिकित्सा और वैज्ञानिक क्षेत्रों के पेशेवरों द्वारा कठोरता से परीक्षण और परिष्कृत किया गया है। यह गहन शोध की परिणति है, जिसे आपके दैनिक जीवन के लिए एक सरल, सुरुचिपूर्ण उपकरण में संक्षेपित किया गया है।</p><p><strong>🎯 सबसे बढ़कर सादगी</strong><br>हम न्यूनतमवाद की शक्ति में विश्वास करते हैं। कोई ध्यान भटकाने वाले ऑडियो या दृश्य प्रभाव नहीं हैं—केवल शुद्ध, उद्देश्यपूर्ण बातचीत जो आराम और अधिकतम मानसिक लाभ के लिए डिज़ाइन की गई है।</p><p><strong>🤖 आपका दैनिक साथी, विशेष रूप से आपका</strong><br>हमारा बुद्धिमान सलाह इंजन सुनिश्चित करता है कि सुझाव और निर्देश कभी भी दोहराए न जाएं। यह आपके साथ विकसित होता है, आपको दिन-प्रतिदिन अपने बेहतर, स्वस्थ संस्करण की ओर मार्गदर्शन करता है। हर वाक्य आपकी दैनिक खुशी की कुंजी है।</p><p><strong>🔒 प्रतिबद्धता का मूल्य</strong><br>हम अपनी छोटी मासिक सदस्यता की सिफारिश क्यों करते हैं? क्योंकि प्रतिबद्धता ध्यान केंद्रित करती है। जब आप निवेश करते हैं, तो आप ध्यान देते हैं। पेशेवर इस मॉडल का समर्थन करते हैं क्योंकि एक समर्पित उपयोगकर्ता एक संपन्न उपयोगकर्ता होता है। एक कोच या डॉक्टर के साथ एक परामर्श की कीमत पर, आपको पोषण विशेषज्ञों, मनोवैज्ञानिकों और कल्याण विशेषज्ञों से आजीवन संक्षेपित ज्ञान तक पहुंच मिलती है—सब एक ही स्थान पर।</p><p><strong>🚀 हम अलग क्यों हैं</strong><br>हमने अनगिनत अन्य ऐप्स और वेबसाइटों की गहन समीक्षा की है। अधिकांश आपको लंबे, सामान्य लेखों से भर देते हैं जो आपकी विशिष्ट मानसिक स्थिति के अनुरूप नहीं होते हैं। हम अलग हैं। हम संक्षिप्त, लक्षित, वैज्ञानिक रूप से समर्थित मार्गदर्शन प्रदान करते हैं जब आपको इसकी आवश्यकता होती है।</p><p><strong>🌍 एक वैश्विक आंदोलन</strong><br>यह सिर्फ एक ऐप नहीं है; यह एक वैश्विक आंदोलन है। इसने पहले ही दुनिया भर के लोगों के दैनिक जीवन को बदल दिया है, एक समय में एक मूड।</p><p style="margin-top: 15px; font-weight: bold; text-align: center; color: #2c3e50;">आज अपनी यात्रा शुरू करें। स्पष्टता की आपकी दैनिक खुराक बस एक टैप दूर है। ✨</p>`,
-                lang_btn: 'हिन्दी', timer: '3 सेकंड में प्रवेश...',
-                insights_title: '📊 आपकी अंतर्दृष्टि', recs_title: '💡 सिफ़ारिशें',
-                lang_modal_title: 'भाषा चुनें', lang_modal_cancel: 'रद्द करें',
-                premium_active: '✅ प्रीमियम सक्रिय',
-                insightGoodBase: ["आपका रुझान सकारात्मक है","इस सप्ताह बहुत अच्छा माहौल","आप बहुत अच्छा कर रहे हैं","आपका मूड उच्च है","उत्कृष्ट भावनात्मक स्थिति","आप फल-फूल रहे हैं","खुशी आपके माध्यम से चमक रही है","आप जोश में हैं","आपकी ऊर्जा अद्भुत है","आप चमक रहे हैं","जीवन आपके साथ अच्छा व्यवहार कर रहा है","आप अजेय हैं","आपकी मुस्कान सब कुछ कहती है","आप एक शानदार जगह पर हैं","खुशी आपकी साथी है","आप खिल रहे हैं","आपका दिल हल्का है","आपकी आत्मा उड़ रही है","आप जीवन से भरे हैं","आप धूप की किरण हैं"],
-                insightGoodSuffix: ["! 🌟","! 🎉","! 🚀","! ☀️","! 💯","! ✨","! 🏆","! 💫","! 👏","! जारी रखें! 🌟"]
-            }
-        };
+<script>
+// ══════════════════════════════════════════════════════════════
+// TRANSLATIONS (12 LANGUAGES) — ALL IN-APP CONTENT + PRIVACY
+// ══════════════════════════════════════════════════════════════
+const translations = {
+en:{
+title:'Daily Insights Mood Tracker',mood:'Mood:',activity:'Activity:',save:'Save',
+subscribe:'Subscribe ($4.99/mo)',share:'Share',close:'Close',
+info_title:'🌟 About This App',
+info_text:'<p><strong>🧠 A Product of Collective Wisdom</strong><br>This application has been rigorously tested and refined by professionals across technical, medical, and scientific fields.</p><p><strong>🎯 Simplicity Above All</strong><br>We believe in the power of minimalism. No distracting effects—only pure, purposeful interaction.</p><p><strong>🤖 Your Daily Companion</strong><br>Our intelligent advice engine ensures that tips never repeat. It evolves with you.</p><p><strong>🔒 The Value of Commitment</strong><br>Commitment brings focus. For the price of a single consultation, gain a lifetime of distilled wisdom.</p><p><strong>🚀 Why We Are Different</strong><br>Most apps bombard you with generic content. We deliver concise, targeted, scientifically-backed guidance.</p><p><strong>🌍 A Global Movement</strong><br>This isn\'t just an app; it\'s a global movement.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">Start your journey today. ✨</p>',
+lang_btn:'English',timer:'Entering in 3 seconds...',
+insights_title:'📊 Your Insights',recs_title:'💡 Recommendations',
+lang_modal_title:'Choose Language',lang_modal_cancel:'Cancel',
+premium_active:'✅ Premium Active',
+wg_title:'Daily Insights Mood Tracker',wg_text:'Track your mood and daily activities. Download the full app on the App Store.',wg_btn:'🍎 Download on App Store',
+alert_choose:'Choose mood and activity',alert_success:'Payment successful! Premium features unlocked.',alert_fail:'Payment cancelled or failed.',alert_copied:'Link copied!',
+insightGoodBase:['Your trend is positive','Great vibes this week','You are rocking it','Your mood is high','Excellent emotional state','You are thriving','Happiness is shining through','You are on fire','Your energy is amazing','You are glowing','Life is treating you well','You are unstoppable','Your smile says it all','You are in a great place','Joy is your companion','You are blooming','Your heart is light','Your spirit is soaring','You are full of life','You are a ray of sunshine'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! Keep going! 🌟'],
+insightMiddle:['Keep going, you are doing great.','Take a moment to appreciate yourself.','Remember: small steps lead to big changes.','You deserve every bit of this happiness.','Stay present and enjoy the moment.','Your effort is paying off.','Trust the process, you are on the right path.','You are stronger than you think.','Celebrate this feeling.','Breathe deeply and smile.','You are enough, exactly as you are.','Your journey is unique and beautiful.','Slow down and enjoy today.','You are building something wonderful.','Keep this energy alive.','Your best days are ahead.','You inspire others without knowing it.','Gratitude multiplies happiness.','Today is a gift, unwrap it fully.','You are writing a beautiful story.'],
+advice:['Stay hydrated throughout the day.','Take short breaks to rest your eyes.','Listen to your body, it knows best.','Get at least 7 hours of sleep.','Take a 10-minute walk after meals.','Practice deep breathing for 5 minutes.','Limit screen time before bed.','Spend time in nature.','Connect with a friend today.','Write down 3 things you are grateful for.','Stretch in the morning.','Eat mindfully, without distractions.','Drink a glass of water right now.','Take the stairs instead of the elevator.','Try a new healthy recipe.','Meditate for 5 minutes.','Do something kind for someone.','Read a book instead of scrolling.','Smile at a stranger.','Dance to your favorite song.'],
+privacy_title:'Privacy Policy',
+privacy_updated:'Daily Insights Mood Tracker · Last updated: September 18, 2026',
+privacy_intro:'This Privacy Policy describes how Daily Insights Mood Tracker ("we", "our", or "the App") handles your information when you use our mobile application.',
+privacy_s1_t:'1. Information We Do Not Collect',privacy_s1_c:'We do <strong>not</strong> collect, store, transmit, or share any personal data. This includes, but is not limited to: your name, email address, phone number, location, contacts, photos, or any other personal identifiers.',
+privacy_s2_t:'2. Data Stored on Your Device',privacy_s2_c:'All information you enter in the App (your moods, activities, and preferences) is stored <strong>locally on your device only</strong> using the browser\'s built-in storage (localStorage). This data never leaves your device, is never sent to any server, and is deleted if you uninstall the App or clear your browser data.',
+privacy_s3_t:'3. Third-Party Services',privacy_s3_c:'The App does not use any third-party services for payments, analytics, or data processing. All data remains strictly on your device. Any subscription management is handled entirely by the Apple App Store.',
+privacy_s4_t:'4. Analytics and Tracking',privacy_s4_c:'We do <strong>not</strong> use any analytics, tracking cookies, advertising identifiers, or fingerprinting technologies.',
+privacy_s5_t:'5. Children\'s Privacy',privacy_s5_c:'The App is not directed at children under the age of 13. We do not knowingly collect any personal information from children.',
+privacy_s6_t:'6. Your Rights',privacy_s6_c:'Since we do not collect personal data, there is no data to access, modify, or delete. You can delete all locally stored data by uninstalling the App.',
+privacy_s7_t:'7. Changes to This Policy',privacy_s7_c:'We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated revision date.',
+privacy_s8_t:'8. Contact Us',privacy_s8_c:'If you have any questions about this Privacy Policy, you can contact us at:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 Daily Insights Mood Tracker. All rights reserved.'
+},
+ar:{
+title:'متتبع المزاج اليومي',mood:'المزاج:',activity:'النشاط:',save:'حفظ',
+subscribe:'اشتراك ($4.99/شهر)',share:'مشاركة',close:'إغلاق',
+info_title:'🌟 حول هذا التطبيق',
+info_text:'<p><strong>🧠 منتج الحكمة الجماعية</strong><br>تم اختبار هذا التطبيق وتحسينه بدقة من قبل محترفين في المجالات التقنية والطبية والعلمية.</p><p><strong>🎯 البساطة قبل كل شيء</strong><br>نؤمن بقوة التبسيط. لا توجد مؤثرات مشتتة.</p><p><strong>🤖 رفيقك اليومي</strong><br>محرك النصائح الذكي يضمن عدم تكرار النصائح.</p><p><strong>🔒 قيمة الالتزام</strong><br>مقابل تكلفة استشارة واحدة، احصل على ثروة من الحكمة.</p><p><strong>🚀 لماذا نحن مختلفون</strong><br>نقدم إرشادات موجزة ومدعومة علميًا.</p><p><strong>🌍 حركة عالمية</strong><br>هذا ليس مجرد تطبيق، بل حركة عالمية.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">ابدأ رحلتك اليوم. ✨</p>',
+lang_btn:'العربية',timer:'الدخول بعد 3 ثواني...',
+insights_title:'📊 رؤيتك',recs_title:'💡 توصيات',
+lang_modal_title:'اختر اللغة',lang_modal_cancel:'إلغاء',
+premium_active:'✅ مميز نشط',
+wg_title:'متتبع المزاج اليومي',wg_text:'تتبع مزاجك وأنشطتك اليومية. حمّل التطبيق الكامل من App Store.',wg_btn:'🍎 تحميل من App Store',
+alert_choose:'اختر المزاج والنشاط',alert_success:'تم الدفع بنجاح! تم فتح الميزات المميزة.',alert_fail:'تم إلغاء الدفع أو فشل.',alert_copied:'تم نسخ الرابط!',
+insightGoodBase:['اتجاهك إيجابي','أجواء رائعة هذا الأسبوع','أنت تبلي بلاءً حسناً','مزاجك مرتفع','حالة عاطفية ممتازة','أنت مزدهر','السعادة تتألق من خلالك','أنت في أفضل حالاتك','طاقتك مذهلة','أنت متوهج','الحياة تعاملك جيداً','لا يمكن إيقافك','ابتسامتك تقول كل شيء','أنت في مكان رائع','الفرح رفيقك','أنت تتفتح','قلبك خفيف','روحك تحلق','أنت مليء بالحياة','أنت شعاع من الشمس'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! استمر! 🌟'],
+insightMiddle:['استمر، أنت تبلي بلاءً حسناً.','خذ لحظة لتقدير نفسك.','تذكر: الخطوات الصغيرة تؤدي إلى تغييرات كبيرة.','أنت تستحق كل هذه السعادة.','ابق حاضراً واستمتع باللحظة.','جهدك يؤتي ثماره.','ثق بالعملية، أنت على الطريق الصحيح.','أنت أقوى مما تعتقد.','احتفل بهذا الشعور.','تنفس بعمق وابتسم.','أنت كافٍ، تماماً كما أنت.','رحلتك فريدة وجميلة.','تمهل واستمتع باليوم.','أنت تبني شيئاً رائعاً.','حافظ على هذه الطاقة حية.','أفضل أيامك قادمة.','أنت تلهم الآخرين دون أن تعرف.','الامتنان يضاعف السعادة.','اليوم هدية، افتحها بالكامل.','أنت تكتب قصة جميلة.'],
+advice:['اشرب الماء طوال اليوم.','خذ فترات راحة قصيرة لإراحة عينيك.','استمع لجسمك، فهو يعرف الأفضل.','احصل على 7 ساعات نوم على الأقل.','امشِ 10 دقائق بعد الوجبات.','مارس التنفس العميق لمدة 5 دقائق.','قلل وقت الشاشة قبل النوم.','اقضِ وقتاً في الطبيعة.','تواصل مع صديق اليوم.','اكتب 3 أشياء أنت ممتن لها.','تمدد في الصباح.','كل بوعي، بدون مشتتات.','اشرب كوب ماء الآن.','استخدم الدرج بدلاً من المصعد.','جرب وصفة صحية جديدة.','تأمل لمدة 5 دقائق.','افعل شيئاً لطيفاً لشخص ما.','اقرأ كتاباً بدلاً من التمرير.','ابتسم لشخص غريب.','ارقص على أغنيتك المفضلة.'],
+privacy_title:'سياسة الخصوصية',
+privacy_updated:'متتبع المزاج اليومي · آخر تحديث: 18 سبتمبر 2026',
+privacy_intro:'تصف سياسة الخصوصية هذه كيف يتعامل متتبع المزاج اليومي ("نحن" أو "التطبيق") مع معلوماتك عند استخدام تطبيقنا.',
+privacy_s1_t:'1. المعلومات التي لا نجمعها',privacy_s1_c:'نحن <strong>لا</strong> نجمع أو نخزن أو ننقل أو نشارك أي بيانات شخصية. يشمل ذلك اسمك، بريدك الإلكتروني، رقم هاتفك، موقعك، جهات الاتصال، الصور، أو أي معرفات شخصية أخرى.',
+privacy_s2_t:'2. البيانات المخزنة على جهازك',privacy_s2_c:'يتم تخزين جميع المعلومات التي تدخلها في التطبيق <strong>محليًا على جهازك فقط</strong> باستخدام التخزين المدمج في المتصفح. لا تغادر هذه البيانات جهازك أبدًا ولا يتم إرسالها إلى أي خادم.',
+privacy_s3_t:'3. خدمات الطرف الثالث',privacy_s3_c:'لا يستخدم التطبيق أي خدمات طرف ثالث للمدفوعات أو التحليلات أو معالجة البيانات. تظل جميع البيانات على جهازك. تتم إدارة الاشتراكات بالكامل من قبل Apple App Store.',
+privacy_s4_t:'4. التحليلات والتتبع',privacy_s4_c:'نحن <strong>لا</strong> نستخدم أي تحليلات أو ملفات تعريف ارتباط تتبع أو معرفات إعلانية.',
+privacy_s5_t:'5. خصوصية الأطفال',privacy_s5_c:'التطبيق غير موجه للأطفال دون سن 13 عامًا. لا نجمع عن قصد أي معلومات شخصية من الأطفال.',
+privacy_s6_t:'6. حقوقك',privacy_s6_c:'بما أننا لا نجمع بيانات شخصية، فلا توجد بيانات للوصول إليها أو تعديلها أو حذفها. يمكنك حذف جميع البيانات المخزنة محليًا عن طريق إلغاء تثبيت التطبيق.',
+privacy_s7_t:'7. التغييرات في هذه السياسة',privacy_s7_c:'قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. ستنعكس أي تغييرات على هذه الصفحة مع تاريخ مراجعة محدث.',
+privacy_s8_t:'8. اتصل بنا',privacy_s8_c:'إذا كانت لديك أي أسئلة حول سياسة الخصوصية هذه، يمكنك الاتصال بنا على:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 متتبع المزاج اليومي. جميع الحقوق محفوظة.'
+},
+zh:{
+title:'每日情绪追踪',mood:'心情:',activity:'活动:',save:'保存',
+subscribe:'订阅 ($4.99/月)',share:'分享',close:'关闭',
+info_title:'🌟 关于此应用',
+info_text:'<p><strong>🧠 集体智慧的结晶</strong><br>此应用经过技术、医学和科学领域专业人士的严格测试和完善。</p><p><strong>🎯 极简至上</strong><br>我们相信极简主义的力量。</p><p><strong>🤖 您的日常伴侣</strong><br>我们的智能建议引擎确保提示永不重复。</p><p><strong>🔒 承诺的价值</strong><br>只需一次咨询的费用，获得终身智慧精华。</p><p><strong>🚀 我们为何不同</strong><br>我们提供简洁、有科学依据的指导。</p><p><strong>🌍 全球运动</strong><br>这不仅仅是一个应用；这是一场全球运动。</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">今天就开始您的旅程。 ✨</p>',
+lang_btn:'中文',timer:'3秒后进入...',
+insights_title:'📊 您的洞察',recs_title:'💡 建议',
+lang_modal_title:'选择语言',lang_modal_cancel:'取消',
+premium_active:'✅ 高级已激活',
+wg_title:'每日情绪追踪',wg_text:'追踪您的心情和日常活动。从 App Store 下载完整应用。',wg_btn:'🍎 从 App Store 下载',
+alert_choose:'请选择心情和活动',alert_success:'付款成功！高级功能已解锁。',alert_fail:'付款已取消或失败。',alert_copied:'链接已复制！',
+insightGoodBase:['您的趋势是积极的','本周气氛很棒','您做得很好','您的心情很高','情绪状态极佳','您正在茁壮成长','幸福在闪耀','您充满活力','您的能量惊人','您容光焕发','生活对您很好','您势不可挡','您的笑容说明一切','您处于绝佳状态','快乐是您的伴侣','您正在绽放','您的心情轻松','您的精神在翱翔','您充满生机','您是阳光'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! 继续加油! 🌟'],
+insightMiddle:['继续前进，你做得很棒。','花点时间欣赏自己。','记住：小步走向大变化。','你值得这份幸福。','保持当下，享受此刻。','你的努力正在得到回报。','相信过程，你在正确的道路上。','你比想象中更强大。','庆祝这种感觉。','深呼吸，微笑。','你已经足够好，就是现在的你。','你的旅程独特而美丽。','慢下来，享受今天。','你正在建造美妙的东西。','保持这份能量。','你最好的日子在前方。','你在不知不觉中激励着他人。','感恩倍增幸福。','今天是礼物，充分打开它。','你正在书写美丽的故事。'],
+advice:['全天保持水分充足。','短暂休息，让眼睛放松。','倾听你的身体，它最了解。','至少睡7小时。','饭后散步10分钟。','练习5分钟深呼吸。','睡前限制屏幕时间。','花时间亲近大自然。','今天与朋友联系。','写下3件你感恩的事。','早晨伸展身体。','正念进食，不分心。','现在就喝一杯水。','走楼梯而不是电梯。','尝试新的健康食谱。','冥想5分钟。','为某人做点好事。','读书而不是刷手机。','对陌生人微笑。','跟着喜欢的歌跳舞。'],
+privacy_title:'隐私政策',
+privacy_updated:'每日情绪追踪 · 最后更新：2026年9月18日',
+privacy_intro:'本隐私政策描述了每日情绪追踪（"我们"或"本应用"）在您使用我们的移动应用时如何处理您的信息。',
+privacy_s1_t:'1. 我们不收集的信息',privacy_s1_c:'我们<strong>不</strong>收集、存储、传输或共享任何个人数据。这包括但不限于：您的姓名、电子邮件地址、电话号码、位置、联系人、照片或任何其他个人标识符。',
+privacy_s2_t:'2. 存储在您设备上的数据',privacy_s2_c:'您在应用中输入的所有信息（您的心情、活动和偏好）<strong>仅存储在您的设备本地</strong>，使用浏览器的内置存储（localStorage）。这些数据永远不会离开您的设备，也永远不会发送到任何服务器。',
+privacy_s3_t:'3. 第三方服务',privacy_s3_c:'本应用不使用任何第三方服务进行支付、分析或数据处理。所有数据严格保留在您的设备上。订阅管理完全由 Apple App Store 处理。',
+privacy_s4_t:'4. 分析和跟踪',privacy_s4_c:'我们<strong>不</strong>使用任何分析、跟踪 cookie、广告标识符或指纹识别技术。',
+privacy_s5_t:'5. 儿童隐私',privacy_s5_c:'本应用不面向13岁以下的儿童。我们不会故意收集儿童的任何个人信息。',
+privacy_s6_t:'6. 您的权利',privacy_s6_c:'由于我们不收集个人数据，因此没有数据可访问、修改或删除。您可以通过卸载应用删除所有本地存储的数据。',
+privacy_s7_t:'7. 本政策的变更',privacy_s7_c:'我们可能会不时更新本隐私政策。任何更改都将通过更新的修订日期反映在此页面上。',
+privacy_s8_t:'8. 联系我们',privacy_s8_c:'如果您对本隐私政策有任何疑问，可以通过以下方式联系我们：',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 每日情绪追踪。保留所有权利。'
+},
+es:{
+title:'Rastreador de Estado de Ánimo',mood:'Estado de ánimo:',activity:'Actividad:',save:'Guardar',
+subscribe:'Suscribirse ($4.99/mes)',share:'Compartir',close:'Cerrar',
+info_title:'🌟 Sobre esta aplicación',
+info_text:'<p><strong>🧠 Un producto de sabiduría colectiva</strong><br>Esta aplicación ha sido probada rigurosamente por profesionales.</p><p><strong>🎯 Simplicidad ante todo</strong><br>Creemos en el poder del minimalismo.</p><p><strong>🤖 Su compañero diario</strong><br>Nuestro motor de consejos garantiza que los consejos nunca se repitan.</p><p><strong>🔒 El valor del compromiso</strong><br>Por el precio de una sola consulta, obtenga una vida de sabiduría.</p><p><strong>🚀 Por qué somos diferentes</strong><br>Brindamos orientación concisa y respaldada científicamente.</p><p><strong>🌍 Un movimiento global</strong><br>Esto no es solo una aplicación; es un movimiento global.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">Comience su viaje hoy. ✨</p>',
+lang_btn:'Español',timer:'Entrando en 3 segundos...',
+insights_title:'📊 Tus perspectivas',recs_title:'💡 Recomendaciones',
+lang_modal_title:'Elegir idioma',lang_modal_cancel:'Cancelar',
+premium_active:'✅ Premium activo',
+wg_title:'Rastreador de Estado de Ánimo',wg_text:'Rastree su estado de ánimo y actividades diarias. Descargue la aplicación completa en el App Store.',wg_btn:'🍎 Descargar en App Store',
+alert_choose:'Elige estado de ánimo y actividad',alert_success:'¡Pago exitoso! Funciones premium desbloqueadas.',alert_fail:'Pago cancelado o fallido.',alert_copied:'¡Enlace copiado!',
+insightGoodBase:['Tu tendencia es positiva','Excelentes vibras esta semana','Lo estás haciendo genial','Tu estado de ánimo es alto','Excelente estado emocional','Estás prosperando','La felicidad brilla a través de ti','Estás en racha','Tu energía es increíble','Estás radiante','La vida te trata bien','Eres imparable','Tu sonrisa lo dice todo','Estás en un gran lugar','La alegría es tu compañera','Estás floreciendo','Tu corazón está ligero','Tu espíritu está volando','Estás lleno de vida','Eres un rayo de sol'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! ¡Sigue así! 🌟'],
+insightMiddle:['Sigue adelante, lo estás haciendo genial.','Tómate un momento para apreciarte.','Recuerda: pequeños pasos llevan a grandes cambios.','Mereces cada pedacito de esta felicidad.','Mantente presente y disfruta el momento.','Tu esfuerzo está dando frutos.','Confía en el proceso, estás en el camino correcto.','Eres más fuerte de lo que crees.','Celebra este sentimiento.','Respira profundo y sonríe.','Eres suficiente, tal como eres.','Tu viaje es único y hermoso.','Baja el ritmo y disfruta hoy.','Estás construyendo algo maravilloso.','Mantén esta energía viva.','Tus mejores días están por venir.','Inspiras a otros sin saberlo.','La gratitud multiplica la felicidad.','Hoy es un regalo, ábrelo por completo.','Estás escribiendo una historia hermosa.'],
+advice:['Mantente hidratado todo el día.','Toma descansos cortos para descansar la vista.','Escucha a tu cuerpo, él sabe mejor.','Duerme al menos 7 horas.','Camina 10 minutos después de comer.','Practica respiración profunda durante 5 minutos.','Limita el tiempo de pantalla antes de dormir.','Pasa tiempo en la naturaleza.','Conéctate con un amigo hoy.','Escribe 3 cosas por las que estás agradecido.','Estírate por la mañana.','Come conscientemente, sin distracciones.','Bebe un vaso de agua ahora mismo.','Usa las escaleras en vez del ascensor.','Prueba una nueva receta saludable.','Medita 5 minutos.','Haz algo amable por alguien.','Lee un libro en vez de hacer scroll.','Sonríe a un desconocido.','Baila tu canción favorita.'],
+privacy_title:'Política de Privacidad',
+privacy_updated:'Rastreador de Estado de Ánimo · Última actualización: 18 de septiembre de 2026',
+privacy_intro:'Esta Política de Privacidad describe cómo Rastreador de Estado de Ánimo ("nosotros" o "la Aplicación") maneja su información cuando usa nuestra aplicación móvil.',
+privacy_s1_t:'1. Información que NO recopilamos',privacy_s1_c:'<strong>NO</strong> recopilamos, almacenamos, transmitimos ni compartimos ningún dato personal. Esto incluye, entre otros: su nombre, correo electrónico, número de teléfono, ubicación, contactos, fotos u otros identificadores personales.',
+privacy_s2_t:'2. Datos almacenados en su dispositivo',privacy_s2_c:'Toda la información que ingresa en la Aplicación (sus estados de ánimo, actividades y preferencias) se almacena <strong>únicamente de forma local en su dispositivo</strong> utilizando el almacenamiento integrado del navegador (localStorage). Estos datos nunca salen de su dispositivo.',
+privacy_s3_t:'3. Servicios de terceros',privacy_s3_c:'La Aplicación no utiliza ningún servicio de terceros para pagos, análisis o procesamiento de datos. Todos los datos permanecen estrictamente en su dispositivo. La gestión de suscripciones es manejada completamente por el Apple App Store.',
+privacy_s4_t:'4. Análisis y seguimiento',privacy_s4_c:'<strong>NO</strong> utilizamos análisis, cookies de seguimiento, identificadores publicitarios ni tecnologías de huellas digitales.',
+privacy_s5_t:'5. Privacidad de los niños',privacy_s5_c:'La Aplicación no está dirigida a niños menores de 13 años. No recopilamos a sabiendas información personal de niños.',
+privacy_s6_t:'6. Sus derechos',privacy_s6_c:'Como no recopilamos datos personales, no hay datos para acceder, modificar o eliminar. Puede eliminar todos los datos almacenados localmente desinstalando la Aplicación.',
+privacy_s7_t:'7. Cambios en esta política',privacy_s7_c:'Podemos actualizar esta Política de Privacidad de vez en cuando. Cualquier cambio se reflejará en esta página con una fecha de revisión actualizada.',
+privacy_s8_t:'8. Contáctenos',privacy_s8_c:'Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos en:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 Rastreador de Estado de Ánimo. Todos los derechos reservados.'
+},
+fr:{
+title:'Suivi d\'Humeur',mood:'Humeur:',activity:'Activité:',save:'Enregistrer',
+subscribe:'S\'abonner ($4.99/mois)',share:'Partager',close:'Fermer',
+info_title:'🌟 À propos de cette application',
+info_text:'<p><strong>🧠 Un produit de sagesse collective</strong><br>Cette application a été rigoureusement testée par des professionnels.</p><p><strong>🎯 La simplicité avant tout</strong><br>Nous croyons au pouvoir du minimalisme.</p><p><strong>🤖 Votre compagnon quotidien</strong><br>Notre moteur de conseils garantit que les conseils ne se répètent jamais.</p><p><strong>🔒 La valeur de l\'engagement</strong><br>Pour le prix d\'une seule consultation, accédez à une vie de sagesse.</p><p><strong>🚀 Pourquoi nous sommes différents</strong><br>Nous fournissons des conseils concis et soutenus scientifiquement.</p><p><strong>🌍 Un mouvement mondial</strong><br>Ce n\'est pas juste une application ; c\'est un mouvement mondial.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">Commencez votre voyage aujourd\'hui. ✨</p>',
+lang_btn:'Français',timer:'Entrée dans 3 secondes...',
+insights_title:'📊 Vos aperçus',recs_title:'💡 Recommandations',
+lang_modal_title:'Choisir la langue',lang_modal_cancel:'Annuler',
+premium_active:'✅ Premium actif',
+wg_title:'Suivi d\'Humeur',wg_text:'Suivez votre humeur et vos activités quotidiennes. Téléchargez l\'application complète sur l\'App Store.',wg_btn:'🍎 Télécharger sur l\'App Store',
+alert_choose:'Choisissez humeur et activité',alert_success:'Paiement réussi ! Fonctionnalités premium débloquées.',alert_fail:'Paiement annulé ou échoué.',alert_copied:'Lien copié !',
+insightGoodBase:['Votre tendance est positive','Excellentes ondes cette semaine','Vous assurez','Votre humeur est excellente','Excellent état émotionnel','Vous prospérez','Le bonheur brille à travers vous','Vous êtes en feu','Votre énergie est incroyable','Vous rayonnez','La vie vous traite bien','Vous êtes inarrêtable','Votre sourire dit tout','Vous êtes dans un endroit formidable','La joie est votre compagne','Vous fleurissez','Votre cœur est léger','Votre esprit s\'envole','Vous êtes plein de vie','Vous êtes un rayon de soleil'],
+insightGoodSuffix:[' ! 🌟',' ! 🎉',' ! 🚀',' ! ☀️',' ! 💯',' ! ✨',' ! 🏆',' ! 💫',' ! 👏',' ! Continuez ! 🌟'],
+insightMiddle:['Continuez, vous faites du bon travail.','Prenez un moment pour vous apprécier.','Rappelez-vous : les petits pas mènent aux grands changements.','Vous méritez chaque parcelle de ce bonheur.','Restez présent et savourez l\'instant.','Vos efforts portent leurs fruits.','Faites confiance au processus, vous êtes sur la bonne voie.','Vous êtes plus fort que vous ne le pensez.','Célébrez ce sentiment.','Respirez profondément et souriez.','Vous êtes assez, exactement comme vous êtes.','Votre voyage est unique et beau.','Ralentissez et profitez d\'aujourd\'hui.','Vous construisez quelque chose de merveilleux.','Gardez cette énergie vivante.','Vos meilleurs jours sont devant vous.','Vous inspirez les autres sans le savoir.','La gratitude multiplie le bonheur.','Aujourd\'hui est un cadeau, ouvrez-le pleinement.','Vous écrivez une belle histoire.'],
+advice:['Restez hydraté toute la journée.','Faites de courtes pauses pour reposer vos yeux.','Écoutez votre corps, il sait mieux.','Dormez au moins 7 heures.','Marchez 10 minutes après les repas.','Pratiquez la respiration profonde pendant 5 minutes.','Limitez le temps d\'écran avant de dormir.','Passez du temps dans la nature.','Contactez un ami aujourd\'hui.','Écrivez 3 choses pour lesquelles vous êtes reconnaissant.','Étirez-vous le matin.','Mangez en pleine conscience, sans distractions.','Buvez un verre d\'eau maintenant.','Prenez les escaliers au lieu de l\'ascenseur.','Essayez une nouvelle recette saine.','Méditez 5 minutes.','Faites quelque chose de gentil pour quelqu\'un.','Lisez un livre au lieu de faire défiler.','Souriez à un inconnu.','Dansez sur votre chanson préférée.'],
+privacy_title:'Politique de Confidentialité',
+privacy_updated:'Suivi d\'Humeur · Dernière mise à jour : 18 septembre 2026',
+privacy_intro:'Cette Politique de Confidentialité décrit comment Suivi d\'Humeur ("nous" ou "l\'Application") gère vos informations lorsque vous utilisez notre application mobile.',
+privacy_s1_t:'1. Informations que nous ne collectons pas',privacy_s1_c:'Nous ne collectons, ne stockons, ne transmettons ni ne partageons <strong>aucune</strong> donnée personnelle. Cela inclut, sans s\'y limiter : votre nom, adresse e-mail, numéro de téléphone, localisation, contacts, photos ou tout autre identifiant personnel.',
+privacy_s2_t:'2. Données stockées sur votre appareil',privacy_s2_c:'Toutes les informations que vous saisissez dans l\'Application (vos humeurs, activités et préférences) sont stockées <strong>uniquement localement sur votre appareil</strong> à l\'aide du stockage intégré du navigateur (localStorage). Ces données ne quittent jamais votre appareil.',
+privacy_s3_t:'3. Services tiers',privacy_s3_c:'L\'Application n\'utilise aucun service tiers pour les paiements, l\'analyse ou le traitement des données. Toutes les données restent strictement sur votre appareil. La gestion des abonnements est entièrement gérée par l\'Apple App Store.',
+privacy_s4_t:'4. Analyse et suivi',privacy_s4_c:'Nous n\'utilisons <strong>aucun</strong> analyse, cookie de suivi, identifiant publicitaire ou technologie d\'empreinte digitale.',
+privacy_s5_t:'5. Confidentialité des enfants',privacy_s5_c:'L\'Application n\'est pas destinée aux enfants de moins de 13 ans. Nous ne collectons pas sciemment d\'informations personnelles auprès d\'enfants.',
+privacy_s6_t:'6. Vos droits',privacy_s6_c:'Comme nous ne collectons pas de données personnelles, il n\'y a aucune donnée à consulter, modifier ou supprimer. Vous pouvez supprimer toutes les données stockées localement en désinstallant l\'Application.',
+privacy_s7_t:'7. Modifications de cette politique',privacy_s7_c:'Nous pouvons mettre à jour cette Politique de Confidentialité de temps à autre. Toute modification sera reflétée sur cette page avec une date de révision mise à jour.',
+privacy_s8_t:'8. Nous contacter',privacy_s8_c:'Si vous avez des questions concernant cette Politique de Confidentialité, vous pouvez nous contacter à :',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 Suivi d\'Humeur. Tous droits réservés.'
+},
+de:{
+title:'Stimmungs-Tracker',mood:'Stimmung:',activity:'Aktivität:',save:'Speichern',
+subscribe:'Abonnieren ($4.99/Monat)',share:'Teilen',close:'Schließen',
+info_title:'🌟 Über diese App',
+info_text:'<p><strong>🧠 Ein Produkt kollektiver Weisheit</strong><br>Diese App wurde von Fachleuten streng getestet.</p><p><strong>🎯 Einfachheit über alles</strong><br>Wir glauben an die Kraft des Minimalismus.</p><p><strong>🤖 Ihr täglicher Begleiter</strong><br>Unsere Engine stellt sicher, dass sich Tipps nie wiederholen.</p><p><strong>🔒 Der Wert des Engagements</strong><br>Für den Preis einer einzigen Beratung erhalten Sie ein Leben voller Weisheit.</p><p><strong>🚀 Warum wir anders sind</strong><br>Wir liefern prägnante, wissenschaftlich fundierte Anleitungen.</p><p><strong>🌍 Eine globale Bewegung</strong><br>Dies ist nicht nur eine App; es ist eine globale Bewegung.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">Beginnen Sie Ihre Reise heute. ✨</p>',
+lang_btn:'Deutsch',timer:'Eintritt in 3 Sekunden...',
+insights_title:'📊 Deine Einblicke',recs_title:'💡 Empfehlungen',
+lang_modal_title:'Sprache wählen',lang_modal_cancel:'Abbrechen',
+premium_active:'✅ Premium aktiv',
+wg_title:'Stimmungs-Tracker',wg_text:'Verfolgen Sie Ihre Stimmung und täglichen Aktivitäten. Laden Sie die vollständige App im App Store herunter.',wg_btn:'🍎 Im App Store herunterladen',
+alert_choose:'Wählen Sie Stimmung und Aktivität',alert_success:'Zahlung erfolgreich! Premium-Funktionen freigeschaltet.',alert_fail:'Zahlung abgebrochen oder fehlgeschlagen.',alert_copied:'Link kopiert!',
+insightGoodBase:['Ihr Trend ist positiv','Tolle Stimmung diese Woche','Sie rocken es','Ihre Stimmung ist hoch','Ausgezeichneter emotionaler Zustand','Sie gedeihen','Das Glück scheint durch','Sie sind in Bestform','Ihre Energie ist erstaunlich','Sie strahlen','Das Leben behandelt Sie gut','Sie sind unaufhaltsam','Ihr Lächeln sagt alles','Sie sind an einem großartigen Ort','Freude ist Ihr Begleiter','Sie blühen auf','Ihr Herz ist leicht','Ihr Geist schwebt','Sie sind voller Leben','Sie sind ein Sonnenstrahl'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! Weiter so! 🌟'],
+insightMiddle:['Weiter so, Sie machen das großartig.','Nehmen Sie sich einen Moment, um sich selbst zu schätzen.','Denken Sie daran: Kleine Schritte führen zu großen Veränderungen.','Sie verdienen jedes bisschen dieses Glücks.','Bleiben Sie präsent und genießen Sie den Moment.','Ihre Anstrengung zahlt sich aus.','Vertrauen Sie dem Prozess, Sie sind auf dem richtigen Weg.','Sie sind stärker als Sie denken.','Feiern Sie dieses Gefühl.','Atmen Sie tief ein und lächeln Sie.','Sie sind genug, genau wie Sie sind.','Ihre Reise ist einzigartig und schön.','Verlangsamen Sie und genießen Sie heute.','Sie bauen etwas Wunderbares auf.','Halten Sie diese Energie am Leben.','Ihre besten Tage liegen vor Ihnen.','Sie inspirieren andere, ohne es zu wissen.','Dankbarkeit vervielfacht das Glück.','Heute ist ein Geschenk, packen Sie es ganz aus.','Sie schreiben eine schöne Geschichte.'],
+advice:['Bleiben Sie den ganzen Tag über hydratisiert.','Machen Sie kurze Pausen, um Ihre Augen auszuruhen.','Hören Sie auf Ihren Körper, er weiß es am besten.','Schlafen Sie mindestens 7 Stunden.','Gehen Sie 10 Minuten nach den Mahlzeiten spazieren.','Praktizieren Sie 5 Minuten tiefes Atmen.','Begrenzen Sie die Bildschirmzeit vor dem Schlafengehen.','Verbringen Sie Zeit in der Natur.','Verbinden Sie sich heute mit einem Freund.','Schreiben Sie 3 Dinge auf, für die Sie dankbar sind.','Dehnen Sie sich morgens.','Essen Sie achtsam, ohne Ablenkungen.','Trinken Sie jetzt ein Glas Wasser.','Nehmen Sie die Treppe statt den Aufzug.','Probieren Sie ein neues gesundes Rezept.','Meditieren Sie 5 Minuten.','Tun Sie jemandem etwas Gutes.','Lesen Sie ein Buch statt zu scrollen.','Lächeln Sie einen Fremden an.','Tanzen Sie zu Ihrem Lieblingslied.'],
+privacy_title:'Datenschutzrichtlinie',
+privacy_updated:'Stimmungs-Tracker · Zuletzt aktualisiert: 18. September 2026',
+privacy_intro:'Diese Datenschutzrichtlinie beschreibt, wie Stimmungs-Tracker ("wir" oder "die App") Ihre Informationen verarbeitet, wenn Sie unsere mobile Anwendung nutzen.',
+privacy_s1_t:'1. Informationen, die wir nicht sammeln',privacy_s1_c:'Wir sammeln, speichern, übertragen oder teilen <strong>keine</strong> personenbezogenen Daten. Dies umfasst unter anderem: Ihren Namen, Ihre E-Mail-Adresse, Telefonnummer, Ihren Standort, Kontakte, Fotos oder andere persönliche Identifikatoren.',
+privacy_s2_t:'2. Auf Ihrem Gerät gespeicherte Daten',privacy_s2_c:'Alle Informationen, die Sie in der App eingeben (Ihre Stimmungen, Aktivitäten und Einstellungen), werden <strong>nur lokal auf Ihrem Gerät</strong> unter Verwendung des integrierten Browserspeichers (localStorage) gespeichert. Diese Daten verlassen niemals Ihr Gerät.',
+privacy_s3_t:'3. Drittanbieter-Dienste',privacy_s3_c:'Die App verwendet keine Drittanbieter-Dienste für Zahlungen, Analysen oder Datenverarbeitung. Alle Daten bleiben streng auf Ihrem Gerät. Die Abonnementverwaltung wird vollständig vom Apple App Store abgewickelt.',
+privacy_s4_t:'4. Analyse und Tracking',privacy_s4_c:'Wir verwenden <strong>keine</strong> Analysen, Tracking-Cookies, Werbe-IDs oder Fingerprinting-Technologien.',
+privacy_s5_t:'5. Datenschutz für Kinder',privacy_s5_c:'Die App richtet sich nicht an Kinder unter 13 Jahren. Wir sammeln wissentlich keine personenbezogenen Daten von Kindern.',
+privacy_s6_t:'6. Ihre Rechte',privacy_s6_c:'Da wir keine personenbezogenen Daten sammeln, gibt es keine Daten zum Abrufen, Ändern oder Löschen. Sie können alle lokal gespeicherten Daten durch Deinstallation der App löschen.',
+privacy_s7_t:'7. Änderungen dieser Richtlinie',privacy_s7_c:'Wir können diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Änderungen werden auf dieser Seite mit einem aktualisierten Revisionsdatum widergespiegelt.',
+privacy_s8_t:'8. Kontakt',privacy_s8_c:'Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, können Sie uns kontaktieren unter:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 Stimmungs-Tracker. Alle Rechte vorbehalten.'
+},
+ja:{
+title:'毎日の気分トラッカー',mood:'気分:',activity:'活動:',save:'保存',
+subscribe:'サブスク ($4.99/月)',share:'共有',close:'閉じる',
+info_title:'🌟 このアプリについて',
+info_text:'<p><strong>🧠 集合知の産物</strong><br>このアプリは専門家によって厳格にテストされました。</p><p><strong>🎯 何よりもシンプルさ</strong><br>ミニマリズムの力を信じています。</p><p><strong>🤖 あなたの毎日のコンパニオン</strong><br>ヒントが繰り返されないことを保証します。</p><p><strong>🔒 コミットメントの価値</strong><br>1回の相談料で、生涯の知恵にアクセスできます。</p><p><strong>🚀 私たちが違う理由</strong><br>簡潔で科学的に裏付けられたガイダンスを提供します。</p><p><strong>🌍 グローバルな運動</strong><br>これは単なるアプリではなく、グローバルな運動です。</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">今日から旅を始めましょう。 ✨</p>',
+lang_btn:'日本語',timer:'3秒後に入力...',
+insights_title:'📊 あなたの洞察',recs_title:'💡 おすすめ',
+lang_modal_title:'言語を選択',lang_modal_cancel:'キャンセル',
+premium_active:'✅ プレミアム有効',
+wg_title:'毎日の気分トラッカー',wg_text:'気分と毎日の活動を追跡します。App Storeから完全版アプリをダウンロードしてください。',wg_btn:'🍎 App Storeでダウンロード',
+alert_choose:'気分と活動を選択してください',alert_success:'支払いが成功しました！プレミアム機能が解放されました。',alert_fail:'支払いがキャンセルまたは失敗しました。',alert_copied:'リンクをコピーしました！',
+insightGoodBase:['あなたの傾向はポジティブです','今週は最高の雰囲気','あなたは素晴らしい','気分が高揚しています','優れた感情状態','あなたは成長しています','幸福が輝いています','あなたは燃えています','あなたのエネルギーは素晴らしい','あなたは輝いています','人生はあなたを大切にしています','あなたは止められません','あなたの笑顔がすべてを語る','あなたは素晴らしい場所にいます','喜びはあなたの仲間です','あなたは咲いています','あなたの心は軽い','あなたの精神は舞い上がっています','あなたは生命力に満ちています','あなたは太陽の光です'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! 続けて! 🌟'],
+insightMiddle:['続けてください、あなたは素晴らしいです。','自分を評価する時間を取りましょう。','覚えておいてください：小さな一歩が大きな変化につながります。','あなたはこの幸福のすべてに値します。','今に集中して瞬間を楽しんでください。','あなたの努力は報われています。','プロセスを信じてください、あなたは正しい道にいます。','あなたは思っているより強いです。','この気持ちを祝いましょう。','深く呼吸して微笑んでください。','あなたは今のままで十分です。','あなたの旅はユニークで美しいです。','ゆっくりして今日を楽しんでください。','あなたは素晴らしいものを築いています。','このエネルギーを生かし続けてください。','あなたの最高の日々はこれからです。','あなたは知らずに他人を刺激しています。','感謝は幸福を倍増させます。','今日は贈り物です、完全に開けてください。','あなたは美しい物語を書いています。'],
+advice:['一日中水分補給を続けてください。','短い休憩で目を休めてください。','体の声を聞いてください、それが一番よく知っています。','少なくとも7時間は睡眠をとってください。','食後に10分歩いてください。','5分間の深呼吸を練習してください。','寝る前の画面時間を制限してください。','自然の中で時間を過ごしてください。','今日は友達と連絡を取ってください。','感謝していることを3つ書き留めてください。','朝にストレッチをしてください。','気を散らさずに意識して食べてください。','今すぐコップ一杯の水を飲んでください。','エレベーターの代わりに階段を使ってください。','新しい健康的なレシピを試してください。','5分間瞑想してください。','誰かに親切にしてください。','スクロールの代わりに本を読んでください。','見知らぬ人に微笑んでください。','好きな曲で踊ってください。'],
+privacy_title:'プライバシーポリシー',
+privacy_updated:'毎日の気分トラッカー · 最終更新日：2026年9月18日',
+privacy_intro:'このプライバシーポリシーは、毎日の気分トラッカー（「当社」または「本アプリ」）が、お客様がモバイルアプリケーションを使用する際に情報をどのように取り扱うかを説明します。',
+privacy_s1_t:'1. 収集しない情報',privacy_s1_c:'当社は個人データを<strong>収集、保存、送信、共有しません</strong>。これには、お名前、メールアドレス、電話番号、位置情報、連絡先、写真、その他の個人識別子が含まれますが、これらに限定されません。',
+privacy_s2_t:'2. デバイスに保存されるデータ',privacy_s2_c:'アプリに入力したすべての情報（気分、活動、設定）は、ブラウザの組み込みストレージ（localStorage）を使用して<strong>お客様のデバイスにのみローカルに保存されます</strong>。このデータはデバイスから離れることはなく、サーバーに送信されることもありません。',
+privacy_s3_t:'3. サードパーティサービス',privacy_s3_c:'本アプリは、支払い、分析、データ処理にサードパーティサービスを使用しません。すべてのデータは厳密にデバイス上に残ります。サブスクリプション管理は完全にApple App Storeによって処理されます。',
+privacy_s4_t:'4. 分析とトラッキング',privacy_s4_c:'当社は分析、トラッキングCookie、広告識別子、フィンガープリンティング技術を<strong>使用しません</strong>。',
+privacy_s5_t:'5. 子供のプライバシー',privacy_s5_c:'本アプリは13歳未満の子供を対象としていません。子供から個人情報を故意に収集することはありません。',
+privacy_s6_t:'6. お客様の権利',privacy_s6_c:'当社は個人データを収集しないため、アクセス、変更、削除するデータはありません。アプリをアンインストールすることで、ローカルに保存されたすべてのデータを削除できます。',
+privacy_s7_t:'7. 本ポリシーの変更',privacy_s7_c:'当社はこのプライバシーポリシーを随時更新する場合があります。変更は更新された改訂日とともにこのページに反映されます。',
+privacy_s8_t:'8. お問い合わせ',privacy_s8_c:'このプライバシーポリシーについてご質問がある場合は、以下までお問い合わせください：',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 毎日の気分トラッカー。全著作権所有。'
+},
+ru:{
+title:'Трекер настроения',mood:'Настроение:',activity:'Активность:',save:'Сохранить',
+subscribe:'Подписка ($4.99/мес)',share:'Поделиться',close:'Закрыть',
+info_title:'🌟 Об этом приложении',
+info_text:'<p><strong>🧠 Продукт коллективной мудрости</strong><br>Это приложение было тщательно протестировано профессионалами.</p><p><strong>🎯 Простота превыше всего</strong><br>Мы верим в силу минимализма.</p><p><strong>🤖 Ваш ежедневный спутник</strong><br>Наш движок гарантирует, что советы никогда не повторяются.</p><p><strong>🔒 Ценность обязательств</strong><br>За цену одной консультации вы получаете целую жизнь мудрости.</p><p><strong>🚀 Почему мы другие</strong><br>Мы предоставляем краткое, научно обоснованное руководство.</p><p><strong>🌍 Глобальное движение</strong><br>Это не просто приложение; это глобальное движение.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">Начните свое путешествие сегодня. ✨</p>',
+lang_btn:'Русский',timer:'Вход через 3 секунды...',
+insights_title:'📊 Ваши инсайты',recs_title:'💡 Рекомендации',
+lang_modal_title:'Выбрать язык',lang_modal_cancel:'Отмена',
+premium_active:'✅ Премиум активен',
+wg_title:'Трекер настроения',wg_text:'Отслеживайте свое настроение и повседневные дела. Загрузите полное приложение в App Store.',wg_btn:'🍎 Скачать в App Store',
+alert_choose:'Выберите настроение и активность',alert_success:'Оплата прошла успешно! Премиум-функции разблокированы.',alert_fail:'Оплата отменена или не удалась.',alert_copied:'Ссылка скопирована!',
+insightGoodBase:['Ваш тренд положительный','Отличная атмосфера на этой неделе','Вы великолепны','Ваше настроение на высоте','Отличное эмоциональное состояние','Вы процветаете','Счастье сияет через вас','Вы в ударе','Ваша энергия удивительна','Вы сияете','Жизнь хорошо к вам относится','Вас не остановить','Ваша улыбка говорит всё','Вы в отличном месте','Радость — ваш спутник','Вы расцветаете','Ваше сердце легко','Ваш дух парит','Вы полны жизни','Вы — луч солнца'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! Продолжайте! 🌟'],
+insightMiddle:['Продолжайте, вы отлично справляетесь.','Найдите момент, чтобы оценить себя.','Помните: маленькие шаги ведут к большим переменам.','Вы заслуживаете каждого мгновения этого счастья.','Оставайтесь в моменте и наслаждайтесь.','Ваши усилия окупаются.','Доверьтесь процессу, вы на правильном пути.','Вы сильнее, чем думаете.','Отпразднуйте это чувство.','Дышите глубоко и улыбайтесь.','Вы достаточны, именно такой, какой вы есть.','Ваш путь уникален и прекрасен.','Замедлитесь и наслаждайтесь сегодня.','Вы строите что-то прекрасное.','Сохраните эту энергию.','Ваши лучшие дни впереди.','Вы вдохновляете других, не зная об этом.','Благодарность умножает счастье.','Сегодня — подарок, разверните его полностью.','Вы пишете прекрасную историю.'],
+advice:['Оставайтесь гидратированными весь день.','Делайте короткие перерывы, чтобы отдохнуть глазами.','Слушайте свое тело, оно знает лучше.','Спите не менее 7 часов.','Гуляйте 10 минут после еды.','Практикуйте глубокое дыхание в течение 5 минут.','Ограничьте время у экрана перед сном.','Проводите время на природе.','Свяжитесь с другом сегодня.','Запишите 3 вещи, за которые вы благодарны.','Растягивайтесь утром.','Ешьте осознанно, без отвлечений.','Выпейте стакан воды прямо сейчас.','Поднимайтесь по лестнице вместо лифта.','Попробуйте новый здоровый рецепт.','Медитируйте 5 минут.','Сделайте что-то доброе для кого-то.','Читайте книгу вместо прокрутки.','Улыбнитесь незнакомцу.','Танцуйте под любимую песню.'],
+privacy_title:'Политика конфиденциальности',
+privacy_updated:'Трекер настроения · Последнее обновление: 18 сентября 2026 г.',
+privacy_intro:'Настоящая Политика конфиденциальности описывает, как Трекер настроения («мы» или «Приложение») обрабатывает вашу информацию при использовании нашего мобильного приложения.',
+privacy_s1_t:'1. Информация, которую мы не собираем',privacy_s1_c:'Мы <strong>не</strong> собираем, не храним, не передаем и не делимся никакими персональными данными. Это включает, но не ограничивается: ваше имя, адрес электронной почты, номер телефона, местоположение, контакты, фотографии или любые другие личные идентификаторы.',
+privacy_s2_t:'2. Данные, хранящиеся на вашем устройстве',privacy_s2_c:'Вся информация, которую вы вводите в Приложении (ваше настроение, действия и предпочтения), хранится <strong>только локально на вашем устройстве</strong> с использованием встроенного хранилища браузера (localStorage). Эти данные никогда не покидают ваше устройство.',
+privacy_s3_t:'3. Сторонние сервисы',privacy_s3_c:'Приложение не использует никакие сторонние сервисы для платежей, аналитики или обработки данных. Все данные строго остаются на вашем устройстве. Управление подписками полностью осуществляется Apple App Store.',
+privacy_s4_t:'4. Аналитика и отслеживание',privacy_s4_c:'Мы <strong>не</strong> используем аналитику, отслеживающие cookies, рекламные идентификаторы или технологии снятия отпечатков.',
+privacy_s5_t:'5. Конфиденциальность детей',privacy_s5_c:'Приложение не предназначено для детей младше 13 лет. Мы сознательно не собираем личную информацию от детей.',
+privacy_s6_t:'6. Ваши права',privacy_s6_c:'Поскольку мы не собираем персональные данные, нет данных для доступа, изменения или удаления. Вы можете удалить все локально сохраненные данные, удалив приложение.',
+privacy_s7_t:'7. Изменения в этой политике',privacy_s7_c:'Мы можем время от времени обновлять эту Политику конфиденциальности. Любые изменения будут отражены на этой странице с обновленной датой пересмотра.',
+privacy_s8_t:'8. Свяжитесь с нами',privacy_s8_c:'Если у вас есть вопросы по этой Политике конфиденциальности, вы можете связаться с нами по адресу:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 Трекер настроения. Все права защищены.'
+},
+pt:{
+title:'Monitor de Humor',mood:'Humor:',activity:'Atividade:',save:'Salvar',
+subscribe:'Assinar ($4.99/mês)',share:'Compartilhar',close:'Fechar',
+info_title:'🌟 Sobre este aplicativo',
+info_text:'<p><strong>🧠 Um produto da sabedoria coletiva</strong><br>Este aplicativo foi rigorosamente testado por profissionais.</p><p><strong>🎯 Simplicidade acima de tudo</strong><br>Acreditamos no poder do minimalismo.</p><p><strong>🤖 Seu companheiro diário</strong><br>Nosso mecanismo garante que as dicas nunca se repitam.</p><p><strong>🔒 O valor do compromisso</strong><br>Pelo preço de uma única consulta, obtenha uma vida de sabedoria.</p><p><strong>🚀 Por que somos diferentes</strong><br>Fornecemos orientação concisa e com respaldo científico.</p><p><strong>🌍 Um movimento global</strong><br>Este não é apenas um aplicativo; é um movimento global.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">Comece sua jornada hoje. ✨</p>',
+lang_btn:'Português',timer:'Entrando em 3 segundos...',
+insights_title:'📊 Seus insights',recs_title:'💡 Recomendações',
+lang_modal_title:'Escolher idioma',lang_modal_cancel:'Cancelar',
+premium_active:'✅ Premium ativo',
+wg_title:'Monitor de Humor',wg_text:'Acompanhe seu humor e atividades diárias. Baixe o aplicativo completo na App Store.',wg_btn:'🍎 Baixar na App Store',
+alert_choose:'Escolha humor e atividade',alert_success:'Pagamento bem-sucedido! Recursos premium desbloqueados.',alert_fail:'Pagamento cancelado ou falhou.',alert_copied:'Link copiado!',
+insightGoodBase:['Sua tendência é positiva','Ótimas vibrações esta semana','Você está arrasando','Seu humor está alto','Excelente estado emocional','Você está prosperando','A felicidade brilha através de você','Você está em chamas','Sua energia é incrível','Você está radiante','A vida está te tratando bem','Você é imparável','Seu sorriso diz tudo','Você está em um ótimo lugar','A alegria é sua companheira','Você está florescendo','Seu coração está leve','Seu espírito está voando','Você está cheio de vida','Você é um raio de sol'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! Continue! 🌟'],
+insightMiddle:['Continue, você está indo muito bem.','Reserve um momento para se apreciar.','Lembre-se: pequenos passos levam a grandes mudanças.','Você merece cada pedacinho dessa felicidade.','Fique presente e aproveite o momento.','Seu esforço está valendo a pena.','Confie no processo, você está no caminho certo.','Você é mais forte do que pensa.','Celebre esse sentimento.','Respire fundo e sorria.','Você é suficiente, exatamente como é.','Sua jornada é única e bela.','Desacelere e aproveite hoje.','Você está construindo algo maravilhoso.','Mantenha essa energia viva.','Seus melhores dias estão por vir.','Você inspira os outros sem saber.','A gratidão multiplica a felicidade.','Hoje é um presente, abra-o completamente.','Você está escrevendo uma bela história.'],
+advice:['Mantenha-se hidratado ao longo do dia.','Faça pausas curtas para descansar os olhos.','Ouça seu corpo, ele sabe melhor.','Durma pelo menos 7 horas.','Caminhe 10 minutos após as refeições.','Pratique respiração profunda por 5 minutos.','Limite o tempo de tela antes de dormir.','Passe tempo na natureza.','Conecte-se com um amigo hoje.','Escreva 3 coisas pelas quais você é grato.','Alongue-se pela manhã.','Coma com atenção, sem distrações.','Beba um copo de água agora mesmo.','Use as escadas em vez do elevador.','Experimente uma nova receita saudável.','Medite por 5 minutos.','Faça algo gentil por alguém.','Leia um livro em vez de rolar.','Sorria para um estranho.','Dance sua música favorita.'],
+privacy_title:'Política de Privacidade',
+privacy_updated:'Monitor de Humor · Última atualização: 18 de setembro de 2026',
+privacy_intro:'Esta Política de Privacidade descreve como o Monitor de Humor ("nós" ou "o Aplicativo") lida com suas informações quando você usa nosso aplicativo móvel.',
+privacy_s1_t:'1. Informações que NÃO coletamos',privacy_s1_c:'<strong>NÃO</strong> coletamos, armazenamos, transmitimos ou compartilhamos quaisquer dados pessoais. Isso inclui, mas não se limita a: seu nome, endereço de e-mail, número de telefone, localização, contatos, fotos ou quaisquer outros identificadores pessoais.',
+privacy_s2_t:'2. Dados armazenados no seu dispositivo',privacy_s2_c:'Todas as informações que você insere no Aplicativo (seus humores, atividades e preferências) são armazenadas <strong>apenas localmente no seu dispositivo</strong> usando o armazenamento integrado do navegador (localStorage). Esses dados nunca saem do seu dispositivo.',
+privacy_s3_t:'3. Serviços de terceiros',privacy_s3_c:'O Aplicativo não usa nenhum serviço de terceiros para pagamentos, análises ou processamento de dados. Todos os dados permanecem estritamente no seu dispositivo. O gerenciamento de assinaturas é feito inteiramente pela Apple App Store.',
+privacy_s4_t:'4. Análise e rastreamento',privacy_s4_c:'<strong>NÃO</strong> usamos análises, cookies de rastreamento, identificadores de publicidade ou tecnologias de impressão digital.',
+privacy_s5_t:'5. Privacidade das crianças',privacy_s5_c:'O Aplicativo não é direcionado a crianças menores de 13 anos. Não coletamos intencionalmente informações pessoais de crianças.',
+privacy_s6_t:'6. Seus direitos',privacy_s6_c:'Como não coletamos dados pessoais, não há dados para acessar, modificar ou excluir. Você pode excluir todos os dados armazenados localmente desinstalando o Aplicativo.',
+privacy_s7_t:'7. Alterações nesta política',privacy_s7_c:'Podemos atualizar esta Política de Privacidade de tempos em tempos. Quaisquer alterações serão refletidas nesta página com uma data de revisão atualizada.',
+privacy_s8_t:'8. Fale conosco',privacy_s8_c:'Se você tiver alguma dúvida sobre esta Política de Privacidade, entre em contato conosco em:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 Monitor de Humor. Todos os direitos reservados.'
+},
+it:{
+title:'Monitor Umore',mood:'Umore:',activity:'Attività:',save:'Salva',
+subscribe:'Abbonati ($4.99/mese)',share:'Condividi',close:'Chiudi',
+info_title:'🌟 Informazioni su questa app',
+info_text:'<p><strong>🧠 Un prodotto della saggezza collettiva</strong><br>Questa app è stata rigorosamente testata da professionisti.</p><p><strong>🎯 Semplicità sopra ogni cosa</strong><br>Crediamo nel potere del minimalismo.</p><p><strong>🤖 Il tuo compagno quotidiano</strong><br>Il nostro motore garantisce che i suggerimenti non si ripetano mai.</p><p><strong>🔒 Il valore dell\'impegno</strong><br>Per il prezzo di una singola consulenza, ottieni una vita di saggezza.</p><p><strong>🚀 Perché siamo diversi</strong><br>Forniamo una guida concisa e supportata scientificamente.</p><p><strong>🌍 Un movimento globale</strong><br>Questa non è solo un\'app; è un movimento globale.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">Inizia il tuo viaggio oggi. ✨</p>',
+lang_btn:'Italiano',timer:'Entrata in 3 secondi...',
+insights_title:'📊 I tuoi insight',recs_title:'💡 Raccomandazioni',
+lang_modal_title:'Scegli lingua',lang_modal_cancel:'Annulla',
+premium_active:'✅ Premium attivo',
+wg_title:'Monitor Umore',wg_text:'Tieni traccia del tuo umore e delle attività quotidiane. Scarica l\'app completa sull\'App Store.',wg_btn:'🍎 Scarica su App Store',
+alert_choose:'Scegli umore e attività',alert_success:'Pagamento riuscito! Funzionalità premium sbloccate.',alert_fail:'Pagamento annullato o fallito.',alert_copied:'Link copiato!',
+insightGoodBase:['Il tuo trend è positivo','Ottime vibrazioni questa settimana','Stai andando alla grande','Il tuo umore è alto','Eccellente stato emotivo','Stai prosperando','La felicità brilla attraverso di te','Sei in forma smagliante','La tua energia è incredibile','Stai brillando','La vita ti tratta bene','Sei inarrestabile','Il tuo sorriso dice tutto','Sei in un ottimo posto','La gioia è la tua compagna','Stai fiorendo','Il tuo cuore è leggero','Il tuo spirito sta volando','Sei pieno di vita','Sei un raggio di sole'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! Continua così! 🌟'],
+insightMiddle:['Continua, stai andando alla grande.','Prenditi un momento per apprezzarti.','Ricorda: piccoli passi portano a grandi cambiamenti.','Meriti ogni briciolo di questa felicità.','Rimani presente e goditi il momento.','Il tuo sforzo sta dando i suoi frutti.','Fidati del processo, sei sulla strada giusta.','Sei più forte di quanto pensi.','Celebra questo sentimento.','Respira profondamente e sorridi.','Sei abbastanza, esattamente come sei.','Il tuo viaggio è unico e bellissimo.','Rallenta e goditi oggi.','Stai costruendo qualcosa di meraviglioso.','Mantieni viva questa energia.','I tuoi giorni migliori sono davanti a te.','Ispiri gli altri senza saperlo.','La gratitudine moltiplica la felicità.','Oggi è un regalo, aprilo completamente.','Stai scrivendo una bella storia.'],
+advice:['Rimani idratato tutto il giorno.','Fai brevi pause per riposare gli occhi.','Ascolta il tuo corpo, sa meglio.','Dormi almeno 7 ore.','Cammina 10 minuti dopo i pasti.','Pratica la respirazione profonda per 5 minuti.','Limita il tempo davanti allo schermo prima di dormire.','Passa del tempo nella natura.','Connettiti con un amico oggi.','Scrivi 3 cose per cui sei grato.','Fai stretching al mattino.','Mangia con consapevolezza, senza distrazioni.','Bevi un bicchiere d\'acqua adesso.','Usa le scale invece dell\'ascensore.','Prova una nuova ricetta sana.','Medita per 5 minuti.','Fai qualcosa di gentile per qualcuno.','Leggi un libro invece di scorrere.','Sorridi a uno sconosciuto.','Balla la tua canzone preferita.'],
+privacy_title:'Informativa sulla Privacy',
+privacy_updated:'Monitor Umore · Ultimo aggiornamento: 18 settembre 2026',
+privacy_intro:'Questa Informativa sulla Privacy descrive come Monitor Umore ("noi" o "l\'App") gestisce le tue informazioni quando utilizzi la nostra applicazione mobile.',
+privacy_s1_t:'1. Informazioni che non raccogliamo',privacy_s1_c:'<strong>NON</strong> raccogliamo, memorizziamo, trasmettiamo o condividiamo alcun dato personale. Ciò include, ma non è limitato a: il tuo nome, indirizzo email, numero di telefono, posizione, contatti, foto o qualsiasi altro identificatore personale.',
+privacy_s2_t:'2. Dati memorizzati sul tuo dispositivo',privacy_s2_c:'Tutte le informazioni inserite nell\'App (i tuoi umori, attività e preferenze) sono memorizzate <strong>solo localmente sul tuo dispositivo</strong> utilizzando l\'archiviazione integrata del browser (localStorage). Questi dati non lasciano mai il tuo dispositivo.',
+privacy_s3_t:'3. Servizi di terze parti',privacy_s3_c:'L\'App non utilizza alcun servizio di terze parti per pagamenti, analisi o elaborazione dati. Tutti i dati rimangono rigorosamente sul tuo dispositivo. La gestione degli abbonamenti è interamente gestita dall\'Apple App Store.',
+privacy_s4_t:'4. Analisi e tracciamento',privacy_s4_c:'<strong>NON</strong> utilizziamo analisi, cookie di tracciamento, identificatori pubblicitari o tecnologie di fingerprinting.',
+privacy_s5_t:'5. Privacy dei bambini',privacy_s5_c:'L\'App non è destinata a bambini di età inferiore ai 13 anni. Non raccogliamo consapevolmente informazioni personali da bambini.',
+privacy_s6_t:'6. I tuoi diritti',privacy_s6_c:'Poiché non raccogliamo dati personali, non ci sono dati da accedere, modificare o eliminare. Puoi eliminare tutti i dati memorizzati localmente disinstallando l\'App.',
+privacy_s7_t:'7. Modifiche a questa politica',privacy_s7_c:'Potremmo aggiornare questa Informativa sulla Privacy di tanto in tanto. Eventuali modifiche saranno riflesse su questa pagina con una data di revisione aggiornata.',
+privacy_s8_t:'8. Contattaci',privacy_s8_c:'Se hai domande su questa Informativa sulla Privacy, puoi contattarci a:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 Monitor Umore. Tutti i diritti riservati.'
+},
+ko:{
+title:'일일 기분 추적기',mood:'기분:',activity:'활동:',save:'저장',
+subscribe:'구독 ($4.99/월)',share:'공유',close:'닫기',
+info_title:'🌟 이 앱 정보',
+info_text:'<p><strong>🧠 집단 지혜의 산물</strong><br>이 앱은 전문가에 의해 엄격하게 테스트되었습니다.</p><p><strong>🎯 무엇보다도 단순함</strong><br>우리는 미니멀리즘의 힘을 믿습니다.</p><p><strong>🤖 당신의 일상 동반자</strong><br>팁이 절대 반복되지 않도록 보장합니다.</p><p><strong>🔒 헌신의 가치</strong><br>한 번의 상담 가격으로 평생의 지혜를 얻으세요.</p><p><strong>🚀 우리가 다른 이유</strong><br>간결하고 과학적으로 뒷받침되는 지침을 제공합니다.</p><p><strong>🌍 글로벌 무브먼트</strong><br>이것은 단순한 앱이 아니라 글로벌 무브먼트입니다.</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">오늘 여정을 시작하세요. ✨</p>',
+lang_btn:'한국어',timer:'3초 후 진입...',
+insights_title:'📊 당신의 인사이트',recs_title:'💡 추천',
+lang_modal_title:'언어 선택',lang_modal_cancel:'취소',
+premium_active:'✅ 프리미엄 활성',
+wg_title:'일일 기분 추적기',wg_text:'기분과 일상 활동을 추적하세요. App Store에서 전체 앱을 다운로드하세요.',wg_btn:'🍎 App Store에서 다운로드',
+alert_choose:'기분과 활동을 선택하세요',alert_success:'결제 성공! 프리미엄 기능이 잠금 해제되었습니다.',alert_fail:'결제가 취소되거나 실패했습니다.',alert_copied:'링크가 복사되었습니다!',
+insightGoodBase:['당신의 트렌드는 긍정적입니다','이번 주 분위기가 좋아요','당신은 멋지게 하고 있어요','기분이 좋아요','훌륭한 감정 상태','당신은 번성하고 있어요','행복이 빛나고 있어요','당신은 불타오르고 있어요','당신의 에너지는 놀라워요','당신은 빛나고 있어요','삶이 당신을 잘 대하고 있어요','당신은 멈출 수 없어요','당신의 미소가 모든 것을 말해요','당신은 좋은 곳에 있어요','기쁨이 당신의 동반자예요','당신은 꽃피고 있어요','당신의 마음은 가벼워요','당신의 영혼이 날아오르고 있어요','당신은 생기로 가득해요','당신은 햇살이에요'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! 계속하세요! 🌟'],
+insightMiddle:['계속하세요, 잘하고 있어요.','자신을 인정하는 시간을 가지세요.','기억하세요: 작은 걸음이 큰 변화를 만듭니다.','당신은 이 행복의 모든 순간을 누릴 자격이 있어요.','현재에 집중하고 순간을 즐기세요.','당신의 노력이 결실을 맺고 있어요.','과정을 믿으세요, 당신은 올바른 길에 있어요.','당신은 생각보다 강해요.','이 감정을 축하하세요.','깊게 숨 쉬고 미소 지으세요.','당신은 있는 그대로 충분해요.','당신의 여정은 독특하고 아름다워요.','속도를 늦추고 오늘을 즐기세요.','당신은 멋진 것을 만들고 있어요.','이 에너지를 살려두세요.','당신의 최고의 날들은 앞에 있어요.','당신은 모르는 사이에 다른 사람들에게 영감을 줍니다.','감사는 행복을 배가시킵니다.','오늘은 선물입니다, 완전히 열어보세요.','당신은 아름다운 이야기를 쓰고 있어요.'],
+advice:['하루 종일 수분을 유지하세요.','짧은 휴식으로 눈을 쉬게 하세요.','몸의 말을 들으세요, 그것이 가장 잘 압니다.','최소 7시간은 주무세요.','식사 후 10분 산책하세요.','5분간 심호흡을 연습하세요.','잠들기 전 화면 시간을 줄이세요.','자연 속에서 시간을 보내세요.','오늘 친구와 연락하세요.','감사한 것 3가지를 적으세요.','아침에 스트레칭하세요.','방해 없이 마음챙김으로 드세요.','지금 물 한 잔을 마시세요.','엘리베이터 대신 계단을 이용하세요.','새로운 건강 레시피를 시도하세요.','5분간 명상하세요.','누군가에게 친절을 베푸세요.','스크롤 대신 책을 읽으세요.','낯선 사람에게 미소 지으세요.','좋아하는 노래에 맞춰 춤추세요.'],
+privacy_title:'개인정보 처리방침',
+privacy_updated:'일일 기분 추적기 · 최종 업데이트: 2026년 9월 18일',
+privacy_intro:'본 개인정보 처리방침은 일일 기분 추적기("당사" 또는 "본 앱")가 모바일 애플리케이션 사용 시 귀하의 정보를 어떻게 처리하는지 설명합니다.',
+privacy_s1_t:'1. 당사가 수집하지 않는 정보',privacy_s1_c:'당사는 어떠한 개인 데이터도 <strong>수집, 저장, 전송 또는 공유하지 않습니다</strong>. 여기에는 귀하의 이름, 이메일 주소, 전화번호, 위치, 연락처, 사진 또는 기타 개인 식별자가 포함되지만 이에 국한되지 않습니다.',
+privacy_s2_t:'2. 기기에 저장된 데이터',privacy_s2_c:'앱에 입력한 모든 정보(기분, 활동, 환경설정)는 브라우저의 내장 저장소(localStorage)를 사용하여 <strong>귀하의 기기에만 로컬로 저장됩니다</strong>. 이 데이터는 기기를 떠나지 않으며 서버로 전송되지 않습니다.',
+privacy_s3_t:'3. 제3자 서비스',privacy_s3_c:'본 앱은 결제, 분석 또는 데이터 처리를 위한 제3자 서비스를 사용하지 않습니다. 모든 데이터는 엄격하게 기기에 남아 있습니다. 구독 관리는 전적으로 Apple App Store에서 처리됩니다.',
+privacy_s4_t:'4. 분석 및 추적',privacy_s4_c:'당사는 분석, 추적 쿠키, 광고 식별자 또는 핑거프린팅 기술을 <strong>사용하지 않습니다</strong>.',
+privacy_s5_t:'5. 아동 개인정보',privacy_s5_c:'본 앱은 13세 미만 아동을 대상으로 하지 않습니다. 당사는 아동으로부터 개인정보를 고의로 수집하지 않습니다.',
+privacy_s6_t:'6. 귀하의 권리',privacy_s6_c:'당사는 개인 데이터를 수집하지 않으므로 접근, 수정 또는 삭제할 데이터가 없습니다. 앱을 제거하여 로컬에 저장된 모든 데이터를 삭제할 수 있습니다.',
+privacy_s7_t:'7. 본 방침의 변경',privacy_s7_c:'당사는 본 개인정보 처리방침을 수시로 업데이트할 수 있습니다. 변경 사항은 업데이트된 개정 날짜와 함께 이 페이지에 반영됩니다.',
+privacy_s8_t:'8. 문의하기',privacy_s8_c:'본 개인정보 처리방침에 대해 질문이 있으시면 다음으로 문의하실 수 있습니다:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 일일 기분 추적기. 모든 권리 보유.'
+},
+hi:{
+title:'दैनिक मूड ट्रैकर',mood:'मूड:',activity:'गतिविधि:',save:'सहेजें',
+subscribe:'सदस्यता ($4.99/महीना)',share:'साझा करें',close:'बंद करें',
+info_title:'🌟 इस ऐप के बारे में',
+info_text:'<p><strong>🧠 सामूहिक ज्ञान का उत्पाद</strong><br>इस ऐप का पेशेवरों द्वारा कठोरता से परीक्षण किया गया है।</p><p><strong>🎯 सबसे बढ़कर सादगी</strong><br>हम न्यूनतमवाद की शक्ति में विश्वास करते हैं।</p><p><strong>🤖 आपका दैनिक साथी</strong><br>हमारा इंजन सुनिश्चित करता है कि सुझाव कभी न दोहराएं।</p><p><strong>🔒 प्रतिबद्धता का मूल्य</strong><br>एक परामर्श की कीमत पर जीवन भर का ज्ञान पाएं।</p><p><strong>🚀 हम अलग क्यों हैं</strong><br>हम संक्षिप्त, वैज्ञानिक रूप से समर्थित मार्गदर्शन प्रदान करते हैं।</p><p><strong>🌍 एक वैश्विक आंदोलन</strong><br>यह सिर्फ एक ऐप नहीं है; यह एक वैश्विक आंदोलन है।</p><p style="margin-top:15px;font-weight:bold;text-align:center;color:#2c3e50;">आज अपनी यात्रा शुरू करें। ✨</p>',
+lang_btn:'हिन्दी',timer:'3 सेकंड में प्रवेश...',
+insights_title:'📊 आपकी अंतर्दृष्टि',recs_title:'💡 सिफ़ारिशें',
+lang_modal_title:'भाषा चुनें',lang_modal_cancel:'रद्द करें',
+premium_active:'✅ प्रीमियम सक्रिय',
+wg_title:'दैनिक मूड ट्रैकर',wg_text:'अपने मूड और दैनिक गतिविधियों को ट्रैक करें। App Store से पूरा ऐप डाउनलोड करें।',wg_btn:'🍎 App Store से डाउनलोड करें',
+alert_choose:'मूड और गतिविधि चुनें',alert_success:'भुगतान सफल! प्रीमियम सुविधाएं अनलॉक हो गईं।',alert_fail:'भुगतान रद्द या विफल।',alert_copied:'लिंक कॉपी किया गया!',
+insightGoodBase:['आपका रुझान सकारात्मक है','इस सप्ताह बहुत अच्छा माहौल','आप बहुत अच्छा कर रहे हैं','आपका मूड उच्च है','उत्कृष्ट भावनात्मक स्थिति','आप फल-फूल रहे हैं','खुशी आपके माध्यम से चमक रही है','आप जोश में हैं','आपकी ऊर्जा अद्भुत है','आप चमक रहे हैं','जीवन आपके साथ अच्छा व्यवहार कर रहा है','आप अजेय हैं','आपकी मुस्कान सब कुछ कहती है','आप एक शानदार जगह पर हैं','खुशी आपकी साथी है','आप खिल रहे हैं','आपका दिल हल्का है','आपकी आत्मा उड़ रही है','आप जीवन से भरे हैं','आप धूप की किरण हैं'],
+insightGoodSuffix:['! 🌟','! 🎉','! 🚀','! ☀️','! 💯','! ✨','! 🏆','! 💫','! 👏','! जारी रखें! 🌟'],
+insightMiddle:['जारी रखें, आप बहुत अच्छा कर रहे हैं।','अपनी सराहना करने के लिए एक पल लें।','याद रखें: छोटे कदम बड़े बदलाव लाते हैं।','आप इस खुशी के हर पल के लायक हैं।','वर्तमान में रहें और पल का आनंद लें।','आपकी मेहनत रंग ला रही है।','प्रक्रिया पर भरोसा करें, आप सही रास्ते पर हैं।','आप जितना सोचते हैं उससे ज्यादा मजबूत हैं।','इस भावना का जश्न मनाएं।','गहरी सांस लें और मुस्कुराएं।','आप जैसे हैं वैसे ही पर्याप्त हैं।','आपकी यात्रा अनोखी और सुंदर है।','धीमे चलें और आज का आनंद लें।','आप कुछ अद्भुत बना रहे हैं।','इस ऊर्जा को जीवित रखें।','आपके सबसे अच्छे दिन आगे हैं।','आप बिना जाने दूसरों को प्रेरित करते हैं।','कृतज्ञता खुशी को बढ़ाती है।','आज एक उपहार है, इसे पूरी तरह खोलें।','आप एक सुंदर कहानी लिख रहे हैं।'],
+advice:['पूरे दिन हाइड्रेटेड रहें।','आंखों को आराम देने के लिए छोटे ब्रेक लें।','अपने शरीर की सुनें, यह सबसे अच्छा जानता है।','कम से कम 7 घंटे सोएं।','भोजन के बाद 10 मिनट टहलें।','5 मिनट के लिए गहरी सांस का अभ्यास करें।','सोने से पहले स्क्रीन समय सीमित करें।','प्रकृति में समय बिताएं।','आज किसी मित्र से जुड़ें।','3 चीजें लिखें जिनके लिए आप आभारी हैं।','सुबह स्ट्रेच करें।','बिना ध्यान भटकाए सचेतता से खाएं।','अभी एक गिलास पानी पिएं।','लिफ्ट के बजाय सीढ़ियों का उपयोग करें।','नई स्वस्थ रेसिपी आजमाएं।','5 मिनट ध्यान करें।','किसी के लिए कुछ अच्छा करें।','स्क्रॉल के बजाय किताब पढ़ें।','अजनबी को देखकर मुस्कुराएं।','अपने पसंदीदा गाने पर नाचें।'],
+privacy_title:'गोपनीयता नीति',
+privacy_updated:'दैनिक मूड ट्रैकर · अंतिम अपडेट: 18 सितंबर 2026',
+privacy_intro:'यह गोपनीयता नीति बताती है कि दैनिक मूड ट्रैकर ("हम" या "ऐप") आपके मोबाइल एप्लिकेशन का उपयोग करते समय आपकी जानकारी को कैसे संभालता है।',
+privacy_s1_t:'1. वह जानकारी जो हम एकत्र नहीं करते',privacy_s1_c:'हम कोई भी व्यक्तिगत डेटा <strong>एकत्र, संग्रहीत, प्रसारित या साझा नहीं करते</strong>। इसमें शामिल हैं, लेकिन इन्हीं तक सीमित नहीं: आपका नाम, ईमेल पता, फोन नंबर, स्थान, संपर्क, फोटो या कोई अन्य व्यक्तिगत पहचानकर्ता।',
+privacy_s2_t:'2. आपके डिवाइस पर संग्रहीत डेटा',privacy_s2_c:'आपके द्वारा ऐप में दर्ज की गई सभी जानकारी (आपके मूड, गतिविधियां और प्राथमिकताएं) ब्राउज़र के अंतर्निहित स्टोरेज (localStorage) का उपयोग करके <strong>केवल आपके डिवाइस पर स्थानीय रूप से संग्रहीत की जाती हैं</strong>। यह डेटा कभी आपके डिवाइस को नहीं छोड़ता।',
+privacy_s3_t:'3. तृतीय-पक्ष सेवाएं',privacy_s3_c:'ऐप भुगतान, विश्लेषण या डेटा प्रोसेसिंग के लिए किसी तृतीय-पक्ष सेवा का उपयोग नहीं करता। सभी डेटा सख्ती से आपके डिवाइस पर रहता है। सदस्यता प्रबंधन पूरी तरह से Apple App Store द्वारा संभाला जाता है।',
+privacy_s4_t:'4. विश्लेषण और ट्रैकिंग',privacy_s4_c:'हम कोई विश्लेषण, ट्रैकिंग कुकीज़, विज्ञापन पहचानकर्ता या फिंगरप्रिंटिंग तकनीक <strong>उपयोग नहीं करते</strong>।',
+privacy_s5_t:'5. बच्चों की गोपनीयता',privacy_s5_c:'ऐप 13 वर्ष से कम उम्र के बच्चों के लिए निर्देशित नहीं है। हम जानबूझकर बच्चों से व्यक्तिगत जानकारी एकत्र नहीं करते।',
+privacy_s6_t:'6. आपके अधिकार',privacy_s6_c:'चूंकि हम व्यक्तिगत डेटा एकत्र नहीं करते, इसलिए एक्सेस, संशोधित या हटाने के लिए कोई डेटा नहीं है। आप ऐप को अनइंस्टॉल करके सभी स्थानीय रूप से संग्रहीत डेटा हटा सकते हैं।',
+privacy_s7_t:'7. इस नीति में परिवर्तन',privacy_s7_c:'हम समय-समय पर इस गोपनीयता नीति को अपडेट कर सकते हैं। कोई भी परिवर्तन अद्यतन संशोधन तिथि के साथ इस पृष्ठ पर परिलक्षित होगा।',
+privacy_s8_t:'8. हमसे संपर्क करें',privacy_s8_c:'यदि इस गोपनीयता नीति के बारे में आपके कोई प्रश्न हैं, तो आप हमसे संपर्क कर सकते हैं:',
+privacy_email:'boussedraoui.mohamed@gmail.com',
+privacy_footer:'© 2026 दैनिक मूड ट्रैकर। सर्वाधिकार सुरक्षित।'
+}
+};
 
-        const alertMessages = {
-            'en': { choose: 'Choose mood and activity', success: 'Payment successful! Premium features unlocked.', fail: 'Payment cancelled or failed.', copied: 'Link copied!' },
-            'ar': { choose: 'اختر المزاج والنشاط', success: 'تم الدفع بنجاح! تم فتح الميزات المميزة.', fail: 'تم إلغاء الدفع أو فشل.', copied: 'تم نسخ الرابط!' },
-            'zh': { choose: '请选择心情和活动', success: '付款成功！高级功能已解锁。', fail: '付款已取消或失败。', copied: '链接已复制！' },
-            'es': { choose: 'Elige estado de ánimo y actividad', success: '¡Pago exitoso! Funciones premium desbloqueadas.', fail: 'Pago cancelado o fallido.', copied: '¡Enlace copiado!' },
-            'fr': { choose: 'Choisissez humeur et activité', success: 'Paiement réussi ! Fonctionnalités premium débloquées.', fail: 'Paiement annulé ou échoué.', copied: 'Lien copié !' },
-            'de': { choose: 'Wählen Sie Stimmung und Aktivität', success: 'Zahlung erfolgreich! Premium-Funktionen freigeschaltet.', fail: 'Zahlung abgebrochen oder fehlgeschlagen.', copied: 'Link kopiert!' },
-            'ja': { choose: '気分と活動を選択してください', success: '支払いが成功しました！プレミアム機能が解放されました。', fail: '支払いがキャンセルまたは失敗しました。', copied: 'リンクをコピーしました！' },
-            'ru': { choose: 'Выберите настроение и активность', success: 'Оплата прошла успешно! Премиум-функции разблокированы.', fail: 'Оплата отменена или не удалась.', copied: 'Ссылка скопирована!' },
-            'pt': { choose: 'Escolha humor e atividade', success: 'Pagamento bem-sucedido! Recursos premium desbloqueados.', fail: 'Pagamento cancelado ou falhou.', copied: 'Link copiado!' },
-            'it': { choose: 'Scegli umore e attività', success: 'Pagamento riuscito! Funzionalità premium sbloccate.', fail: 'Pagamento annullato o fallito.', copied: 'Link copiato!' },
-            'ko': { choose: '기분과 활동을 선택하세요', success: '결제 성공! 프리미엄 기능이 잠금 해제되었습니다.', fail: '결제가 취소되거나 실패했습니다.', copied: '링크가 복사되었습니다!' },
-            'hi': { choose: 'मूड और गतिविधि चुनें', success: 'भुगतान सफल! प्रीमियम सुविधाएं अनलॉक हो गईं।', fail: 'भुगतान रद्द या विफल।', copied: 'लिंक कॉपी किया गया!' }
-        };
+// ══ TOAST FUNCTION (remplace alert pour ne pas afficher le domaine) ══
+function showToast(msg){
+var existing=document.getElementById('custom-toast');
+if(existing)existing.remove();
+var toast=document.createElement('div');
+toast.id='custom-toast';
+toast.innerText=msg;
+toast.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:14px 28px;border-radius:30px;font-size:15px;font-weight:bold;z-index:9999999;opacity:0;transition:opacity 0.3s;pointer-events:none;max-width:85%;text-align:center;';
+document.body.appendChild(toast);
+setTimeout(function(){toast.style.opacity='1';},10);
+setTimeout(function(){toast.style.opacity='0';setTimeout(function(){toast.remove();},300);},2500);
+}
 
-        const insightMiddle = {
-            'en': ["Keep going, you are doing great.","Take a moment to appreciate yourself.","Remember: small steps lead to big changes.","You deserve every bit of this happiness.","Stay present and enjoy the moment.","Your effort is paying off.","Trust the process, you are on the right path.","You are stronger than you think.","Celebrate this feeling.","Breathe deeply and smile.","You are enough, exactly as you are.","Your journey is unique and beautiful.","Slow down and enjoy today.","You are building something wonderful.","Keep this energy alive.","Your best days are ahead.","You inspire others without knowing it.","Gratitude multiplies happiness.","Today is a gift, unwrap it fully.","You are writing a beautiful story."],
-            'ar': ["استمر، أنت تبلي بلاءً حسناً.","خذ لحظة لتقدير نفسك.","تذكر: الخطوات الصغيرة تؤدي إلى تغييرات كبيرة.","أنت تستحق كل هذه السعادة.","ابق حاضراً واستمتع باللحظة.","جهدك يؤتي ثماره.","ثق بالعملية، أنت على الطريق الصحيح.","أنت أقوى مما تعتقد.","احتفل بهذا الشعور.","تنفس بعمق وابتسم.","أنت كافٍ، تماماً كما أنت.","رحلتك فريدة وجميلة.","تمهل واستمتع باليوم.","أنت تبني شيئاً رائعاً.","حافظ على هذه الطاقة حية.","أفضل أيامك قادمة.","أنت تلهم الآخرين دون أن تعرف.","الامتنان يضاعف السعادة.","اليوم هدية، افتحها بالكامل.","أنت تكتب قصة جميلة."],
-            'zh': ["继续前进，你做得很棒。","花点时间欣赏自己。","记住：小步走向大变化。","你值得这份幸福。","保持当下，享受此刻。","你的努力正在得到回报。","相信过程，你在正确的道路上。","你比想象中更强大。","庆祝这种感觉。","深呼吸，微笑。","你已经足够好，就是现在的你。","你的旅程独特而美丽。","慢下来，享受今天。","你正在建造美妙的东西。","保持这份能量。","你最好的日子在前方。","你在不知不觉中激励着他人。","感恩倍增幸福。","今天是礼物，充分打开它。","你正在书写美丽的故事。"],
-            'es': ["Sigue adelante, lo estás haciendo genial.","Tómate un momento para apreciarte.","Recuerda: pequeños pasos llevan a grandes cambios.","Mereces cada pedacito de esta felicidad.","Mantente presente y disfruta el momento.","Tu esfuerzo está dando frutos.","Confía en el proceso, estás en el camino correcto.","Eres más fuerte de lo que crees.","Celebra este sentimiento.","Respira profundo y sonríe.","Eres suficiente, tal como eres.","Tu viaje es único y hermoso.","Baja el ritmo y disfruta hoy.","Estás construyendo algo maravilloso.","Mantén esta energía viva.","Tus mejores días están por venir.","Inspiras a otros sin saberlo.","La gratitud multiplica la felicidad.","Hoy es un regalo, ábrelo por completo.","Estás escribiendo una historia hermosa."],
-            'fr': ["Continuez, vous faites du bon travail.","Prenez un moment pour vous apprécier.","Rappelez-vous : les petits pas mènent aux grands changements.","Vous méritez chaque parcelle de ce bonheur.","Restez présent et savourez l'instant.","Vos efforts portent leurs fruits.","Faites confiance au processus, vous êtes sur la bonne voie.","Vous êtes plus fort que vous ne le pensez.","Célébrez ce sentiment.","Respirez profondément et souriez.","Vous êtes assez, exactement comme vous êtes.","Votre voyage est unique et beau.","Ralentissez et profitez d'aujourd'hui.","Vous construisez quelque chose de merveilleux.","Gardez cette énergie vivante.","Vos meilleurs jours sont devant vous.","Vous inspirez les autres sans le savoir.","La gratitude multiplie le bonheur.","Aujourd'hui est un cadeau, ouvrez-le pleinement.","Vous écrivez une belle histoire."],
-            'de': ["Weiter so, Sie machen das großartig.","Nehmen Sie sich einen Moment, um sich selbst zu schätzen.","Denken Sie daran: Kleine Schritte führen zu großen Veränderungen.","Sie verdienen jedes bisschen dieses Glücks.","Bleiben Sie präsent und genießen Sie den Moment.","Ihre Anstrengung zahlt sich aus.","Vertrauen Sie dem Prozess, Sie sind auf dem richtigen Weg.","Sie sind stärker als Sie denken.","Feiern Sie dieses Gefühl.","Atmen Sie tief ein und lächeln Sie.","Sie sind genug, genau wie Sie sind.","Ihre Reise ist einzigartig und schön.","Verlangsamen Sie und genießen Sie heute.","Sie bauen etwas Wunderbares auf.","Halten Sie diese Energie am Leben.","Ihre besten Tage liegen vor Ihnen.","Sie inspirieren andere, ohne es zu wissen.","Dankbarkeit vervielfacht das Glück.","Heute ist ein Geschenk, packen Sie es ganz aus.","Sie schreiben eine schöne Geschichte."],
-            'ja': ["続けてください、あなたは素晴らしいです。","自分を評価する時間を取りましょう。","覚えておいてください：小さな一歩が大きな変化につながります。","あなたはこの幸福のすべてに値します。","今に集中して瞬間を楽しんでください。","あなたの努力は報われています。","プロセスを信じてください、あなたは正しい道にいます。","あなたは思っているより強いです。","この気持ちを祝いましょう。","深く呼吸して微笑んでください。","あなたは今のままで十分です。","あなたの旅はユニークで美しいです。","ゆっくりして今日を楽しんでください。","あなたは素晴らしいものを築いています。","このエネルギーを生かし続けてください。","あなたの最高の日々はこれからです。","あなたは知らずに他人を刺激しています。","感謝は幸福を倍増させます。","今日は贈り物です、完全に開けてください。","あなたは美しい物語を書いています。"],
-            'ru': ["Продолжайте, вы отлично справляетесь.","Найдите момент, чтобы оценить себя.","Помните: маленькие шаги ведут к большим переменам.","Вы заслуживаете каждого мгновения этого счастья.","Оставайтесь в моменте и наслаждайтесь.","Ваши усилия окупаются.","Доверьтесь процессу, вы на правильном пути.","Вы сильнее, чем думаете.","Отпразднуйте это чувство.","Дышите глубоко и улыбайтесь.","Вы достаточны, именно такой, какой вы есть.","Ваш путь уникален и прекрасен.","Замедлитесь и наслаждайтесь сегодня.","Вы строите что-то прекрасное.","Сохраните эту энергию.","Ваши лучшие дни впереди.","Вы вдохновляете других, не зная об этом.","Благодарность умножает счастье.","Сегодня — подарок, разверните его полностью.","Вы пишете прекрасную историю."],
-            'pt': ["Continue, você está indo muito bem.","Reserve um momento para se apreciar.","Lembre-se: pequenos passos levam a grandes mudanças.","Você merece cada pedacinho dessa felicidade.","Fique presente e aproveite o momento.","Seu esforço está valendo a pena.","Confie no processo, você está no caminho certo.","Você é mais forte do que pensa.","Celebre esse sentimento.","Respire fundo e sorria.","Você é suficiente, exatamente como é.","Sua jornada é única e bela.","Desacelere e aproveite hoje.","Você está construindo algo maravilhoso.","Mantenha essa energia viva.","Seus melhores dias estão por vir.","Você inspira os outros sem saber.","A gratidão multiplica a felicidade.","Hoje é um presente, abra-o completamente.","Você está escrevendo uma bela história."],
-            'it': ["Continua, stai andando alla grande.","Prenditi un momento per apprezzarti.","Ricorda: piccoli passi portano a grandi cambiamenti.","Meriti ogni briciolo di questa felicità.","Rimani presente e goditi il momento.","Il tuo sforzo sta dando i suoi frutti.","Fidati del processo, sei sulla strada giusta.","Sei più forte di quanto pensi.","Celebra questo sentimento.","Respira profondamente e sorridi.","Sei abbastanza, esattamente come sei.","Il tuo viaggio è unico e bellissimo.","Rallenta e goditi oggi.","Stai costruendo qualcosa di meraviglioso.","Mantieni viva questa energia.","I tuoi giorni migliori sono davanti a te.","Ispiri gli altri senza saperlo.","La gratitudine moltiplica la felicità.","Oggi è un regalo, aprilo completamente.","Stai scrivendo una bella storia."],
-            'ko': ["계속하세요, 잘하고 있어요.","자신을 인정하는 시간을 가지세요.","기억하세요: 작은 걸음이 큰 변화를 만듭니다.","당신은 이 행복의 모든 순간을 누릴 자격이 있어요.","현재에 집중하고 순간을 즐기세요.","당신의 노력이 결실을 맺고 있어요.","과정을 믿으세요, 당신은 올바른 길에 있어요.","당신은 생각보다 강해요.","이 감정을 축하하세요.","깊게 숨 쉬고 미소 지으세요.","당신은 있는 그대로 충분해요.","당신의 여정은 독특하고 아름다워요.","속도를 늦추고 오늘을 즐기세요.","당신은 멋진 것을 만들고 있어요.","이 에너지를 살려두세요.","당신의 최고의 날들은 앞에 있어요.","당신은 모르는 사이에 다른 사람들에게 영감을 줍니다.","감사는 행복을 배가시킵니다.","오늘은 선물입니다, 완전히 열어보세요.","당신은 아름다운 이야기를 쓰고 있어요."],
-            'hi': ["जारी रखें, आप बहुत अच्छा कर रहे हैं।","अपनी सराहना करने के लिए एक पल लें।","याद रखें: छोटे कदम बड़े बदलाव लाते हैं।","आप इस खुशी के हर पल के लायक हैं।","वर्तमान में रहें और पल का आनंद लें।","आपकी मेहनत रंग ला रही है।","प्रक्रिया पर भरोसा करें, आप सही रास्ते पर हैं।","आप जितना सोचते हैं उससे ज्यादा मजबूत हैं।","इस भावना का जश्न मनाएं।","गहरी सांस लें और मुस्कुराएं।","आप जैसे हैं वैसे ही पर्याप्त हैं।","आपकी यात्रा अनोखी और सुंदर है।","धीमे चलें और आज का आनंद लें।","आप कुछ अद्भुत बना रहे हैं।","इस ऊर्जा को जीवित रखें।","आपके सबसे अच्छे दिन आगे हैं।","आप बिना जाने दूसरों को प्रेरित करते हैं।","कृतज्ञता खुशी को बढ़ाती है।","आज एक उपहार है, इसे पूरी तरह खोलें।","आप एक सुंदर कहानी लिख रहे हैं।"]
-        };
+// ══ FOOD & ACTIVITY GENERATION (200 foods × 500 activities × 12 langs) ══
+const foodData={
+en:{b:["Apple","Banana","Orange","Strawberry","Blueberry","Avocado","Salmon","Chicken","Rice","Pasta","Bread","Cheese","Yogurt","Eggs","Almonds","Walnuts","Spinach","Broccoli","Carrot","Tomato"],m:["fresh","organic","ripe","grilled","steamed","raw","cooked","baked","roasted","sautéed"],aB:["running","walking","swimming","cycling","yoga","meditation","reading","writing","painting","singing","dancing","cooking","gardening","hiking","fishing","camping","shopping","traveling","photography","volunteering","learning","teaching","playing","exercising","stretching"],aM:["morning","evening","afternoon","night","daily","weekly","gentle","intense","relaxing","energetic","outdoor","indoor","group","solo","creative","mindful","fun","calm","active","peaceful"]},
+ar:{b:["تفاح","موز","برتقال","فراولة","توت أزرق","أفوكادو","سلمون","دجاج","أرز","معكرونة","خبز","جبن","زبادي","بيض","لوز","جوز","سبانخ","بروكلي","جزر","طماطم"],m:["طازج","عضوي","ناضج","مشوي","مطهو على البخار","نيء","مطبوخ","مخبوز","محمص","مقلي"],aB:["الجري","المشي","السباحة","ركوب الدراجة","اليوغا","التأمل","القراءة","الكتابة","الرسم","الغناء","الرقص","الطبخ","البستنة","المشي لمسافات طويلة","الصيد","التخييم","التسوق","السفر","التصوير","التطوع","التعلم","التعليم","اللعب","التمارين","التمدد"],aM:["الصباح","المساء","بعد الظهر","الليل","يوميا","أسبوعيا","لطيف","مكثف","مريح","نشيط","في الهواء الطلق","في الداخل","جماعي","فردي","إبداعي","واعي","ممتع","هادئ","نشط","سلمي"]},
+zh:{b:["苹果","香蕉","橙子","草莓","蓝莓","牛油果","三文鱼","鸡肉","米饭","意大利面","面包","奶酪","酸奶","鸡蛋","杏仁","核桃","菠菜","西兰花","胡萝卜","番茄"],m:["新鲜的","有机的","成熟的","烤的","蒸的","生的","煮熟的","烘烤的","烤制的","炒的"],aB:["跑步","散步","游泳","骑自行车","瑜伽","冥想","阅读","写作","绘画","唱歌","跳舞","烹饪","园艺","徒步旅行","钓鱼","露营","购物","旅行","摄影","志愿服务","学习","教学","玩耍","锻炼","伸展"],aM:["早晨","傍晚","下午","夜晚","每天","每周","温和","激烈","放松","充满活力","户外","室内","团体","单独","创意","正念","有趣","平静","活跃","宁静"]},
+es:{b:["Manzana","Plátano","Naranja","Fresa","Arándano","Aguacate","Salmón","Pollo","Arroz","Pasta","Pan","Queso","Yogur","Huevos","Almendras","Nueces","Espinaca","Brócoli","Zanahoria","Tomate"],m:["fresco","orgánico","maduro","a la parrilla","al vapor","crudo","cocido","horneado","asado","salteado"],aB:["correr","caminar","nadar","ciclismo","yoga","meditación","leer","escribir","pintar","cantar","bailar","cocinar","jardinería","senderismo","pesca","acampada","compras","viajar","fotografía","voluntariado","aprender","enseñar","jugar","ejercicio","estiramiento"],aM:["matutino","vespertino","de tarde","nocturno","diario","semanal","suave","intenso","relajante","energético","al aire libre","interior","en grupo","solo","creativo","consciente","divertido","tranquilo","activo","pacífico"]},
+fr:{b:["Pomme","Banane","Orange","Fraise","Myrtille","Avocat","Saumon","Poulet","Riz","Pâtes","Pain","Fromage","Yaourt","Œufs","Amandes","Noix","Épinards","Brocoli","Carotte","Tomate"],m:["frais","bio","mûr","grillé","à la vapeur","cru","cuit","au four","rôti","sauté"],aB:["courir","marcher","nager","cyclisme","yoga","méditation","lire","écrire","peindre","chanter","danser","cuisiner","jardinage","randonnée","pêche","camping","shopping","voyager","photographie","bénévolat","apprendre","enseigner","jouer","exercice","étirement"],aM:["matinal","du soir","de l'après-midi","nocturne","quotidien","hebdomadaire","doux","intense","relaxant","énergique","en plein air","intérieur","en groupe","seul","créatif","conscient","amusant","calme","actif","paisible"]},
+de:{b:["Apfel","Banane","Orange","Erdbeere","Heidelbeere","Avocado","Lachs","Hähnchen","Reis","Nudeln","Brot","Käse","Joghurt","Eier","Mandeln","Walnüsse","Spinat","Brokkoli","Karotte","Tomate"],m:["frisch","bio","reif","gegrillt","gedämpft","roh","gekocht","gebacken","geröstet","sautiert"],aB:["Laufen","Gehen","Schwimmen","Radfahren","Yoga","Meditation","Lesen","Schreiben","Malen","Singen","Tanzen","Kochen","Gärtnern","Wandern","Angeln","Camping","Einkaufen","Reisen","Fotografie","Freiwilligenarbeit","Lernen","Lehren","Spielen","Übung","Dehnen"],aM:["morgens","abends","nachmittags","nachts","täglich","wöchentlich","sanft","intensiv","entspannend","energisch","im Freien","drinnen","in der Gruppe","allein","kreativ","achtsam","lustig","ruhig","aktiv","friedlich"]},
+ja:{b:["りんご","バナナ","オレンジ","いちご","ブルーベリー","アボカド","サーモン","鶏肉","ご飯","パスタ","パン","チーズ","ヨーグルト","卵","アーモンド","くるみ","ほうれん草","ブロッコリー","にんじん","トマト"],m:["新鮮な","オーガニック","熟した","グリルした","蒸した","生の","調理した","焼いた","ローストした","炒めた"],aB:["ランニング","ウォーキング","水泳","サイクリング","ヨガ","瞑想","読書","執筆","絵画","歌う","ダンス","料理","ガーデニング","ハイキング","釣り","キャンプ","ショッピング","旅行","写真","ボランティア","学習","教える","遊ぶ","運動","ストレッチ"],aM:["朝の","夕方の","午後の","夜の","毎日の","毎週の","穏やかな","激しい","リラックスした","エネルギッシュな","屋外の","屋内の","グループの","一人の","創造的な","マインドフルな","楽しい","穏やかな","活発な","平和な"]},
+ru:{b:["Яблоко","Банан","Апельсин","Клубника","Черника","Авокадо","Лосось","Курица","Рис","Паста","Хлеб","Сыр","Йогурт","Яйца","Миндаль","Грецкие орехи","Шпинат","Брокколи","Морковь","Помидор"],m:["свежий","органический","спелый","на гриле","на пару","сырой","приготовленный","запечённый","жареный","тушёный"],aB:["бег","ходьба","плавание","велоспорт","йога","медитация","чтение","письмо","рисование","пение","танцы","готовка","садоводство","поход","рыбалка","кемпинг","шопинг","путешествия","фотография","волонтёрство","учёба","преподавание","игра","упражнения","растяжка"],aM:["утренний","вечерний","дневной","ночной","ежедневный","еженедельный","нежный","интенсивный","расслабляющий","энергичный","на открытом воздухе","в помещении","групповой","одиночный","творческий","осознанный","весёлый","спокойный","активный","мирный"]},
+pt:{b:["Maçã","Banana","Laranja","Morango","Mirtilo","Abacate","Salmão","Frango","Arroz","Massa","Pão","Queijo","Iogurte","Ovos","Amêndoas","Nozes","Espinafre","Brócolis","Cenoura","Tomate"],m:["fresco","orgânico","maduro","grelhado","no vapor","cru","cozido","assado","torrado","salteado"],aB:["correr","caminhar","nadar","ciclismo","yoga","meditação","ler","escrever","pintar","cantar","dançar","cozinhar","jardinagem","trilha","pesca","acampamento","compras","viajar","fotografia","voluntariado","aprender","ensinar","brincar","exercício","alongamento"],aM:["matinal","noturno","da tarde","da noite","diário","semanal","suave","intenso","relaxante","energético","ao ar livre","interior","em grupo","sozinho","criativo","consciente","divertido","calmo","ativo","pacífico"]},
+it:{b:["Mela","Banana","Arancia","Fragola","Mirtillo","Avocado","Salmone","Pollo","Riso","Pasta","Pane","Formaggio","Yogurt","Uova","Mandorle","Noci","Spinaci","Broccoli","Carota","Pomodoro"],m:["fresco","biologico","maturo","grigliato","al vapore","crudo","cotto","al forno","arrosto","saltato"],aB:["correre","camminare","nuotare","ciclismo","yoga","meditazione","leggere","scrivere","dipingere","cantare","ballare","cucinare","giardinaggio","escursione","pesca","campeggio","shopping","viaggiare","fotografia","volontariato","imparare","insegnare","giocare","esercizio","stretching"],aM:["mattutino","serale","pomeridiano","notturno","quotidiano","settimanale","delicato","intenso","rilassante","energico","all'aperto","al chiuso","di gruppo","solo","creativo","consapevole","divertente","calmo","attivo","pacifico"]},
+ko:{b:["사과","바나나","오렌지","딸기","블루베리","아보카도","연어","닭고기","쌀","파스타","빵","치즈","요거트","계란","아몬드","호두","시금치","브로콜리","당근","토마토"],m:["신선한","유기농","익은","구운","찐","생","조리된","오븐에 구운","볶은","튀긴"],aB:["달리기","걷기","수영","자전거","요가","명상","독서","글쓰기","그림","노래","춤","요리","정원 가꾸기","하이킹","낚시","캠핑","쇼핑","여행","사진","자원봉사","학습","가르치기","놀기","운동","스트레칭"],aM:["아침의","저녁의","오후의","밤의","매일의","매주의","부드러운","격렬한","편안한","활기찬","야외의","실내의","그룹의","혼자의","창의적인","마음챙김의","재미있는","차분한","활동적인","평화로운"]},
+hi:{b:["सेब","केला","संतरा","स्ट्रॉबेरी","ब्लूबेरी","एवोकैडो","सैल्मन","चिकन","चावल","पास्ता","रोटी","पनीर","दही","अंडे","बादाम","अखरोट","पालक","ब्रोकोली","गाजर","टमाटर"],m:["ताजा","जैविक","पका","ग्रिल्ड","उबला हुआ","कच्चा","पका हुआ","सेंका हुआ","भुना हुआ","तला हुआ"],aB:["दौड़ना","चलना","तैरना","साइकिल चलाना","योग","ध्यान","पढ़ना","लिखना","चित्रकला","गाना","नृत्य","खाना बनाना","बागवानी","पैदल यात्रा","मछली पकड़ना","कैंपिंग","खरीदारी","यात्रा","फोटोग्राफी","स्वयंसेवा","सीखना","सिखाना","खेलना","व्यायाम","स्ट्रेचिंग"],aM:["सुबह का","शाम का","दोपहर का","रात का","दैनिक","साप्ताहिक","कोमल","तीव्र","आरामदायक","ऊर्जावान","बाहरी","अंदरूनी","समूह","अकेला","रचनात्मक","माइंडफुल","मज़ेदार","शांत","सक्रिय","शांतिपूर्ण"]}
+};
 
-        const adviceLines = {
-            'en': ["Stay hydrated throughout the day.","Take short breaks to rest your eyes.","Listen to your body, it knows best.","Get at least 7 hours of sleep.","Take a 10-minute walk after meals.","Practice deep breathing for 5 minutes.","Limit screen time before bed.","Spend time in nature.","Connect with a friend today.","Write down 3 things you are grateful for.","Stretch in the morning.","Eat mindfully, without distractions.","Drink a glass of water right now.","Take the stairs instead of the elevator.","Try a new healthy recipe.","Meditate for 5 minutes.","Do something kind for someone.","Read a book instead of scrolling.","Smile at a stranger.","Dance to your favorite song."],
-            'ar': ["اشرب الماء طوال اليوم.","خذ فترات راحة قصيرة لإراحة عينيك.","استمع لجسمك، فهو يعرف الأفضل.","احصل على 7 ساعات نوم على الأقل.","امشِ 10 دقائق بعد الوجبات.","مارس التنفس العميق لمدة 5 دقائق.","قلل وقت الشاشة قبل النوم.","اقضِ وقتاً في الطبيعة.","تواصل مع صديق اليوم.","اكتب 3 أشياء أنت ممتن لها.","تمدد في الصباح.","كل بوعي، بدون مشتتات.","اشرب كوب ماء الآن.","استخدم الدرج بدلاً من المصعد.","جرب وصفة صحية جديدة.","تأمل لمدة 5 دقائق.","افعل شيئاً لطيفاً لشخص ما.","اقرأ كتاباً بدلاً من التمرير.","ابتسم لشخص غريب.","ارقص على أغنيتك المفضلة."],
-            'zh': ["全天保持水分充足。","短暂休息，让眼睛放松。","倾听你的身体，它最了解。","至少睡7小时。","饭后散步10分钟。","练习5分钟深呼吸。","睡前限制屏幕时间。","花时间亲近大自然。","今天与朋友联系。","写下3件你感恩的事。","早晨伸展身体。","正念进食，不分心。","现在就喝一杯水。","走楼梯而不是电梯。","尝试新的健康食谱。","冥想5分钟。","为某人做点好事。","读书而不是刷手机。","对陌生人微笑。","跟着喜欢的歌跳舞。"],
-            'es': ["Mantente hidratado todo el día.","Toma descansos cortos para descansar la vista.","Escucha a tu cuerpo, él sabe mejor.","Duerme al menos 7 horas.","Camina 10 minutos después de comer.","Practica respiración profunda durante 5 minutos.","Limita el tiempo de pantalla antes de dormir.","Pasa tiempo en la naturaleza.","Conéctate con un amigo hoy.","Escribe 3 cosas por las que estás agradecido.","Estírate por la mañana.","Come conscientemente, sin distracciones.","Bebe un vaso de agua ahora mismo.","Usa las escaleras en vez del ascensor.","Prueba una nueva receta saludable.","Medita 5 minutos.","Haz algo amable por alguien.","Lee un libro en vez de hacer scroll.","Sonríe a un desconocido.","Baila tu canción favorita."],
-            'fr': ["Restez hydraté toute la journée.","Faites de courtes pauses pour reposer vos yeux.","Écoutez votre corps, il sait mieux.","Dormez au moins 7 heures.","Marchez 10 minutes après les repas.","Pratiquez la respiration profonde pendant 5 minutes.","Limitez le temps d'écran avant de dormir.","Passez du temps dans la nature.","Contactez un ami aujourd'hui.","Écrivez 3 choses pour lesquelles vous êtes reconnaissant.","Étirez-vous le matin.","Mangez en pleine conscience, sans distractions.","Buvez un verre d'eau maintenant.","Prenez les escaliers au lieu de l'ascenseur.","Essayez une nouvelle recette saine.","Méditez 5 minutes.","Faites quelque chose de gentil pour quelqu'un.","Lisez un livre au lieu de faire défiler.","Souriez à un inconnu.","Dansez sur votre chanson préférée."],
-            'de': ["Bleiben Sie den ganzen Tag über hydratisiert.","Machen Sie kurze Pausen, um Ihre Augen auszuruhen.","Hören Sie auf Ihren Körper, er weiß es am besten.","Schlafen Sie mindestens 7 Stunden.","Gehen Sie 10 Minuten nach den Mahlzeiten spazieren.","Praktizieren Sie 5 Minuten tiefes Atmen.","Begrenzen Sie die Bildschirmzeit vor dem Schlafengehen.","Verbringen Sie Zeit in der Natur.","Verbinden Sie sich heute mit einem Freund.","Schreiben Sie 3 Dinge auf, für die Sie dankbar sind.","Dehnen Sie sich morgens.","Essen Sie achtsam, ohne Ablenkungen.","Trinken Sie jetzt ein Glas Wasser.","Nehmen Sie die Treppe statt den Aufzug.","Probieren Sie ein neues gesundes Rezept.","Meditieren Sie 5 Minuten.","Tun Sie jemandem etwas Gutes.","Lesen Sie ein Buch statt zu scrollen.","Lächeln Sie einen Fremden an.","Tanzen Sie zu Ihrem Lieblingslied."],
-            'ja': ["一日中水分補給を続けてください。","短い休憩で目を休めてください。","体の声を聞いてください、それが一番よく知っています。","少なくとも7時間は睡眠をとってください。","食後に10分歩いてください。","5分間の深呼吸を練習してください。","寝る前の画面時間を制限してください。","自然の中で時間を過ごしてください。","今日は友達と連絡を取ってください。","感謝していることを3つ書き留めてください。","朝にストレッチをしてください。","気を散らさずに意識して食べてください。","今すぐコップ一杯の水を飲んでください。","エレベーターの代わりに階段を使ってください。","新しい健康的なレシピを試してください。","5分間瞑想してください。","誰かに親切にしてください。","スクロールの代わりに本を読んでください。","見知らぬ人に微笑んでください。","好きな曲で踊ってください。"],
-            'ru': ["Оставайтесь гидратированными весь день.","Делайте короткие перерывы, чтобы отдохнуть глазами.","Слушайте свое тело, оно знает лучше.","Спите не менее 7 часов.","Гуляйте 10 минут после еды.","Практикуйте глубокое дыхание в течение 5 минут.","Ограничьте время у экрана перед сном.","Проводите время на природе.","Свяжитесь с другом сегодня.","Запишите 3 вещи, за которые вы благодарны.","Растягивайтесь утром.","Ешьте осознанно, без отвлечений.","Выпейте стакан воды прямо сейчас.","Поднимайтесь по лестнице вместо лифта.","Попробуйте новый здоровый рецепт.","Медитируйте 5 минут.","Сделайте что-то доброе для кого-то.","Читайте книгу вместо прокрутки.","Улыбнитесь незнакомцу.","Танцуйте под любимую песню."],
-            'pt': ["Mantenha-se hidratado ao longo do dia.","Faça pausas curtas para descansar os olhos.","Ouça seu corpo, ele sabe melhor.","Durma pelo menos 7 horas.","Caminhe 10 minutos após as refeições.","Pratique respiração profunda por 5 minutos.","Limite o tempo de tela antes de dormir.","Passe tempo na natureza.","Conecte-se com um amigo hoje.","Escreva 3 coisas pelas quais você é grato.","Alongue-se pela manhã.","Coma com atenção, sem distrações.","Beba um copo de água agora mesmo.","Use as escadas em vez do elevador.","Experimente uma nova receita saudável.","Medite por 5 minutos.","Faça algo gentil por alguém.","Leia um livro em vez de rolar.","Sorria para um estranho.","Dance sua música favorita."],
-            'it': ["Rimani idratato tutto il giorno.","Fai brevi pause per riposare gli occhi.","Ascolta il tuo corpo, sa meglio.","Dormi almeno 7 ore.","Cammina 10 minuti dopo i pasti.","Pratica la respirazione profonda per 5 minuti.","Limita il tempo davanti allo schermo prima di dormire.","Passa del tempo nella natura.","Connettiti con un amico oggi.","Scrivi 3 cose per cui sei grato.","Fai stretching al mattino.","Mangia con consapevolezza, senza distrazioni.","Bevi un bicchiere d'acqua adesso.","Usa le scale invece dell'ascensore.","Prova una nuova ricetta sana.","Medita per 5 minuti.","Fai qualcosa di gentile per qualcuno.","Leggi un libro invece di scorrere.","Sorridi a uno sconosciuto.","Balla la tua canzone preferita."],
-            'ko': ["하루 종일 수분을 유지하세요.","짧은 휴식으로 눈을 쉬게 하세요.","몸의 말을 들으세요, 그것이 가장 잘 압니다.","최소 7시간은 주무세요.","식사 후 10분 산책하세요.","5분간 심호흡을 연습하세요.","잠들기 전 화면 시간을 줄이세요.","자연 속에서 시간을 보내세요.","오늘 친구와 연락하세요.","감사한 것 3가지를 적으세요.","아침에 스트레칭하세요.","방해 없이 마음챙김으로 드세요.","지금 물 한 잔을 마시세요.","엘리베이터 대신 계단을 이용하세요.","새로운 건강 레시피를 시도하세요.","5분간 명상하세요.","누군가에게 친절을 베푸세요.","스크롤 대신 책을 읽으세요.","낯선 사람에게 미소 지으세요.","좋아하는 노래에 맞춰 춤추세요."],
-            'hi': ["पूरे दिन हाइड्रेटेड रहें।","आंखों को आराम देने के लिए छोटे ब्रेक लें।","अपने शरीर की सुनें, यह सबसे अच्छा जानता है।","कम से कम 7 घंटे सोएं।","भोजन के बाद 10 मिनट टहलें।","5 मिनट के लिए गहरी सांस का अभ्यास करें।","सोने से पहले स्क्रीन समय सीमित करें।","प्रकृति में समय बिताएं।","आज किसी मित्र से जुड़ें।","3 चीजें लिखें जिनके लिए आप आभारी हैं।","सुबह स्ट्रेच करें।","बिना ध्यान भटकाए सचेतता से खाएं।","अभी एक गिलास पानी पिएं।","लिफ्ट के बजाय सीढ़ियों का उपयोग करें।","नई स्वस्थ रेसिपी आजमाएं।","5 मिनट ध्यान करें।","किसी के लिए कुछ अच्छा करें।","स्क्रॉल के बजाय किताब पढ़ें।","अजनबी को देखकर मुस्कुराएं।","अपने पसंदीदा गाने पर नाचें।"]
-        };
+Object.keys(foodData).forEach(function(lang){
+if(!translations[lang])return;
+var d=foodData[lang];
+var gf=[];
+d.b.forEach(function(b){d.m.forEach(function(m){gf.push(m+" "+b);});});
+translations[lang].foodRecs=gf;
+var ga=[];
+d.aB.forEach(function(b){d.aM.forEach(function(m){ga.push(m+" "+b);});});
+translations[lang].activityRecs=ga;
+});
 
-        (function() {
-            var data = {
-                'en': { fBase: ["Apple","Banana","Orange","Strawberry","Blueberry","Avocado","Salmon","Chicken","Rice","Pasta","Bread","Cheese","Yogurt","Eggs","Almonds","Walnuts","Spinach","Broccoli","Carrot","Tomato"], fMod: ["fresh","organic","ripe","grilled","steamed","raw","cooked","baked","roasted","sautéed"], aBase: ["running","walking","swimming","cycling","yoga","meditation","reading","writing","painting","singing","dancing","cooking","gardening","hiking","fishing","camping","shopping","traveling","photography","volunteering","learning","teaching","playing","exercising","stretching"], aMod: ["morning","evening","afternoon","night","daily","weekly","gentle","intense","relaxing","energetic","outdoor","indoor","group","solo","creative","mindful","fun","calm","active","peaceful"] },
-                'ar': { fBase: ["تفاح","موز","برتقال","فراولة","توت أزرق","أفوكادو","سلمون","دجاج","أرز","معكرونة","خبز","جبن","زبادي","بيض","لوز","جوز","سبانخ","بروكلي","جزر","طماطم"], fMod: ["طازج","عضوي","ناضج","مشوي","مطهو على البخار","نيء","مطبوخ","مخبوز","محمص","مقلي"], aBase: ["الجري","المشي","السباحة","ركوب الدراجة","اليوغا","التأمل","القراءة","الكتابة","الرسم","الغناء","الرقص","الطبخ","البستنة","المشي لمسافات طويلة","الصيد","التخييم","التسوق","السفر","التصوير","التطوع","التعلم","التعليم","اللعب","التمارين","التمدد"], aMod: ["الصباح","المساء","بعد الظهر","الليل","يوميا","أسبوعيا","لطيف","مكثف","مريح","نشيط","في الهواء الطلق","في الداخل","جماعي","فردي","إبداعي","واعي","ممتع","هادئ","نشط","سلمي"] },
-                'zh': { fBase: ["苹果","香蕉","橙子","草莓","蓝莓","牛油果","三文鱼","鸡肉","米饭","意大利面","面包","奶酪","酸奶","鸡蛋","杏仁","核桃","菠菜","西兰花","胡萝卜","番茄"], fMod: ["新鲜的","有机的","成熟的","烤的","蒸的","生的","煮熟的","烘烤的","烤制的","炒的"], aBase: ["跑步","散步","游泳","骑自行车","瑜伽","冥想","阅读","写作","绘画","唱歌","跳舞","烹饪","园艺","徒步旅行","钓鱼","露营","购物","旅行","摄影","志愿服务","学习","教学","玩耍","锻炼","伸展"], aMod: ["早晨","傍晚","下午","夜晚","每天","每周","温和","激烈","放松","充满活力","户外","室内","团体","单独","创意","正念","有趣","平静","活跃","宁静"] },
-                'es': { fBase: ["Manzana","Plátano","Naranja","Fresa","Arándano","Aguacate","Salmón","Pollo","Arroz","Pasta","Pan","Queso","Yogur","Huevos","Almendras","Nueces","Espinaca","Brócoli","Zanahoria","Tomate"], fMod: ["fresco","orgánico","maduro","a la parrilla","al vapor","crudo","cocido","horneado","asado","salteado"], aBase: ["correr","caminar","nadar","ciclismo","yoga","meditación","leer","escribir","pintar","cantar","bailar","cocinar","jardinería","senderismo","pesca","acampada","compras","viajar","fotografía","voluntariado","aprender","enseñar","jugar","ejercicio","estiramiento"], aMod: ["matutino","vespertino","de tarde","nocturno","diario","semanal","suave","intenso","relajante","energético","al aire libre","interior","en grupo","solo","creativo","consciente","divertido","tranquilo","activo","pacífico"] },
-                'fr': { fBase: ["Pomme","Banane","Orange","Fraise","Myrtille","Avocat","Saumon","Poulet","Riz","Pâtes","Pain","Fromage","Yaourt","Œufs","Amandes","Noix","Épinards","Brocoli","Carotte","Tomate"], fMod: ["frais","bio","mûr","grillé","à la vapeur","cru","cuit","au four","rôti","sauté"], aBase: ["courir","marcher","nager","cyclisme","yoga","méditation","lire","écrire","peindre","chanter","danser","cuisiner","jardinage","randonnée","pêche","camping","shopping","voyager","photographie","bénévolat","apprendre","enseigner","jouer","exercice","étirement"], aMod: ["matinal","du soir","de l'après-midi","nocturne","quotidien","hebdomadaire","doux","intense","relaxant","énergique","en plein air","intérieur","en groupe","seul","créatif","conscient","amusant","calme","actif","paisible"] },
-                'de': { fBase: ["Apfel","Banane","Orange","Erdbeere","Heidelbeere","Avocado","Lachs","Hähnchen","Reis","Nudeln","Brot","Käse","Joghurt","Eier","Mandeln","Walnüsse","Spinat","Brokkoli","Karotte","Tomate"], fMod: ["frisch","bio","reif","gegrillt","gedämpft","roh","gekocht","gebacken","geröstet","sautiert"], aBase: ["Laufen","Gehen","Schwimmen","Radfahren","Yoga","Meditation","Lesen","Schreiben","Malen","Singen","Tanzen","Kochen","Gärtnern","Wandern","Angeln","Camping","Einkaufen","Reisen","Fotografie","Freiwilligenarbeit","Lernen","Lehren","Spielen","Übung","Dehnen"], aMod: ["morgens","abends","nachmittags","nachts","täglich","wöchentlich","sanft","intensiv","entspannend","energisch","im Freien","drinnen","in der Gruppe","allein","kreativ","achtsam","lustig","ruhig","aktiv","friedlich"] },
-                'ja': { fBase: ["りんご","バナナ","オレンジ","いちご","ブルーベリー","アボカド","サーモン","鶏肉","ご飯","パスタ","パン","チーズ","ヨーグルト","卵","アーモンド","くるみ","ほうれん草","ブロッコリー","にんじん","トマト"], fMod: ["新鮮な","オーガニック","熟した","グリルした","蒸した","生の","調理した","焼いた","ローストした","炒めた"], aBase: ["ランニング","ウォーキング","水泳","サイクリング","ヨガ","瞑想","読書","執筆","絵画","歌う","ダンス","料理","ガーデニング","ハイキング","釣り","キャンプ","ショッピング","旅行","写真","ボランティア","学習","教える","遊ぶ","運動","ストレッチ"], aMod: ["朝の","夕方の","午後の","夜の","毎日の","毎週の","穏やかな","激しい","リラックスした","エネルギッシュな","屋外の","屋内の","グループの","一人の","創造的な","マインドフルな","楽しい","穏やかな","活発な","平和な"] },
-                'ru': { fBase: ["Яблоко","Банан","Апельсин","Клубника","Черника","Авокадо","Лосось","Курица","Рис","Паста","Хлеб","Сыр","Йогурт","Яйца","Миндаль","Грецкие орехи","Шпинат","Брокколи","Морковь","Помидор"], fMod: ["свежий","органический","спелый","на гриле","на пару","сырой","приготовленный","запечённый","жареный","тушёный"], aBase: ["бег","ходьба","плавание","велоспорт","йога","медитация","чтение","письмо","рисование","пение","танцы","готовка","садоводство","поход","рыбалка","кемпинг","шопинг","путешествия","фотография","волонтёрство","учёба","преподавание","игра","упражнения","растяжка"], aMod: ["утренний","вечерний","дневной","ночной","ежедневный","еженедельный","нежный","интенсивный","расслабляющий","энергичный","на открытом воздухе","в помещении","групповой","одиночный","творческий","осознанный","весёлый","спокойный","активный","мирный"] },
-                'pt': { fBase: ["Maçã","Banana","Laranja","Morango","Mirtilo","Abacate","Salmão","Frango","Arroz","Massa","Pão","Queijo","Iogurte","Ovos","Amêndoas","Nozes","Espinafre","Brócolis","Cenoura","Tomate"], fMod: ["fresco","orgânico","maduro","grelhado","no vapor","cru","cozido","assado","torrado","salteado"], aBase: ["correr","caminhar","nadar","ciclismo","yoga","meditação","ler","escrever","pintar","cantar","dançar","cozinhar","jardinagem","trilha","pesca","acampamento","compras","viajar","fotografia","voluntariado","aprender","ensinar","brincar","exercício","alongamento"], aMod: ["matinal","noturno","da tarde","da noite","diário","semanal","suave","intenso","relaxante","energético","ao ar livre","interior","em grupo","sozinho","criativo","consciente","divertido","calmo","ativo","pacífico"] },
-                'it': { fBase: ["Mela","Banana","Arancia","Fragola","Mirtillo","Avocado","Salmone","Pollo","Riso","Pasta","Pane","Formaggio","Yogurt","Uova","Mandorle","Noci","Spinaci","Broccoli","Carota","Pomodoro"], fMod: ["fresco","biologico","maturo","grigliato","al vapore","crudo","cotto","al forno","arrosto","saltato"], aBase: ["correre","camminare","nuotare","ciclismo","yoga","meditazione","leggere","scrivere","dipingere","cantare","ballare","cucinare","giardinaggio","escursione","pesca","campeggio","shopping","viaggiare","fotografia","volontariato","imparare","insegnare","giocare","esercizio","stretching"], aMod: ["mattutino","serale","pomeridiano","notturno","quotidiano","settimanale","delicato","intenso","rilassante","energico","all'aperto","al chiuso","di gruppo","solo","creativo","consapevole","divertente","calmo","attivo","pacifico"] },
-                'ko': { fBase: ["사과","바나나","오렌지","딸기","블루베리","아보카도","연어","닭고기","쌀","파스타","빵","치즈","요거트","계란","아몬드","호두","시금치","브로콜리","당근","토마토"], fMod: ["신선한","유기농","익은","구운","찐","생","조리된","오븐에 구운","볶은","튀긴"], aBase: ["달리기","걷기","수영","자전거","요가","명상","독서","글쓰기","그림","노래","춤","요리","정원 가꾸기","하이킹","낚시","캠핑","쇼핑","여행","사진","자원봉사","학습","가르치기","놀기","운동","스트레칭"], aMod: ["아침의","저녁의","오후의","밤의","매일의","매주의","부드러운","격렬한","편안한","활기찬","야외의","실내의","그룹의","혼자의","창의적인","마음챙김의","재미있는","차분한","활동적인","평화로운"] },
-                'hi': { fBase: ["सेब","केला","संतरा","स्ट्रॉबेरी","ब्लूबेरी","एवोकैडो","सैल्मन","चिकन","चावल","पास्ता","रोटी","पनीर","दही","अंडे","बादाम","अखरोट","पालक","ब्रोकोली","गाजर","टमाटर"], fMod: ["ताजा","जैविक","पका","ग्रिल्ड","उबला हुआ","कच्चा","पका हुआ","सेंका हुआ","भुना हुआ","तला हुआ"], aBase: ["दौड़ना","चलना","तैरना","साइकिल चलाना","योग","ध्यान","पढ़ना","लिखना","चित्रकला","गाना","नृत्य","खाना बनाना","बागवानी","पैदल यात्रा","मछली पकड़ना","कैंपिंग","खरीदारी","यात्रा","फोटोग्राफी","स्वयंसेवा","सीखना","सिखाना","खेलना","व्यायाम","स्ट्रेचिंग"], aMod: ["सुबह का","शाम का","दोपहर का","रात का","दैनिक","साप्ताहिक","कोमल","तीव्र","आरामदायक","ऊर्जावान","बाहरी","अंदरूनी","समूह","अकेला","रचनात्मक","माइंडफुल","मज़ेदार","शांत","सक्रिय","शांतिपूर्ण"] }
-            };
+// ══ APP INIT ══
+var isInApp=/PWAShell/.test(navigator.userAgent);
+if(!isInApp){
+document.addEventListener('DOMContentLoaded',function(){
+document.getElementById('web-gate').classList.add('active');
+document.getElementById('start-screen').classList.add('hidden');
+document.getElementById('app').style.display='none';
+});
+}
 
-            Object.keys(data).forEach(function(lang) {
-                if (!translations[lang]) return;
-                var d = data[lang];
-                var genFoods = [];
-                d.fBase.forEach(function(base) { d.fMod.forEach(function(mod) { genFoods.push(mod + " " + base); }); });
-                translations[lang].foodRecs = genFoods;
-                var genActs = [];
-                d.aBase.forEach(function(base) { d.aMod.forEach(function(mod) { genActs.push(mod + " " + base); }); });
-                translations[lang].activityRecs = genActs;
-            });
-        })();
+var languages=[
+{code:'en',name:'English'},{code:'ar',name:'العربية'},
+{code:'zh',name:'中文'},{code:'es',name:'Español'},
+{code:'fr',name:'Français'},{code:'de',name:'Deutsch'},
+{code:'ja',name:'日本語'},{code:'ru',name:'Русский'},
+{code:'pt',name:'Português'},{code:'it',name:'Italiano'},
+{code:'ko',name:'한국어'},{code:'hi',name:'हिन्दी'}
+];
 
-        let currentLang = 'en';
-        let selectedMood = null;
-        let selectedActivity = null;
-        let entries = JSON.parse(localStorage.getItem('moodData')) || [];
-        let isSubscribed = false;
-        let expiryTime = null;
-        let timerInterval = null;
+var currentLang='en';
+var selectedMood=null;
+var selectedActivity=null;
+var entries=JSON.parse(localStorage.getItem('moodData'))||[];
+var isSubscribed=false;
+var expiryTime=null;
+var timerInterval=null;
 
-        const startScreen = document.getElementById('start-screen');
-        const appContainer = document.getElementById('app');
-        const langBtn = document.getElementById('lang-select-btn');
-        const timerText = document.getElementById('timer-text');
-        const langModal = document.getElementById('lang-modal');
-        const langListContainer = document.getElementById('lang-list-container');
+var startScreen=document.getElementById('start-screen');
+var appContainer=document.getElementById('app');
+var langBtn=document.getElementById('lang-select-btn');
+var timerText=document.getElementById('timer-text');
+var langModal=document.getElementById('lang-modal');
+var langListContainer=document.getElementById('lang-list-container');
 
-        const moodBtns = document.querySelectorAll('#mood-buttons .btn');
-        const activityBtns = document.querySelectorAll('#activity-buttons .btn');
-        const saveBtn = document.getElementById('save-btn');
-        const subscribeBtn = document.getElementById('subscribe-btn');
-        const shareBtn = document.getElementById('share-btn');
-        const infoBtn = document.getElementById('info-btn');
-        const infoModal = document.getElementById('info-modal');
-        const infoCloseBtn = document.getElementById('info-close-btn');
-        const infoTextContent = document.getElementById('info-text-content');
+var moodBtns=document.querySelectorAll('#mood-buttons .btn');
+var activityBtns=document.querySelectorAll('#activity-buttons .btn');
+var saveBtn=document.getElementById('save-btn');
+var subscribeBtn=document.getElementById('subscribe-btn');
+var shareBtn=document.getElementById('share-btn');
+var infoBtn=document.getElementById('info-btn');
+var infoModal=document.getElementById('info-modal');
+var infoCloseBtn=document.getElementById('info-close-btn');
+var infoTextContent=document.getElementById('info-text-content');
 
-        function getNextFromPool(poolArray, storageKey) {
-            let queue = JSON.parse(localStorage.getItem(storageKey));
-            if (!queue || queue.length === 0) {
-                let shuffled = [...poolArray].sort(() => Math.random() - 0.5);
-                localStorage.setItem(storageKey, JSON.stringify(shuffled));
-                queue = shuffled;
-            }
-            let chosen = queue.pop();
-            localStorage.setItem(storageKey, JSON.stringify(queue));
-            return chosen;
-        }
+function getNextFromPool(poolArray,storageKey){
+var queue=JSON.parse(localStorage.getItem(storageKey));
+if(!queue||queue.length===0){
+var shuffled=[...poolArray].sort(function(){return Math.random()-0.5;});
+localStorage.setItem(storageKey,JSON.stringify(shuffled));
+queue=shuffled;
+}
+var chosen=queue.pop();
+localStorage.setItem(storageKey,JSON.stringify(queue));
+return chosen;
+}
 
-        function updateUIText(lang) {
-            const t = translations[lang];
-            document.getElementById('app-title').innerText = t.title;
-            document.getElementById('mood-label').innerText = t.mood;
-            document.getElementById('activity-label').innerText = t.activity;
-            document.getElementById('save-btn').innerText = t.save;
-            document.getElementById('share-btn').innerText = '🔗 ' + t.share;
-            document.querySelector('#info-modal .info-modal-title').innerText = t.info_title;
-            document.getElementById('info-text-content').innerHTML = t.info_text;
-            document.getElementById('info-close-btn').innerText = t.close;
-            document.getElementById('subscribe-btn').innerText = t.subscribe;
-            document.getElementById('lang-modal-title').innerText = t.lang_modal_title;
-            document.getElementById('close-lang-modal').innerText = t.lang_modal_cancel;
-            document.getElementById('close-insight-btn').innerText = t.close;
-            document.getElementById('close-recs-btn').innerText = t.close;
-            document.getElementById('btn-open-insight').innerText = t.insights_title;
-            document.getElementById('btn-open-recs').innerText = t.recs_title;
-            document.getElementById('sub-status').innerText = t.premium_active;
-            langBtn.innerText = t.lang_btn;
-            timerText.innerText = t.timer;
-        }
+function updateUIText(lang){
+var t=translations[lang];
+document.getElementById('app-title').innerText=t.title;
+document.getElementById('mood-label').innerText=t.mood;
+document.getElementById('activity-label').innerText=t.activity;
+document.getElementById('save-btn').innerText=t.save;
+document.getElementById('share-btn').innerText='🔗 '+t.share;
+document.getElementById('info-modal-title').innerText=t.info_title;
+document.getElementById('info-text-content').innerHTML=t.info_text;
+document.getElementById('info-close-btn').innerText=t.close;
+document.getElementById('subscribe-btn').innerText=t.subscribe;
+document.getElementById('lang-modal-title').innerText=t.lang_modal_title;
+document.getElementById('close-lang-modal').innerText=t.lang_modal_cancel;
+document.getElementById('close-insight-btn').innerText=t.close;
+document.getElementById('close-recs-btn').innerText=t.close;
+document.getElementById('btn-open-insight').innerText=t.insights_title;
+document.getElementById('btn-open-recs').innerText=t.recs_title;
+document.getElementById('sub-status').innerText=t.premium_active;
+document.getElementById('wg-title').innerText=t.wg_title;
+document.getElementById('wg-text').innerText=t.wg_text;
+document.getElementById('wg-btn').innerText=t.wg_btn;
+langBtn.innerText=t.lang_btn;
+timerText.innerText=t.timer;
+}
 
-        function renderLanguageList() {
-            langListContainer.innerHTML = '';
-            languages.forEach(lang => {
-                const div = document.createElement('div');
-                div.className = 'lang-list-item';
-                div.innerText = lang.name;
-                div.onclick = () => selectLanguage(lang.code);
-                langListContainer.appendChild(div);
-            });
-        }
+function renderLanguageList(){
+langListContainer.innerHTML='';
+languages.forEach(function(lang){
+var div=document.createElement('div');
+div.className='lang-list-item';
+div.innerText=lang.name;
+div.onclick=function(){selectLanguage(lang.code);};
+langListContainer.appendChild(div);
+});
+}
 
-        function selectLanguage(code) {
-            currentLang = code;
-            localStorage.setItem('appLang', code);
-            langModal.classList.add('hidden');
-            startScreen.classList.add('hidden');
-            appContainer.style.display = 'flex';
-            updateUIText(code);
-        }
+function selectLanguage(code){
+currentLang=code;
+localStorage.setItem('appLang',code);
+langModal.classList.add('hidden');
+startScreen.classList.add('hidden');
+appContainer.style.display='flex';
+updateUIText(code);
+}
 
-        let countdown = 3;
+var countdown=3;
 
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                countdown -= 1;
-                timerText.innerText = translations[currentLang].timer.replace('3', countdown);
-                if (countdown <= 0) { clearInterval(timerInterval); selectLanguage('en'); }
-            }, 1000);
-        }
+function startTimer(){
+timerInterval=setInterval(function(){
+countdown-=1;
+timerText.innerText=translations[currentLang].timer.replace('3',countdown);
+if(countdown<=0){clearInterval(timerInterval);selectLanguage('en');}
+},1000);
+}
 
-        function initStartScreen() {
-            const savedLang = localStorage.getItem('appLang');
-            if (savedLang && languages.find(l => l.code === savedLang)) {
-                currentLang = savedLang;
-                startScreen.classList.add('hidden');
-                appContainer.style.display = 'flex';
-                updateUIText(savedLang);
-                loadEntries();
-                checkSubscription();
-            } else {
-                startScreen.classList.remove('hidden');
-                appContainer.style.display = 'none';
-                currentLang = 'en';
-                langBtn.innerText = translations['en'].lang_btn;
-                timerText.innerText = translations['en'].timer;
-                renderLanguageList();
-                startTimer();
-            }
-        }
+function initStartScreen(){
+var savedLang=localStorage.getItem('appLang');
+if(savedLang&&languages.find(function(l){return l.code===savedLang;})){
+currentLang=savedLang;
+startScreen.classList.add('hidden');
+appContainer.style.display='flex';
+updateUIText(savedLang);
+loadEntries();
+checkSubscription();
+}else{
+startScreen.classList.remove('hidden');
+appContainer.style.display='none';
+currentLang='en';
+langBtn.innerText=translations['en'].lang_btn;
+timerText.innerText=translations['en'].timer;
+renderLanguageList();
+startTimer();
+}
+}
 
-        langBtn.onclick = () => { clearInterval(timerInterval); langModal.classList.remove('hidden'); };
-        document.getElementById('close-lang-modal').onclick = () => {
-            langModal.classList.add('hidden');
-            if (!document.getElementById('app').style.display || document.getElementById('app').style.display === 'none') { startTimer(); }
-        };
+langBtn.onclick=function(){clearInterval(timerInterval);langModal.classList.remove('hidden');};
+document.getElementById('close-lang-modal').onclick=function(){
+langModal.classList.add('hidden');
+if(!document.getElementById('app').style.display||document.getElementById('app').style.display==='none'){startTimer();}
+};
 
-        moodBtns.forEach(btn => { btn.onclick = () => { moodBtns.forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedMood = btn.dataset.value; }; });
-        activityBtns.forEach(btn => { btn.onclick = () => { activityBtns.forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedActivity = btn.dataset.value; }; });
+moodBtns.forEach(function(btn){btn.onclick=function(){moodBtns.forEach(function(b){b.classList.remove('selected');});btn.classList.add('selected');selectedMood=btn.dataset.value;};});
+activityBtns.forEach(function(btn){btn.onclick=function(){activityBtns.forEach(function(b){b.classList.remove('selected');});btn.classList.add('selected');selectedActivity=btn.dataset.value;};});
 
-        saveBtn.onclick = () => {
-            if (!selectedMood || !selectedActivity) { alert(alertMessages[currentLang].choose); return; }
-            const entry = { mood: selectedMood, activity: selectedActivity, date: new Date().toISOString() };
-            entries.push(entry);
-            localStorage.setItem('moodData', JSON.stringify(entries));
-            moodBtns.forEach(b => b.classList.remove('selected'));
-            activityBtns.forEach(b => b.classList.remove('selected'));
-            selectedMood = null; selectedActivity = null;
-            updateUIText(currentLang);
-        };
+saveBtn.onclick=function(){
+if(!selectedMood||!selectedActivity){showToast(translations[currentLang].alert_choose);return;}
+var entry={mood:selectedMood,activity:selectedActivity,date:new Date().toISOString()};
+entries.push(entry);
+localStorage.setItem('moodData',JSON.stringify(entries));
+moodBtns.forEach(function(b){b.classList.remove('selected');});
+activityBtns.forEach(function(b){b.classList.remove('selected');});
+selectedMood=null;selectedActivity=null;
+updateUIText(currentLang);
+};
 
-        subscribeBtn.onclick = () => {
-            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers["iap-purchase"]) {
-                window.webkit.messageHandlers["iap-purchase"].postMessage({});
-            }
-        };
+subscribeBtn.onclick=function(){
+if(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers["iap-purchase"]){
+window.webkit.messageHandlers["iap-purchase"].postMessage({});
+}
+};
 
-        document.addEventListener('iap-purchase-result', function(e) {
-            if (e.detail === 'success') {
-                const now = new Date().getTime();
-                const expiry = now + 30 * 24 * 60 * 60 * 1000;
-                localStorage.setItem('subExpiry', expiry.toString());
-                isSubscribed = true; expiryTime = expiry;
-                document.getElementById('subscribe-btn').classList.add('hidden');
-                document.getElementById('sub-status').classList.remove('hidden');
-                document.getElementById('btn-open-recs').classList.remove('hidden');
-                updateUIText(currentLang);
-                alert(alertMessages[currentLang].success);
-            } else { alert(alertMessages[currentLang].fail); }
-        });
+document.addEventListener('iap-purchase-result',function(e){
+if(e.detail==='success'){
+var now=new Date().getTime();
+var expiry=now+30*24*60*60*1000;
+localStorage.setItem('subExpiry',expiry.toString());
+isSubscribed=true;expiryTime=expiry;
+document.getElementById('subscribe-btn').classList.add('hidden');
+document.getElementById('sub-status').classList.remove('hidden');
+document.getElementById('btn-open-recs').classList.remove('hidden');
+updateUIText(currentLang);
+showToast(translations[currentLang].alert_success);
+}else{showToast(translations[currentLang].alert_fail);}
+});
 
-        document.addEventListener('iap-status', function(e) {
-            if (e.detail === 'active') {
-                const now = new Date().getTime();
-                const expiry = now + 30 * 24 * 60 * 60 * 1000;
-                localStorage.setItem('subExpiry', expiry.toString());
-                isSubscribed = true; expiryTime = expiry;
-                document.getElementById('subscribe-btn').classList.add('hidden');
-                document.getElementById('sub-status').classList.remove('hidden');
-                document.getElementById('btn-open-recs').classList.remove('hidden');
-                updateUIText(currentLang);
-            }
-        });
+document.addEventListener('iap-status',function(e){
+if(e.detail==='active'){
+var now=new Date().getTime();
+var expiry=now+30*24*60*60*1000;
+localStorage.setItem('subExpiry',expiry.toString());
+isSubscribed=true;expiryTime=expiry;
+document.getElementById('subscribe-btn').classList.add('hidden');
+document.getElementById('sub-status').classList.remove('hidden');
+document.getElementById('btn-open-recs').classList.remove('hidden');
+updateUIText(currentLang);
+}
+});
 
-        shareBtn.onclick = () => {
-            if (navigator.share) {
-                navigator.share({ title: 'Daily Insights Mood Tracker', url: 'https://www.apple.com' });
-            } else {
-                navigator.clipboard.writeText('https://www.apple.com').then(() => {
-                    var toast = document.createElement('div');
-                    toast.innerText = alertMessages[currentLang].copied;
-                    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:bold;z-index:999999;opacity:0;transition:opacity 0.3s;pointer-events:none;';
-                    document.body.appendChild(toast);
-                    toast.style.opacity = '1';
-                    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => document.body.removeChild(toast), 300); }, 1500);
-                });
-            }
-        };
+shareBtn.onclick=function(){
+if(navigator.share){
+navigator.share({title:'Daily Insights Mood Tracker',url:'https://www.apple.com'});
+}else{
+navigator.clipboard.writeText('https://www.apple.com').then(function(){
+showToast(translations[currentLang].alert_copied);
+});
+}
+};
 
-        infoBtn.onclick = () => { infoModal.classList.remove('hidden'); };
-        infoCloseBtn.onclick = () => { infoModal.classList.add('hidden'); };
-        window.onclick = (e) => { if (e.target === infoModal) infoModal.classList.add('hidden'); };
+infoBtn.onclick=function(){infoModal.classList.remove('hidden');};
+infoCloseBtn.onclick=function(){infoModal.classList.add('hidden');};
+window.addEventListener('click',function(e){if(e.target===infoModal)infoModal.classList.add('hidden');});
 
-        var insightModal = document.getElementById('insight-modal');
-        var recsModal = document.getElementById('recs-modal');
-        var insightContent = document.getElementById('insight-content');
-        var recsContent = document.getElementById('recs-content');
+// ══ INSIGHTS MODAL (2 lignes) ══
+document.getElementById('btn-open-insight').onclick=function(){
+var t=translations[currentLang];
+document.getElementById('insight-modal-title').innerText=t.insights_title;
+var bases=t.insightGoodBase||["Your trend is positive"];
+var middles=t.insightMiddle||["Keep going, you are doing great."];
+var suffixes=t.insightGoodSuffix||["! 🌟"];
+var base=getNextFromPool(bases,'insightBase_'+currentLang);
+var middle=getNextFromPool(middles,'insightMiddle_'+currentLang);
+var suffix=getNextFromPool(suffixes,'insightSuffix_'+currentLang);
+document.getElementById('insight-content').innerHTML=
+"<div style='font-weight:bold;font-size:1.1em;margin-bottom:14px;'>"+base+suffix+"</div>"+
+"<div style='font-size:0.95em;line-height:1.6;'>"+middle+"</div>";
+document.getElementById('insight-modal').classList.remove('hidden');
+};
+document.getElementById('close-insight-btn').onclick=function(){document.getElementById('insight-modal').classList.add('hidden');};
 
-        document.getElementById('btn-open-insight').onclick = () => {
-            var t = translations[currentLang];
-            document.getElementById('insight-modal-title').innerText = t.insights_title;
-            var bases = t.insightGoodBase || ["Your trend is positive"];
-            var middles = insightMiddle[currentLang] || insightMiddle['en'];
-            var suffixes = t.insightGoodSuffix || ["! 🌟"];
-            var base = getNextFromPool(bases, 'insightBase_' + currentLang);
-            var middle = getNextFromPool(middles, 'insightMiddle_' + currentLang);
-            var suffix = getNextFromPool(suffixes, 'insightSuffix_' + currentLang);
-            insightContent.innerHTML = "<div style='font-weight:bold; font-size:1.1em; margin-bottom:14px;'>" + base + suffix + "</div>" +
-                                       "<div style='font-size:0.95em; line-height:1.6;'>" + middle + "</div>";
-            insightModal.classList.remove('hidden');
-        };
-        document.getElementById('close-insight-btn').onclick = () => insightModal.classList.add('hidden');
+// ══ RECOMMENDATIONS MODAL (3 lignes) ══
+document.getElementById('btn-open-recs').onclick=function(){
+var t=translations[currentLang];
+document.getElementById('recs-modal-title').innerText=t.recs_title;
+var food=getNextFromPool(t.foodRecs,'foodQueue_'+currentLang);
+var act=getNextFromPool(t.activityRecs,'activityQueue_'+currentLang);
+var advices=t.advice||["Stay hydrated."];
+var advice=getNextFromPool(advices,'adviceQueue_'+currentLang);
+document.getElementById('recs-content').innerHTML=
+"<div style='font-weight:bold;margin-bottom:14px;'>🍽️ "+food+"</div>"+
+"<div style='font-weight:bold;margin-bottom:14px;'>🏃 "+act+"</div>"+
+"<div style='font-size:0.95em;line-height:1.6;'>💡 "+advice+"</div>";
+document.getElementById('recs-modal').classList.remove('hidden');
+};
+document.getElementById('close-recs-btn').onclick=function(){document.getElementById('recs-modal').classList.add('hidden');};
 
-        document.getElementById('btn-open-recs').onclick = () => {
-            var t = translations[currentLang];
-            document.getElementById('recs-modal-title').innerText = t.recs_title;
-            var food = getNextFromPool(t.foodRecs, 'foodQueue_' + currentLang);
-            var act = getNextFromPool(t.activityRecs, 'activityQueue_' + currentLang);
-            var advices = adviceLines[currentLang] || adviceLines['en'];
-            var advice = getNextFromPool(advices, 'adviceQueue_' + currentLang);
-            recsContent.innerHTML = "<div style='font-weight:bold; margin-bottom:14px;'>🍽️ " + food + "</div>" +
-                                    "<div style='font-weight:bold; margin-bottom:14px;'>🏃 " + act + "</div>" +
-                                    "<div style='font-size:0.95em; line-height:1.6;'>💡 " + advice + "</div>";
-            recsModal.classList.remove('hidden');
-        };
-        document.getElementById('close-recs-btn').onclick = () => recsModal.classList.add('hidden');
+function checkSubscription(){
+var expiry=localStorage.getItem('subExpiry');
+if(expiry){
+var now=new Date().getTime();
+if(now<parseInt(expiry)){
+isSubscribed=true;expiryTime=parseInt(expiry);
+document.getElementById('subscribe-btn').classList.add('hidden');
+document.getElementById('sub-status').classList.remove('hidden');
+document.getElementById('btn-open-recs').classList.remove('hidden');
+}else{isSubscribed=false;localStorage.removeItem('subExpiry');}
+}
+if(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers["iap-check"]){
+window.webkit.messageHandlers["iap-check"].postMessage({});
+}
+updateUIText(currentLang);
+}
 
-        function checkSubscription() {
-            const expiry = localStorage.getItem('subExpiry');
-            if (expiry) {
-                const now = new Date().getTime();
-                if (now < parseInt(expiry)) {
-                    isSubscribed = true; expiryTime = parseInt(expiry);
-                    document.getElementById('subscribe-btn').classList.add('hidden');
-                    document.getElementById('sub-status').classList.remove('hidden');
-                    document.getElementById('btn-open-recs').classList.remove('hidden');
-                } else { isSubscribed = false; localStorage.removeItem('subExpiry'); }
-            }
-            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers["iap-check"]) {
-                window.webkit.messageHandlers["iap-check"].postMessage({});
-            }
-            updateUIText(currentLang);
-        }
+function loadEntries(){
+var data=localStorage.getItem('moodData');
+if(data)entries=JSON.parse(data);
+updateUIText(currentLang);
+}
 
-        function loadEntries() {
-            const data = localStorage.getItem('moodData');
-            if (data) entries = JSON.parse(data);
-            updateUIText(currentLang);
-        }
+// ══ PRIVACY POLICY (overlay avec contenu traduit) ══
+document.getElementById('privacy-link').addEventListener('click',function(e){
+e.preventDefault();
+var t=translations[currentLang];
+var html='<h1 style="font-size:32px;margin-bottom:8px;color:#2c3e50;">'+t.privacy_title+'</h1>';
+html+='<p style="color:#888;margin-bottom:24px;font-size:14px;">'+t.privacy_updated+'</p>';
+html+='<hr style="border:none;border-top:1px solid #eee;margin-bottom:24px;">';
+html+='<p style="margin-bottom:20px;">'+t.privacy_intro+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s1_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s1_c+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s2_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s2_c+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s3_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s3_c+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s4_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s4_c+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s5_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s5_c+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s6_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s6_c+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s7_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s7_c+'</p>';
+html+='<h2 style="font-size:20px;margin:24px 0 10px;color:#2c3e50;">'+t.privacy_s8_t+'</h2>';
+html+='<p style="margin-bottom:16px;">'+t.privacy_s8_c+'</p>';
+html+='<p style="margin-bottom:24px;"><strong>'+t.privacy_email+'</strong></p>';
+html+='<hr style="border:none;border-top:1px solid #eee;margin-top:40px;margin-bottom:20px;">';
+html+='<p style="text-align:center;color:#999;font-size:13px;">'+t.privacy_footer+'</p>';
+document.getElementById('privacy-content').innerHTML=html;
+document.getElementById('privacy-overlay').style.display='block';
+});
+document.getElementById('close-privacy-btn').addEventListener('click',function(){
+document.getElementById('privacy-overlay').style.display='none';
+});
 
-        if (isInApp || window.location.search.includes('demo=1')) { initStartScreen(); }
-    </script>
-
-    <a href="https://boussedraoui.github.io/mood-tracker/privacy.html" target="_blank" style="position: fixed; bottom: 20px; left: 0; writing-mode: vertical-rl; text-orientation: mixed; background-color: #f0f0f0; color: #333; padding: 12px 6px; font-family: -apple-system, sans-serif; font-size: 11px; font-weight: bold; text-decoration: none; border-radius: 0 8px 8px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); z-index: 9999;">Privacy Policy</a>
-
-    <div id="privacy-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:2147483647; overflow:hidden;">
-        <button id="close-privacy-btn" style="position:absolute; top:15px; right:15px; z-index:2147483648; background:#007aff; color:white; border:none; border-radius:20px; padding:10px 20px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.2);">Close</button>
-        <iframe id="privacy-iframe" style="width:100%; height:100%; border:none;"></iframe>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.overflow = 'hidden';
-            document.body.style.height = '100vh';
-            document.body.style.width = '100vw';
-            document.body.addEventListener('click', function(e) {
-                var target = e.target.closest('a');
-                if (target && target.href && target.href.includes('privacy.html')) {
-                    e.preventDefault();
-                    var overlay = document.getElementById('privacy-overlay');
-                    var iframe = document.getElementById('privacy-iframe');
-                    if (overlay && iframe) { overlay.style.display = 'block'; iframe.src = target.href; }
-                }
-            });
-            document.getElementById('close-privacy-btn').addEventListener('click', function() {
-                var overlay = document.getElementById('privacy-overlay');
-                var iframe = document.getElementById('privacy-iframe');
-                if (overlay && iframe) { overlay.style.display = 'none'; iframe.src = ''; }
-            });
-        });
-    </script>
-
-
-
-
-
-
-
-
-
-    
-    <script>
-  // ══ CODE DE TEST TEMPORAIRE (À SUPPRIMER AVANT SOUMISSION) ══
-  document.addEventListener('DOMContentLoaded', function() {
-    
-    // 1. Bypass la web gate et affiche l'app
-    var gate = document.getElementById('web-gate');
-    if (gate) gate.style.display = 'none';
-
-    // 2. Simule l'environnement iOS (pour que le start-screen s'affiche)
-    // → On garde isInApp à true via un override
-    window.isInApp = true;
-
-    // 3. Affiche le start-screen (choix de langue) comme sur iOS
-    var start = document.getElementById('start-screen');
-    if (start) start.classList.remove('hidden');
-    var app = document.getElementById('app');
-    if (app) app.style.display = 'none';
-
-    // 4. Initialise le start-screen (choix de langue + timer)
-    if (typeof initStartScreen === 'function') {
-      initStartScreen();
-    }
-
-    // 5. INTERCEPTE le clic sur Subscribe pour SIMULER un paiement réussi
-    setTimeout(function() {
-      var subBtn = document.getElementById('subscribe-btn');
-      if (subBtn) {
-        subBtn.onclick = function() {
-          // Simule le retour de succès d'Apple StoreKit
-          var event = new CustomEvent('iap-purchase-result', { detail: 'success' });
-          document.dispatchEvent(event);
-        };
-      }
-    }, 500);
-  });
+// ══ START ══
+if(isInApp){initStartScreen();}
 </script>
 
 </body>
