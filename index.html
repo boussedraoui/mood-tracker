@@ -698,6 +698,18 @@
         const infoCloseBtn = document.getElementById('info-close-btn');
         const infoTextContent = document.getElementById('info-text-content');
 
+                function showToast(msg) {
+            var existing = document.getElementById('custom-toast');
+            if (existing) existing.remove();
+            var toast = document.createElement('div');
+            toast.id = 'custom-toast';
+            toast.innerText = msg;
+            toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:14px 28px;border-radius:30px;font-size:15px;font-weight:bold;z-index:9999999;opacity:0;transition:opacity 0.3s;pointer-events:none;max-width:85%;text-align:center;';
+            document.body.appendChild(toast);
+            setTimeout(function(){ toast.style.opacity = '1'; }, 10);
+            setTimeout(function(){ toast.style.opacity = '0'; setTimeout(function(){ toast.remove(); }, 300); }, 2500);
+        }
+
         function getNextFromPool(poolArray, storageKey) {
             let queue = JSON.parse(localStorage.getItem(storageKey));
             if (!queue || queue.length === 0) {
@@ -792,7 +804,7 @@
         activityBtns.forEach(btn => { btn.onclick = () => { activityBtns.forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedActivity = btn.dataset.value; }; });
 
         saveBtn.onclick = () => {
-            if (!selectedMood || !selectedActivity) { alert(alertMessages[currentLang].choose); return; }
+            if (!selectedMood || !selectedActivity) { showToast(alertMessages[currentLang].choose); return; }
             const entry = { mood: selectedMood, activity: selectedActivity, date: new Date().toISOString() };
             entries.push(entry);
             localStorage.setItem('moodData', JSON.stringify(entries));
@@ -818,8 +830,8 @@
                 document.getElementById('sub-status').classList.remove('hidden');
                 document.getElementById('btn-open-recs').classList.remove('hidden');
                 updateUIText(currentLang);
-                alert(alertMessages[currentLang].success);
-            } else { alert(alertMessages[currentLang].fail); }
+                showToast(alertMessages[currentLang].success);
+            } else { showToast(alertMessages[currentLang].fail); }
         });
 
         document.addEventListener('iap-status', function(e) {
