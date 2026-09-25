@@ -1387,31 +1387,6 @@ Object.assign(translations['it'], {stats_title:'📊 Statistiche', stats_total:'
 Object.assign(translations['ko'], {stats_title:'📊 통계', stats_total:'총 항목', stats_top_mood:'가장 많은 기분', stats_last:'마지막 항목', stats_entries:'항목', stats_no_data:'아직 항목이 없습니다'});
 Object.assign(translations['hi'], {stats_title:'📊 आंकड़े', stats_total:'कुल प्रविष्टियाँ', stats_top_mood:'सबसे आम मूड', stats_last:'अंतिम प्रविष्टि', stats_entries:'प्रविष्टियाँ', stats_no_data:'अभी तक कोई प्रविष्टि नहीं'});
 </script>
-
-    <script>
-  // ══ CODE DE TEST TEMPORAIRE (À SUPPRIMER AVANT SOUMISSION) ══
-  document.addEventListener('DOMContentLoaded', function() {
-    var gate = document.getElementById('web-gate');
-    if (gate) gate.style.display = 'none';
-    window.isInApp = true;
-    var start = document.getElementById('start-screen');
-    if (start) start.classList.remove('hidden');
-    var app = document.getElementById('app');
-    if (app) app.style.display = 'none';
-    if (typeof initStartScreen === 'function') {
-      initStartScreen();
-    }
-    setTimeout(function() {
-      var subBtn = document.getElementById('subscribe-btn');
-      if (subBtn) {
-        subBtn.onclick = function() {
-          var event = new CustomEvent('iap-purchase-result', { detail: 'success' });
-          document.dispatchEvent(event);
-        };
-      }
-    }, 500);
-  });
-</script>
     
 </body>
 </html>
