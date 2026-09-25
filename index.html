@@ -635,6 +635,23 @@
             text-decoration: none;
             font-size: 17px;
         }
+        /* ── iPad / Tablets ── */
+@media (min-width: 768px) {
+    #app {
+        max-width: 700px;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    .btn {
+        font-size: clamp(56px, 9vh, 80px);
+    }
+    .title {
+        font-size: clamp(34px, 5vh, 48px);
+    }
+    .insights-box {
+        padding: 26px 34px 22px 34px;
+    }
+}
     </style>
 </head>
 <body>
