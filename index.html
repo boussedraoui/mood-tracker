@@ -1454,33 +1454,6 @@ Object.assign(translations['hi'], {onboarding_title:'👋 स्वागत ह
 
 
 
-    <script>
-  // ══ CODE DE TEST TEMPORAIRE (À SUPPRIMER AVANT SOUMISSION) ══
-  document.addEventListener('DOMContentLoaded', function() {
-    var gate = document.getElementById('web-gate');
-    if (gate) gate.style.display = 'none';
-    window.isInApp = true;
-    var start = document.getElementById('start-screen');
-    if (start) start.classList.remove('hidden');
-    var app = document.getElementById('app');
-    if (app) app.style.display = 'none';
-    if (typeof initStartScreen === 'function') {
-      initStartScreen();
-    }
-    setTimeout(function() {
-      var subBtn = document.getElementById('subscribe-btn');
-      if (subBtn) {
-        subBtn.onclick = function() {
-          var event = new CustomEvent('iap-purchase-result', { detail: 'success' });
-          document.dispatchEvent(event);
-        };
-      }
-    }, 500);
-  });
-</script>
-
-
-
     <style>
 /* ══ OVERRIDE FINAL — compact, tout collé ══ */
 html, body {
