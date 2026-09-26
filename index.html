@@ -26,7 +26,7 @@
         html, body { height: 100vh; height: 100dvh; overflow: hidden; margin: 0; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; overscroll-behavior: none; }
         #start-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100vh; height: 100dvh; position: absolute; top: 0; left: 0; background: #f0f4f8; z-index: 100; padding: 20px; }
         .start-icon { width: 120px; height: 120px; border-radius: 30px; margin-bottom: 20px; }
-        .start-title { font-size: clamp(32px, 7vh, 48px); font-weight: bold; color: #2c3e50; margin-bottom: 30px; }
+        .start-title { font-size: clamp(22px, 5vh, 34px); font-weight: bold; color: #2c3e50; margin-bottom: 30px; text-align: center; line-height: 1.2; padding: 0 20px; }
         .lang-btn { background: #fff; padding: 18px 50px; border-radius: 40px; border: 1px solid #ddd; font-size: clamp(20px, 4vh, 28px); font-weight: bold; cursor: pointer; margin-bottom: 16px; }
         .timer-text { font-size: clamp(16px, 2.5vh, 22px); color: #888; }
         .hidden { display: none !important; }
@@ -153,7 +153,7 @@
 
     <div id="start-screen">
         <img src="./assets/1783351665167.png" class="start-icon" alt="App Icon">
-        <div class="start-title">Mood Tracker</div>
+        <div class="start-title">Daily Insights Mood Tracker</div>
         <button class="lang-btn" id="lang-select-btn">English</button>
         <div class="timer-text" id="timer-text">Entering in 3 seconds...</div>
     </div>
