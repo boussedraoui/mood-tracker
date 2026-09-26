@@ -1483,11 +1483,14 @@ Object.assign(translations['hi'], {onboarding_title:'👋 स्वागत ह
 
 
     <style>
-/* ══ OVERRIDE FINAL — tout collé, zéro scroll ══ */
+/* ══ OVERRIDE FINAL — compact, tout collé ══ */
 html, body {
     overflow: hidden !important;
     height: 100vh !important;
     height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: #f0f4f8 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -1496,15 +1499,16 @@ html, body {
     width: 100% !important;
     max-width: 480px !important;
     height: auto !important;
+    max-height: 98vh !important;
     max-height: 98dvh !important;
-    padding: 12px 14px 60px 14px !important;
+    padding: 12px 14px !important;
     border-radius: 20px !important;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08) !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
     gap: 6px !important;
-    position: relative !important;
+    overflow: hidden !important;
 }
 .title { font-size: clamp(16px, 2.2vh, 22px) !important; margin-bottom: 2px !important; }
 .label { font-size: clamp(11px, 1.5vh, 15px) !important; margin: 2px 0 !important; }
@@ -1524,31 +1528,29 @@ html, body {
 .subscribe-btn-small { padding: 10px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
 .sub-status { font-size: clamp(11px, 1.5vh, 14px) !important; }
 
-/* Share — en bas à gauche de #app */
+/* Share + 3 boutons ronds dans la même ligne */
 .bottom-row {
-    position: absolute !important;
-    bottom: 12px !important;
-    left: 16px !important;
-    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    width: 100% !important;
+    margin-top: 6px !important;
     padding: 0 !important;
-    z-index: 15 !important;
+    position: static !important;
 }
-.share-btn { padding: 8px 18px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
-
-/* Boutons ronds — en bas à droite de #app */
+.share-btn { padding: 8px 18px !important; font-size: clamp(13px, 1.8vh, 17px) !important; margin-right: auto !important; }
 .info-btn, .io-btn, .stats-btn {
-    position: absolute !important;
-    bottom: 12px !important;
+    position: static !important;
+    bottom: auto !important;
+    right: auto !important;
     width: clamp(32px, 4.6vh, 42px) !important;
     height: clamp(32px, 4.6vh, 42px) !important;
     font-size: clamp(15px, 2.2vh, 20px) !important;
-    z-index: 15 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
 }
-.info-btn { right: 12px !important; }
-.io-btn { right: 56px !important; }
-.stats-btn { right: 100px !important; }
 
-/* Modales */
 .modal-content { padding: 16px 14px !important; max-width: 90vw !important; max-height: 90vh !important; border-radius: 20px !important; }
 .info-modal-title { font-size: clamp(16px, 2.2vh, 22px) !important; margin-bottom: 8px !important; padding-bottom: 6px !important; }
 #insight-content, #recs-content, #stats-content { font-size: clamp(13px, 1.8vh, 17px) !important; line-height: 1.45 !important; }
@@ -1563,5 +1565,19 @@ html, body {
 .modal-btn { padding: 10px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
 #privacy-link { font-size: 8px !important; padding: 6px 3px !important; }
 </style>
+
+<script>
+// Déplace les 3 boutons ronds (stats, io, info) dans .bottom-row
+document.addEventListener('DOMContentLoaded', function() {
+    var br = document.querySelector('.bottom-row');
+    if (!br) return;
+    var statsBtn = document.getElementById('stats-btn');
+    var ioBtn = document.getElementById('io-btn');
+    var infoBtn = document.getElementById('info-btn');
+    if (statsBtn) br.appendChild(statsBtn);
+    if (ioBtn) br.appendChild(ioBtn);
+    if (infoBtn) br.appendChild(infoBtn);
+});
+</script>
 </body>
 </html>
