@@ -1482,6 +1482,61 @@ Object.assign(translations['hi'], {onboarding_title:'👋 स्वागत ह
 
 
 
-    
+    <style>
+/* ══ OVERRIDE RESPONSIVE UNIVERSEL — iPhone + iPad ══ */
+html, body { overflow: hidden !important; height: 100vh !important; height: 100dvh !important; }
+#app {
+    padding: 8px 12px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    justify-content: space-between !important;
+}
+.title { font-size: clamp(16px, 2.4vh, 22px) !important; margin-bottom: 2px !important; }
+.label { font-size: clamp(11px, 1.6vh, 15px) !important; margin-top: 2px !important; margin-bottom: 2px !important; }
+.row { gap: 4px !important; }
+.btn { padding: 2px 0 !important; font-size: clamp(24px, 4.2vh, 36px) !important; border-radius: 30px !important; }
+.save-btn { padding: 5px 0 !important; font-size: clamp(13px, 1.8vh, 17px) !important; margin-top: 3px !important; }
+.insights-box { padding: 6px 8px !important; margin-top: 3px !important; border-radius: 14px !important; gap: 4px !important; }
+.main-action-btn { padding: 8px 10px !important; font-size: clamp(13px, 1.8vh, 17px) !important; border-radius: 28px !important; }
+.subscribe-btn-small { padding: 8px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
+.sub-status { font-size: clamp(11px, 1.5vh, 14px) !important; }
+.bottom-row { margin-top: 3px !important; justify-content: flex-start !important; padding-left: 30px !important; }
+.share-btn { padding: 7px 18px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
+.info-btn, .io-btn, .stats-btn {
+    width: clamp(32px, 4.6vh, 42px) !important;
+    height: clamp(32px, 4.6vh, 42px) !important;
+    font-size: clamp(15px, 2.2vh, 20px) !important;
+    bottom: 5px !important;
+}
+.info-btn { right: 10px !important; }
+.io-btn { right: 54px !important; }
+.stats-btn { right: 98px !important; }
+.modal-content { padding: 16px 14px !important; max-width: 90vw !important; max-height: 90vh !important; border-radius: 20px !important; }
+.info-modal-title { font-size: clamp(16px, 2.2vh, 22px) !important; margin-bottom: 8px !important; padding-bottom: 6px !important; }
+#insight-content, #recs-content, #stats-content { font-size: clamp(13px, 1.8vh, 17px) !important; line-height: 1.45 !important; }
+.info-close-btn { padding: 9px !important; font-size: clamp(13px, 1.8vh, 17px) !important; margin-top: 10px !important; }
+#onboarding-modal .modal-content { padding: 14px 12px !important; max-width: 88vw !important; }
+#onboarding-title { font-size: clamp(16px, 2.2vh, 22px) !important; margin-bottom: 6px !important; padding-bottom: 6px !important; }
+#onboarding-subtitle { font-size: clamp(11px, 1.5vh, 14px) !important; margin-bottom: 10px !important; line-height: 1.4 !important; }
+#onboarding-mood-buttons { gap: 6px !important; margin-bottom: 10px !important; }
+#onboarding-mood-buttons .btn { padding: 0 !important; font-size: clamp(28px, 5vh, 40px) !important; border-radius: 20px !important; height: clamp(50px, 8vh, 70px) !important; }
+.lang-list-item { padding: 8px 0 !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
+.lang-modal-title { font-size: clamp(15px, 2vh, 20px) !important; margin-bottom: 8px !important; }
+.modal-btn { padding: 10px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
+#privacy-link { font-size: 8px !important; padding: 6px 3px !important; }
+@media (min-width: 768px) {
+    #app { max-width: 480px !important; padding: 10px 14px !important; }
+    .title { font-size: clamp(18px, 2.6vh, 24px) !important; }
+    .btn { font-size: clamp(28px, 4.6vh, 40px) !important; }
+    .main-action-btn { font-size: clamp(14px, 2vh, 18px) !important; }
+    .info-btn, .io-btn, .stats-btn { width: clamp(36px, 5vh, 46px) !important; height: clamp(36px, 5vh, 46px) !important; }
+    .stats-btn { right: 108px !important; }
+    .io-btn { right: 60px !important; }
+    .info-btn { right: 12px !important; }
+}
+</style>
 </body>
 </html>
