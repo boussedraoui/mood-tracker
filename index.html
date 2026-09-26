@@ -1483,7 +1483,7 @@ Object.assign(translations['hi'], {onboarding_title:'👋 स्वागत ह
 
 
     <style>
-/* ══ OVERRIDE RESPONSIVE UNIVERSEL — iPhone + iPad ══ */
+/* ══ OVERRIDE FINAL — tout compact, zéro scroll ══ */
 html, body { overflow: hidden !important; height: 100vh !important; height: 100dvh !important; }
 #app {
     padding: 8px 12px !important;
@@ -1492,19 +1492,30 @@ html, body { overflow: hidden !important; height: 100vh !important; height: 100d
     height: 100dvh !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    justify-content: space-between !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
 }
-.title { font-size: clamp(16px, 2.4vh, 22px) !important; margin-bottom: 2px !important; }
-.label { font-size: clamp(11px, 1.6vh, 15px) !important; margin-top: 2px !important; margin-bottom: 2px !important; }
+.title { font-size: clamp(16px, 2.2vh, 22px) !important; margin-bottom: 2px !important; flex-shrink: 0; }
+.label { font-size: clamp(11px, 1.5vh, 15px) !important; margin-top: 2px !important; margin-bottom: 2px !important; flex-shrink: 0; }
 .row { gap: 4px !important; }
-.btn { padding: 2px 0 !important; font-size: clamp(24px, 4.2vh, 36px) !important; border-radius: 30px !important; }
-.save-btn { padding: 5px 0 !important; font-size: clamp(13px, 1.8vh, 17px) !important; margin-top: 3px !important; }
-.insights-box { padding: 6px 8px !important; margin-top: 3px !important; border-radius: 14px !important; gap: 4px !important; }
-.main-action-btn { padding: 8px 10px !important; font-size: clamp(13px, 1.8vh, 17px) !important; border-radius: 28px !important; }
-.subscribe-btn-small { padding: 8px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
+.btn { padding: 2px 0 !important; font-size: clamp(24px, 4vh, 36px) !important; border-radius: 30px !important; }
+.save-btn { padding: 8px 0 !important; font-size: clamp(13px, 1.8vh, 17px) !important; margin-top: 4px !important; flex-shrink: 0; }
+.insights-box {
+    padding: 8px 10px !important;
+    margin-top: 4px !important;
+    border-radius: 14px !important;
+    gap: 6px !important;
+    flex: 0 0 auto !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+}
+.main-action-btn { padding: 10px 12px !important; font-size: clamp(13px, 1.8vh, 17px) !important; border-radius: 28px !important; }
+.subscribe-btn-small { padding: 10px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
 .sub-status { font-size: clamp(11px, 1.5vh, 14px) !important; }
-.bottom-row { margin-top: 3px !important; justify-content: flex-start !important; padding-left: 30px !important; }
-.share-btn { padding: 7px 18px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
+.bottom-row { margin-top: 4px !important; justify-content: flex-start !important; padding-left: 30px !important; flex-shrink: 0; }
+.share-btn { padding: 8px 18px !important; font-size: clamp(13px, 1.8vh, 17px) !important; }
 .info-btn, .io-btn, .stats-btn {
     width: clamp(32px, 4.6vh, 42px) !important;
     height: clamp(32px, 4.6vh, 42px) !important;
@@ -1529,8 +1540,8 @@ html, body { overflow: hidden !important; height: 100vh !important; height: 100d
 #privacy-link { font-size: 8px !important; padding: 6px 3px !important; }
 @media (min-width: 768px) {
     #app { max-width: 480px !important; padding: 10px 14px !important; }
-    .title { font-size: clamp(18px, 2.6vh, 24px) !important; }
-    .btn { font-size: clamp(28px, 4.6vh, 40px) !important; }
+    .title { font-size: clamp(18px, 2.4vh, 24px) !important; }
+    .btn { font-size: clamp(28px, 4.4vh, 40px) !important; }
     .main-action-btn { font-size: clamp(14px, 2vh, 18px) !important; }
     .info-btn, .io-btn, .stats-btn { width: clamp(36px, 5vh, 46px) !important; height: clamp(36px, 5vh, 46px) !important; }
     .stats-btn { right: 108px !important; }
